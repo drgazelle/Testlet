@@ -11,11 +11,14 @@ public class TestletDriver {
     public static final int WIDTH = 900;
     public static final int HEIGHT = 600;
 
+    public static TestletPanel screen;
+
     public static void main(String[] args) {
+        screen = new TestletPanel();
         JFrame.setDefaultLookAndFeelDecorated(true);
         JFrame frame = new JFrame("Testlet");
         // frame attributes
-        frame.setContentPane(null); //replace with content panel
+        frame.setContentPane(screen);
         frame.setSize(WIDTH, HEIGHT);
         frame.setLocation(100, 50);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
