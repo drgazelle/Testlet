@@ -2,7 +2,7 @@
  *  a String definition and term.
  * @author RMizelle
  * @since 9/16/2022
- * @version V0.1
+ * @version V0.2
  */
 public class Flashcard {
     private String term, def;
@@ -36,5 +36,12 @@ public class Flashcard {
     /** setter method for definition. */
     public void setDef(String def) {
         this.def = def;
+    }
+
+    /** swap method exchanges the term and definition */
+    public void swap() {
+        String temp = term;
+        term = def;
+        def = term;
     }
 }
