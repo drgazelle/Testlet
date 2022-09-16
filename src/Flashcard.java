@@ -2,7 +2,7 @@
  *  a String definition and term.
  * @author RMizelle
  * @since 9/16/2022
- * @version V0.2
+ * @version V0.1
  */
 public class Flashcard {
     private String term, def;
