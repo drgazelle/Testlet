@@ -18,6 +18,14 @@ public class Flashcard {
         this.def = def;
     }
 
+    /** 0-arg constructor that instantiates
+     *  the term and definition as empty
+     */
+    public Flashcard() {
+        term = "";
+        def = "";
+    }
+
     /** accessor method for term. */
     public String getTerm() {
         return term;
@@ -38,7 +46,7 @@ public class Flashcard {
         this.def = def;
     }
 
-    /** swap method exchanges the term and definition */
+    /** swap method exchanges the term and definition. */
     public void swap() {
         String temp = term;
         term = def;
