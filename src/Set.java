@@ -7,5 +7,5 @@ import java.util.ArrayList;
  * @version V0.1
  */
 public class Set {
-    private ArrayList<Flashcard> set  = new ArrayList<Flashcard>();
+    private ArrayList<Flashcard> set = new ArrayList<Flashcard>();
 }
