@@ -18,6 +18,15 @@ public class Course {
         this.name = name;
     }
 
+    /**
+     * 0-arg construction instantiates Deck
+     * ArrayList and sets name to empty
+     */
+    public Course() {
+        course = new ArrayList<Deck>();
+        name = "";
+    }
+
     /** setName method modifies name */
     public void setName(String name) {
         this.name = name;

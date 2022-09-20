@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * @version V0.1
  */
 public class Deck {
-    private ArrayList<Flashcard> Deck;
+    private ArrayList<Flashcard> deck;
     private String name;
 
     /** 1-arg constructor instantiates Flashcard
@@ -14,8 +14,17 @@ public class Deck {
      * @param name Deck name
      */
     public Deck(String name) {
-        Deck = new ArrayList<Flashcard>();
+        deck = new ArrayList<Flashcard>();
         this.name = name;
+    }
+
+    /**
+     * 0-arg construction instantiates Flashcard
+     * ArrayList and sets name to empty
+     */
+    public Deck() {
+        deck = new ArrayList<Flashcard>();
+        name = "";
     }
 
     /** setName method modifies name */
@@ -34,7 +43,7 @@ public class Deck {
      *  @param indexEnd final index of Flashcard
      */
     public void move(int indexStart, int indexEnd) {
-        Flashcard temp = Deck.remove(indexStart);
-        Deck.add(indexEnd, temp);
+        Flashcard temp = deck.remove(indexStart);
+        deck.add(indexEnd, temp);
     }
 }
