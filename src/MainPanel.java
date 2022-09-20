@@ -7,8 +7,8 @@ import javax.swing.*;
  */
 public class MainPanel extends JPanel //implements MouseListener, MouseMotionListener
 {
-    //screen size
-   // private static final int xSIZE = 1000; //originally 700
-    //private static final int ySIZE = 600;
+    /** 0-arg constructor */
+    public MainPanel() {
 
+    }
 }
