@@ -1,10 +1,9 @@
 import javax.swing.JFrame;
 
-/** TestletDriver class defines the containing window
- *  for the application
+/** TestletDriver class defines the containing
+ *  window for the application
  * @author RMizelle
  * @version V0.1
- * @since 9/16/2022
  */
 public class TestletDriver {
     //window dimensions

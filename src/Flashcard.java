@@ -1,6 +1,5 @@
 /** Flashcard Class defines an object pertaining
  *  a String definition and term.
- * @author RMizelle
  * @since 9/16/2022
  * @version V0.1
  */
