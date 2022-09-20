@@ -1,6 +1,6 @@
 /** Flashcard Class defines an object pertaining
  *  a String definition and term.
- * @since 9/16/2022
+ * @author RMizelle
  * @version V0.1
  */
 public class Flashcard {
