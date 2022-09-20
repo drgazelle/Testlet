@@ -3,7 +3,6 @@ import java.util.ArrayList;
 /** Course class defines an ArrayList
  *  of Decks
  *  @author RMizelle
- *  @since 9/16/2022
  *  @version V0.1
  */
 public class Course {
@@ -22,5 +21,20 @@ public class Course {
     /** setName method modifies name */
     public void setName(String name) {
         this.name = name;
+    }
+
+    /** Accessor method for name */
+    public String getName() {
+        return name;
+    }
+
+    /** move method changes the position of a
+     *  Deck within a Course
+     *  @param indexStart initial index of Deck
+     *  @param indexEnd final index of Deck
+     */
+    public void move(int indexStart, int indexEnd) {
+        Deck temp = course.remove(indexStart);
+        course.add(indexEnd, temp);
     }
 }
