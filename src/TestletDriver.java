@@ -1,24 +1,23 @@
 import javax.swing.JFrame;
 
-/** TestletDriver class defines the containing window
- *  for the application
+/** TestletDriver class defines the containing
+ *  window for the application
  * @author RMizelle
  * @version V0.1
- * @since 9/16/2022
  */
 public class TestletDriver {
     //window dimensions
     public static final int WIDTH = 900;
     public static final int HEIGHT = 600;
 
-    public static TestletPanel screen;
+    public static MainPanel panel;
 
     public static void main(String[] args) {
-        screen = new TestletPanel();
+        panel = new MainPanel();
         JFrame.setDefaultLookAndFeelDecorated(true);
         JFrame frame = new JFrame("Testlet");
         // frame attributes
-        frame.setContentPane(screen);
+        frame.setContentPane(panel);
         frame.setSize(WIDTH, HEIGHT);
         frame.setLocation(100, 50);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

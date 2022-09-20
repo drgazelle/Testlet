@@ -1,26 +1,49 @@
 import java.util.ArrayList;
 
 /** Course class defines an ArrayList
- *  of Sets
+ *  of Decks
  *  @author RMizelle
- *  @since 9/16/2022
- *  @version V0.2
+ *  @version V0.1
  */
 public class Course {
-    private ArrayList<Set> course = new ArrayList<Set>();
+    private ArrayList<Deck> course;
+    private String name;
 
-    /** accessor method for sets.
-     * @return Set object at index i; null if out-of-bounds
-     * @param i set index
+    /** 1-arg constructor instantiates Deck ArrayList
+     *  and sets name
+     * @param name course/subject name
      */
-    public Set getSet(int i) {
-        if (i >= course.size()) {
-            return null;
-        }
-        return course.get(i);
+    public Course(String name) {
+        course = new ArrayList<Deck>();
+        this.name = name;
     }
 
-    public void removeSet() {
+    /**
+     * 0-arg construction instantiates Deck
+     * ArrayList and sets name to empty
+     */
+    public Course() {
+        course = new ArrayList<Deck>();
+        name = "";
+    }
 
+    /** setName method modifies name */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /** Accessor method for name */
+    public String getName() {
+        return name;
+    }
+
+    /** move method changes the position of a
+     *  Deck within a Course
+     *  @param indexStart initial index of Deck
+     *  @param indexEnd final index of Deck
+     */
+    public void move(int indexStart, int indexEnd) {
+        Deck temp = course.remove(indexStart);
+        course.add(indexEnd, temp);
     }
 }
