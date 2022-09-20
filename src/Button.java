@@ -4,12 +4,9 @@ import java.awt.Rectangle;
 import java.awt.Graphics;
 import javax.swing.ImageIcon;
 
-
-
 /** Button Class defines an object with shape, title, color, and image
  *  to allow for new actions within the panel
- * @author DOberle with additions from ACraig
- * @since 9/16/2022
+ * @author DOberle, ACraig
  * @version V0.1
  */
 public class Button
