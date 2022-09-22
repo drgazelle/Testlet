@@ -82,7 +82,7 @@ public class Database {
                 //else if data is a flashcard
                 else if (data.contains("**")) {
                     //extrapolates term and definition
-                    String parts[] = data.substring(4).split(",");
+                    String parts[] = data.substring(2).split(",");
                     database.get(cIndex).get(dIndex).add(new Flashcard(parts[0], parts[1]));
                 }
                 else {
@@ -102,25 +102,27 @@ public class Database {
      *  Database and implements data.txt
      *  @return true if successful, false if error
      */
-    public boolean exportData() {
+    public void exportDatabase() {
         try {
-            FileWriter output = new FileWriter("data.txt");
+            FileWriter output = new FileWriter(data);
+            //loops through courses
             for (Course c : database) {
                 output.write("******" + c.getName() + "\n");
+                //loops through decks
                 for (Deck d : c.get()) {
-                    output.write("****" + d.getName()  + "\n");
+                    output.write("****" + d.getName() + "," + d.getDescription() + "\n");
+                    //loops through flashcard
                     for(Flashcard f: d.get()) {
-                        output.write("**" + f.getTerm() + "," + f.getDef()  + "\n");
+                        output.write("**" + f.getTerm() + "," + f.getDef() + "MADE IT" + "\n");
                     }
                 }
             }
+            output.close();
         }
         catch (IOException e) {
             System.out.println("ERROR: Failure to write data.txt");
             e.printStackTrace();
-            return false;
         }
-        return true;
     }
 
     ////////////////////  Database Methods ////////////////////
@@ -202,4 +204,3 @@ public class Database {
         return database.size();
     }
 }
-
