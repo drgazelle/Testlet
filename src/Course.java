@@ -27,7 +27,7 @@ public class Course {
         name = "";
     }
 
-    ////// Name Methods ///////
+    //////////////////// Name Methods ////////////////////
 
     /** setName method modifies name
      * @param name Course name
@@ -43,7 +43,7 @@ public class Course {
         return name;
     }
 
-    ////// Course Methods ///////
+    //////////////////// Course Methods ////////////////////
 
     /** Appends the specified Deck to the end of this course. */
     public boolean add(Deck c) {

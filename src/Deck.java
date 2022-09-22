@@ -40,7 +40,7 @@ public class Deck {
         description = "";
     }
 
-    ////// Name Methods //////
+    //////////////////// Name Methods ////////////////////
 
     /** Modifies deck name */
     public void setName(String name) {
@@ -52,7 +52,7 @@ public class Deck {
         return name;
     }
 
-    ////// Description Methods //////
+    //////////////////// Description Methods ////////////////////
 
     /** Modifies deck description */
     public void setDescription(String description) {
@@ -63,7 +63,7 @@ public class Deck {
         return description;
     }
 
-    ////// Deck Methods //////
+    //////////////////// Deck Methods ////////////////////
 
     /** Appends the specified Flashcard to the end of this deck. */
     public boolean add(Flashcard c) {
@@ -115,6 +115,7 @@ public class Deck {
     public Flashcard remove(int i) {
         return deck.remove(i);
     }
+
     /** Removes the first occurrence of the specified
      *  Flashcard from this deck, if it is present.
      * @param c Flashcard to be removed
@@ -123,6 +124,7 @@ public class Deck {
     public boolean remove(Flashcard c) {
         return deck.remove(c);
     }
+
     /** Replaces the Flashcard at the specified position
      *  in this deck with the specified Flashcard.
      * @param i index
@@ -132,19 +134,20 @@ public class Deck {
     public Flashcard set(int i, Flashcard c) {
         return deck.set(i, c);
     }
+
     /** Returns the number of elements in this list.
      * @return deck size
      */
     public int size() {
         return deck.size();
     }
+
     /** move method changes the position of a
      *  Flashcard within a Deck
      *  @param indexStart initial index of Flashcard
      *  @param indexEnd final index of Flashcard
      */
     public void move(int indexStart, int indexEnd) {
-        Flashcard temp = deck.remove(indexStart);
-        deck.add(indexEnd, temp);
+        deck.add(indexEnd, deck.remove(indexStart));
     }
 }
