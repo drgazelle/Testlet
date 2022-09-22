@@ -20,13 +20,13 @@ public class Database {
 
     /** 0-arg constructor implements ArrayList of course objects */
     public Database() {
+        database = new ArrayList<>();
         //checks for data.txt
         try {
             data = new File("resources/data.txt");
             //if data.txt does not exist, instantiates empty Database
             if (data.createNewFile()) {
                 System.out.println("New Data File Generated");
-                database = new ArrayList<>();
             }
             //else data.txt exists, calls import method
             else {
@@ -53,11 +53,9 @@ public class Database {
      */
     private boolean importData() {
         //course index
-        int cIndex = 0;
+        int cIndex = -1;
         // deck index
-        int dIndex = 0;
-        // flashcard index
-        int fIndex = 0;
+        int dIndex = -1;
 
         try {
             //creates scanner
@@ -67,23 +65,27 @@ public class Database {
                 //if data is a course
                 if (data.contains("******")) {
                     //adds new course
-                    database.add(cIndex, new Course(data.substring(6)));
+                    database.add(new Course(data.substring(6).trim()));
                     //resets deck and course index
-                    dIndex = 0;
-                    fIndex = 0;
+                    dIndex = -1;
                     // increments course index
                     cIndex++;
                 }
                 //else if data is a deck
                 else if (data.contains("****")) {
-
+                    //extrapolates name and description
+                    String parts[] = data.substring(4).split(",");
+                    database.get(cIndex).add(new Deck(parts[0], parts[1]));
+                    dIndex++;
                 }
                 //else if data is a flashcard
                 else if (data.contains("**")) {
-
+                    //extrapolates term and definition
+                    String parts[] = data.substring(4).split(",");
+                    database.get(cIndex).get(dIndex).add(new Flashcard(parts[0], parts[1]));
                 }
                 else {
-                    System.out.println("ERROR: Reading Data");
+                    System.out.println("ERROR: Data Corrupted");
                     return false;
                 }
             }
