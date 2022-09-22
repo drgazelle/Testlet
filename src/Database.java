@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -92,13 +93,34 @@ public class Database {
         } catch (FileNotFoundException e) {
             System.out.println("ERROR: Couldn't Read File");
             e.printStackTrace();
+            return false;
         }
         return true;
     }
 
-    /** exportData method takes existing Database and implements data.txt */
-    public void exportData() {
-        //TO-DO
+    /** exportData method takes existing
+     *  Database and implements data.txt
+     *  @return true if successful, false if error
+     */
+    public boolean exportData() {
+        try {
+            FileWriter output = new FileWriter("data.txt");
+            for (Course c : database) {
+                output.write("******" + c.getName() + "\n");
+                for (Deck d : c.get()) {
+                    output.write("****" + d.getName()  + "\n");
+                    for(Flashcard f: d.get()) {
+                        output.write("**" + f.getTerm() + "," + f.getDef()  + "\n");
+                    }
+                }
+            }
+        }
+        catch (IOException e) {
+            System.out.println("ERROR: Failure to write data.txt");
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     ////////////////////  Database Methods ////////////////////

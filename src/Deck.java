@@ -97,6 +97,13 @@ public class Deck {
         return deck.get(i);
     }
 
+    /** Returns the ArrayList of Flashcards.
+     * @return Flashcard ArrayList
+     */
+    public ArrayList<Flashcard> get() {
+        return deck;
+    }
+
     /** Returns the index of the first occurrence of the
      *  specified Flashcard in this deck, or -1 if this deck
      *  does not contain the Flashcard.

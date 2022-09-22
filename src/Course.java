@@ -77,6 +77,13 @@ public class Course {
         return course.get(i);
     }
 
+    /** Returns the ArrayList Deck.
+     * @return ArrayList course
+     */
+    public ArrayList<Deck> get() {
+        return course;
+    }
+
     /** Returns the index of the first occurrence of the
      *  specified Deck in this course, or -1 if this course
      *  does not contain the Deck.
