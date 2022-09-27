@@ -7,8 +7,8 @@ import javax.swing.JFrame;
  */
 public class TestletDriver {
     //window dimensions
-    public static final int WIDTH = 900;
-    public static final int HEIGHT = 600;
+    public static final int WIDTH = 960;
+    public static final int HEIGHT = 540;
 
     public static MainPanel panel;
 
@@ -19,7 +19,7 @@ public class TestletDriver {
         // frame attributes
         frame.setContentPane(panel);
         frame.setSize(WIDTH, HEIGHT);
-        frame.setLocation(100, 50);
+        frame.setLocation(50, 50);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
         frame.setVisible(true);
