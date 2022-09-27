@@ -12,16 +12,24 @@ import java.util.Scanner;
  *  <p> Database > Course > Deck > Flashcard </p>
  *
  *  @author RMizelle
- *  @version V0.1.1
+ *  @version V0.1.2
  */
 public class Database {
 
     private ArrayList<Course> database;
     private File data;
 
-    /** 0-arg constructor implements ArrayList of course objects */
+    /** 0-arg constructor implements ArrayList of
+     *  Course objects from a text document.
+     */
     public Database() {
         database = new ArrayList<>();
+        //creates resource folder if necessary
+        File directory = new File("resources");
+        if (!directory.exists()) {
+            System.out.println("New Resources Directory Generated");
+            directory.mkdir();
+        }
         //checks for data.txt
         try {
             data = new File("resources/data.txt");
@@ -102,7 +110,7 @@ public class Database {
      *  Database and implements data.txt
      *  @return true if successful, false if error
      */
-    public void exportDatabase() {
+    public boolean exportDatabase() {
         try {
             FileWriter output = new FileWriter(data);
             //loops through courses
@@ -113,7 +121,7 @@ public class Database {
                     output.write("****" + d.getName() + "," + d.getDescription() + "\n");
                     //loops through flashcard
                     for(Flashcard f: d.get()) {
-                        output.write("**" + f.getTerm() + "," + f.getDef() + "MADE IT" + "\n");
+                        output.write("**" + f.getTerm() + "," + f.getDef() + "\n");
                     }
                 }
             }
@@ -122,7 +130,9 @@ public class Database {
         catch (IOException e) {
             System.out.println("ERROR: Failure to write data.txt");
             e.printStackTrace();
+            return false;
         }
+        return true;
     }
 
     ////////////////////  Database Methods ////////////////////
