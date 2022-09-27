@@ -3,7 +3,7 @@ import java.util.ArrayList;
 /** Deck class defines an ArrayList of Flashcard
  *  objects with a name and description.
  * @author RMizelle
- * @version V0.1.1
+ * @version V1.0
  */
 public class Deck {
     private ArrayList<Flashcard> deck;

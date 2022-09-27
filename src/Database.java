@@ -12,7 +12,7 @@ import java.util.Scanner;
  *  <p> Database > Course > Deck > Flashcard </p>
  *
  *  @author RMizelle
- *  @version V0.1.2
+ *  @version V1.0
  */
 public class Database {
 

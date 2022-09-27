@@ -3,7 +3,7 @@ import java.util.ArrayList;
 /** Course class defines an ArrayList
  *  of Decks
  *  @author RMizelle
- *  @version V0.1
+ *  @version V1.0
  */
 public class Course {
     private ArrayList<Deck> course;

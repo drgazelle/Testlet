@@ -1,7 +1,7 @@
 /** Flashcard Class defines an object pertaining
  *  a String definition and term.
  * @author RMizelle
- * @version V0.1
+ * @version V1.0
  */
 public class Flashcard {
     private String term, def;
