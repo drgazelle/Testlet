@@ -1,7 +1,9 @@
 import javax.swing.*;
+//import java.util.*;
 //import java.awt.*;
 //import java.awt.event.*;
 //import java.awt.Shape;
+import java.awt.Color;
 //import java.awt.geom.Ellipse2D;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -14,23 +16,25 @@ import java.awt.Graphics;
 /** MainPanel class defines the containing window
  *  for the application
  *  @author ACraig, RMizelle
- *  @version V0.2
+ *  @version V0.3
  */
 public class MainPanel extends JPanel implements MouseListener, MouseMotionListener
 {
     //screen size
-    //private static final int xSIZE = 900;
-    //private static final int ySIZE = 600;
+    private static final int xSIZE = 960;
+    private static final int ySIZE = 540;
+
+    //scrollPane for left side of screen
+   // private JScrollPane leftScrollPane;
 
     //images
     //private ImageIcon startScreen  = new ImageIcon("images/backgrounds/startScreen.png");
-
     //main buttons for screens
     private Button[] buttons = new Button[1];
-    private static final int STARTBUTTON = 0;
+    private static final int HOMEBUTTON = 0;
 
     //screens
-    private static final int STARTSCREEN = 0;
+    private static final int HOMESCREEN = 0;
     private static int screenMode;
 
     private static final int SIZE = 500;
@@ -46,6 +50,9 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
         mouseX = SIZE/2;
         mouseY = SIZE/2;
 
+        //leftScrollPane = new JScrollPane(xSIZE/4, ySIZE);
+        //leftScrollPane.setCorner(UPPER_LEFT_CORNER, )
+
         //add buttons here
         //example below:
         //                        x    y    width   height
@@ -54,29 +61,50 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
         //ImageIcon startButton2 = new ImageIcon("images/buttons/start2.png");
         //buttons[STARTBUTTON] = new Button(r1, "start", startButton1, startButton2);
 
+     /*   Shape r1 = new Rectangle(0, 0, 120, 50);
+        ImageIcon homeButton1 = new ImageIcon("images/buttons/home1.png");
+        ImageIcon homeButton2 = new ImageIcon("images/buttons/home2.png");
+        buttons[HOMEBUTTON] = new Button(r1, "home", homeButton1, homeButton2);*/
+
         //sets the screen mode
-        screenMode = STARTSCREEN;
+        screenMode = HOMESCREEN;
     }
 
     public void showBoard(Graphics g) {
-        if (screenMode == STARTSCREEN) {
+        if (screenMode == HOMESCREEN) {
 
             //background image
             //g.drawImage(startScreen.getImage(), 0,0, xSIZE, ySIZE, null);
+            g.setColor(Color.WHITE);
+            g.fillRect(0,0, xSIZE, ySIZE);
+
+            g.setColor(new Color(110, 220, 230));
+            g.fillRect(120,0,xSIZE-120, 50);
 
             //draw buttons
             //example below:
-            //buttons[BATTLEBUTTONFOUR].drawButton(g);
-        } else //if(gameMode == )
-        {
-
+            //buttons[HOMEBUTTON].drawButton(g);
+            repaint();
         }
+        else //if(gameMode == )
+        {
+            g.setColor(new Color(0, 0, 0));
+            g.fillRect(0,0,xSIZE, ySIZE);
+
+            repaint();
+        }
+    }
+
+    public void paintComponent(Graphics g)
+    {
+        super.paintComponent(g);
+        showBoard(g);
     }
 
     public void mouseClicked(MouseEvent e)
     {
-       /* int button = e.getButton();
-        if (button == MouseEvent.BUTTON1) {
+       // int button = e.getButton();
+      /*  if (button == MouseEvent.BUTTON1) {
             if (gameMode == TUTORIALSCREEN) {
                 for (int i = 0; i < buttons.length; i++) {
                     buttons[i].setEnabled(false);
@@ -120,12 +148,12 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
         mouseX = e.getX();
         mouseY = e.getY();
         //***BUTTON CODE***highlight button if mouse is on it
-        for (Button b : buttons) {
+      /*  for (Button b : buttons) {
             if (b.getShape().contains(mouseX, mouseY) && b.isEnabled())
                 b.highlight();
             else
-                b.unHighlight();
-        }
+                b.unHighlight();*/
+       // }
     }
 
     public void mouseDragged( MouseEvent e)
