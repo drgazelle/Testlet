@@ -70,27 +70,27 @@ public class Database {
             //creates scanner
             Scanner input = new Scanner(data);
             while (input.hasNextLine()) {
-                String data = input.nextLine();
+                String line = input.nextLine();
                 //if data is a course
-                if (data.contains("******")) {
+                if (line.contains("******")) {
                     //adds new course
-                    database.add(new Course(data.substring(6).trim()));
+                    database.add(new Course(line.substring(6).trim()));
                     //resets deck and course index
                     dIndex = -1;
                     // increments course index
                     cIndex++;
                 }
                 //else if data is a deck
-                else if (data.contains("****")) {
+                else if (line.contains("****")) {
                     //extrapolates name and description
-                    String parts[] = data.substring(4).split(",");
+                    String parts[] = line.substring(4).split(",");
                     database.get(cIndex).add(new Deck(parts[0], parts[1]));
                     dIndex++;
                 }
                 //else if data is a flashcard
-                else if (data.contains("**")) {
+                else if (line.contains("**")) {
                     //extrapolates term and definition
-                    String parts[] = data.substring(2).split(",");
+                    String parts[] = line.substring(2).split(",");
                     database.get(cIndex).get(dIndex).add(new Flashcard(parts[0], parts[1]));
                 }
                 else {
@@ -129,6 +129,29 @@ public class Database {
         }
         catch (IOException e) {
             System.out.println("ERROR: Failure to write data.txt");
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    /** Tries to delete data.txt and clear the Arraylist
+     *  of courses and catches exceptions.
+     * @return true if successfully clear both data.txt and
+     *         Array list of Courses, false otherwise
+     */
+    public boolean wipeDatabase() {
+        try {
+            if(data.delete()) {
+                database.clear();
+                System.out.println("data.txt successfully deleted");
+            }
+            else {
+                System.out.print("ERROR: Failed to Delete data.txt");
+            }
+        }
+        catch(Exception e) {
+            System.out.println("ERROR: Failed to Wipe Database");
             e.printStackTrace();
             return false;
         }
