@@ -45,6 +45,13 @@ public class Course {
 
     //////////////////// Course Methods ////////////////////
 
+    /** Accessor method for deck ArrayList
+     * @return ArrayList of decks
+     */
+    public ArrayList<Deck> getContent() {
+        return course;
+    }
+
     /** Appends the specified Deck to the end of this course. */
     public boolean add(Deck c) {
         return course.add(c);

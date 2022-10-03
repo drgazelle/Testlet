@@ -65,6 +65,32 @@ public class Deck {
 
     //////////////////// Deck Methods ////////////////////
 
+    /** imports user generated Quizlet decks
+     * @param i "term" + "    " + "def" separated by "####"
+     * @return true if successfully added new deck, false otherwise
+     */
+    public boolean importQuizlet(String i) {
+        String[] lines = i.split("####");
+        try {
+            for (String l : lines) {
+                String[] parts = l.split("\t");
+                deck.add(new Flashcard(parts[0], parts[1]));
+            }
+        }
+        catch(Exception e) {
+            System.out.println("ERROR: Couldn't Import Quizlet Set");
+            return false;
+        }
+        return true;
+    }
+
+    /** Accessor method for Flashcard ArrayList
+     * @return ArrayList of Flashcards
+     */
+    public ArrayList<Flashcard> getContent() {
+        return deck;
+    }
+
     /** Appends the specified Flashcard to the end of this deck. */
     public boolean add(Flashcard c) {
         return deck.add(c);
@@ -96,7 +122,6 @@ public class Deck {
     public Flashcard get(int i) {
         return deck.get(i);
     }
-
     /** Returns the ArrayList of Flashcards.
      * @return Flashcard ArrayList
      */

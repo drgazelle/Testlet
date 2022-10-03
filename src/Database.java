@@ -151,6 +151,13 @@ public class Database {
 
     ////////////////////  Database Methods ////////////////////
 
+    /** Accessor method for database
+     * @return ArrayList of Courses
+     */
+    public ArrayList<Course> getContent() {
+        return database;
+    }
+
     /** Appends the specified Course to the end of this database. */
     public boolean add(Course c) {
         return database.add(c);
