@@ -12,7 +12,7 @@ import java.util.Scanner;
  *  <p> Database > Course > Deck > Flashcard </p>
  *
  *  @author RMizelle
- *  @version V1.0
+ *  @version V1.1
  */
 public class Database {
 
@@ -135,27 +135,18 @@ public class Database {
         return true;
     }
 
-    /** Tries to delete data.txt and clear the Arraylist
-     *  of courses and catches exceptions.
+    /** Clears course ArrayList and writes clears data.txt
      * @return true if successfully clear both data.txt and
      *         Array list of Courses, false otherwise
      */
-    public boolean wipeDatabase() {
-        try {
-            if(data.delete()) {
-                database.clear();
-                System.out.println("data.txt successfully deleted");
-            }
-            else {
-                System.out.print("ERROR: Failed to Delete data.txt");
-            }
+    public boolean wipe() {
+        database.clear();
+        if (exportDatabase()) {
+            System.out.println("Data Successfully Wiped");
+            return true;
         }
-        catch(Exception e) {
-            System.out.println("ERROR: Failed to Wipe Database");
-            e.printStackTrace();
-            return false;
-        }
-        return true;
+        System.out.println("ERROR: Failed to Wipe Database");
+        return false;
     }
 
     ////////////////////  Database Methods ////////////////////
