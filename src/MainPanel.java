@@ -1,6 +1,7 @@
 import javax.swing.*;
 //import java.util.*;
 import java.awt.*;
+//import java.awt.Rectangle.*;
 //import java.awt.event.*;
 import java.awt.Shape;
 import java.awt.Color;
@@ -30,7 +31,7 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
     //images
     //private ImageIcon startScreen  = new ImageIcon("images/backgrounds/startScreen.png");
     //main buttons for screens
-    private Button[] buttons = new Button[7];
+    private Button[] buttons = new Button[12];
     private static final int HOMEBUTTON = 0;
     private static final int EXPORTBUTTON = 1;
     private static final int SETTINGSBUTTON = 2;
@@ -38,6 +39,11 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
     private static final int UPDATEBUTTON = 4;
     private static final int ARROWUPCOURSES = 5;
     private static final int ARROWDOWNCOURSES = 6;
+    private static final int COURSEBUTTON1 = 7;
+    private static final int COURSEBUTTON2 = 8;
+    private static final int COURSEBUTTON3 = 9;
+    private static final int COURSEBUTTON4 = 10;
+    private static final int COURSEBUTTON5 = 11;
 
 
     //screens
@@ -97,13 +103,39 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
 
         Shape r6 = new Rectangle(0, topBarHeight, leftBarSize, topBarHeight-15);
         ImageIcon arrowUpCourses1 = new ImageIcon("resources/images/arrowUp1.png");
-        ImageIcon arrowUpCourses2 = new ImageIcon("resources/images/arrowUp1.png"); //same image as homeButton1
+        ImageIcon arrowUpCourses2 = new ImageIcon("resources/images/arrowUp2.png");
         buttons[ARROWUPCOURSES] = new Button(r6, "arrowUpCourses", arrowUpCourses1, arrowUpCourses2);
 
         Shape r7 = new Rectangle(0, ySIZE - topBarHeight -18, leftBarSize, topBarHeight-15);
         ImageIcon arrowDownCourses1 = new ImageIcon("resources/images/arrowDown1.png");
-        ImageIcon arrowDownCourses2 = new ImageIcon("resources/images/arrowDown1.png"); //same image as homeButton1
+        ImageIcon arrowDownCourses2 = new ImageIcon("resources/images/arrowDown2.png");
         buttons[ARROWDOWNCOURSES] = new Button(r7, "arrowDownCourses", arrowDownCourses1, arrowDownCourses2);
+
+        Shape r8 = new Rectangle(0, topBarHeight + topBarHeight - 15, leftBarSize, 77);
+        ImageIcon courseButton11 = new ImageIcon("resources/images/course1.png");
+        ImageIcon courseButton12 = new ImageIcon("resources/images/course2.png");
+        buttons[COURSEBUTTON1] = new Button(r8, "courseButton1", courseButton11, courseButton12);
+
+        Shape r9 = new Rectangle(0, topBarHeight + topBarHeight - 15 + 77, leftBarSize, 77);
+        ImageIcon courseButton21 = new ImageIcon("resources/images/course1.png");
+        ImageIcon courseButton22 = new ImageIcon("resources/images/course2.png");
+        buttons[COURSEBUTTON2] = new Button(r9, "courseButton2", courseButton21, courseButton22);
+
+        Shape r10 = new Rectangle(0, topBarHeight + topBarHeight - 15 + 77 + 77, leftBarSize, 77);
+        ImageIcon courseButton31 = new ImageIcon("resources/images/course1.png");
+        ImageIcon courseButton32 = new ImageIcon("resources/images/course2.png");
+        buttons[COURSEBUTTON3] = new Button(r10, "courseButton3", courseButton31, courseButton32);
+
+        Shape r11 = new Rectangle(0, topBarHeight + topBarHeight - 15 + 77 + 77 + 77, leftBarSize, 78);
+        ImageIcon courseButton41 = new ImageIcon("resources/images/course1.png");
+        ImageIcon courseButton42 = new ImageIcon("resources/images/course2.png");
+        buttons[COURSEBUTTON4] = new Button(r11, "courseButton4", courseButton41, courseButton42);
+
+        Shape r12 = new Rectangle(0, topBarHeight + topBarHeight - 15 + 77 + 77 + 77 + 78, leftBarSize, 79);
+        ImageIcon courseButton51 = new ImageIcon("resources/images/course1.png");
+        ImageIcon courseButton52 = new ImageIcon("resources/images/course2.png");
+        buttons[COURSEBUTTON5] = new Button(r12, "courseButton5", courseButton51, courseButton52);
+
 //        Shape r6 = new Ellipse2D.Float(0, 0, topBarHeight, topBarHeight); //circle
 //        ImageIcon course1Button1 = new ImageIcon("src/home1.png");
 //        ImageIcon course1Button2 = new ImageIcon("src/home1.png"); //same image as homeButton1
@@ -152,11 +184,32 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
             buttons[ARROWDOWNCOURSES].drawButton(g);
             buttons[ARROWDOWNCOURSES].setVisible(true);
             buttons[ARROWDOWNCOURSES].setEnabled(true);
+            buttons[COURSEBUTTON1].drawButton(g);
+            buttons[COURSEBUTTON1].setEnabled(true);
+            buttons[COURSEBUTTON1].setVisible(true);
+            buttons[COURSEBUTTON2].drawButton(g);
+            buttons[COURSEBUTTON2].setEnabled(true);
+            buttons[COURSEBUTTON2].setVisible(true);
+            buttons[COURSEBUTTON3].drawButton(g);
+            buttons[COURSEBUTTON3].setEnabled(true);
+            buttons[COURSEBUTTON3].setVisible(true);
+            buttons[COURSEBUTTON4].drawButton(g);
+            buttons[COURSEBUTTON4].setEnabled(true);
+            buttons[COURSEBUTTON4].setVisible(true);
+            buttons[COURSEBUTTON5].drawButton(g);
+            buttons[COURSEBUTTON5].setEnabled(true);
+            buttons[COURSEBUTTON5].setVisible(true);
 
             if(numberOfSettingsClicks == 1) //if settings button is clicked, show settings menu
             {
+                //draw settings bar
                 g.setColor(new Color(220,220,220));
                 g.fillRoundRect(xSIZE - (3*topBarHeight) - 60, topBarHeight+5, (3*topBarHeight)+45, 445, 10,10);
+                g.setColor(Color.BLACK);
+                //Add text to settings bar
+                g.setFont(new Font("Helvetica", Font.PLAIN, 15));
+                g.drawString("Draw texts here\n for settings options", xSIZE - (3*topBarHeight) - 35, topBarHeight+5 + 20);
+                //Above, new line is not working. Not sure why. Need to fix
                 for(Button bu : buttons)
                 {
                     if(bu.getTitle().equals("home") || bu.getTitle().equals("settings"))
@@ -247,7 +300,8 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                    }
                    if(b.getTitle().equals("arrowDownCourses"))
                    {
-
+                       //if there are more courses to show below, then yes we can use it
+                       //if there are no more courses to show, then do not do anything
                    }
                }
               } //end of buttons for loop
