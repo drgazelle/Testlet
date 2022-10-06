@@ -84,7 +84,12 @@ public class Database {
                 else if (line.contains("****")) {
                     //extrapolates name and description
                     String parts[] = line.substring(4).split(",");
-                    database.get(cIndex).add(new Deck(parts[0], parts[1]));
+                    if (parts.length == 1) {
+                        database.get(cIndex).add(new Deck(parts[0]));
+                    }
+                    else {
+                        database.get(cIndex).add(new Deck(parts[0], parts[1]));
+                    }
                     dIndex++;
                 }
                 //else if data is a flashcard

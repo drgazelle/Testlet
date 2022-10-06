@@ -70,8 +70,10 @@ public class Deck {
      * @return true if successfully added new deck, false otherwise
      */
     public boolean importQuizlet(String i) {
+        //splits flashcards
         String[] lines = i.split("####");
         try {
+            //loops through lines splitting term and definitions
             for (String l : lines) {
                 String[] parts = l.split("\t");
                 deck.add(new Flashcard(parts[0], parts[1]));
