@@ -17,7 +17,7 @@ import javax.swing.plaf.basic.BasicSplitPaneUI;
 /** MainPanel class defines the containing window
  *  for the application
  *  @author ACraig, RMizelle
- *  @version V0.6
+ *  @version V0.7
  */
 public class MainPanel extends JPanel implements MouseListener, MouseMotionListener
 {
