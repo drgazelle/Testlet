@@ -18,7 +18,7 @@ import javax.swing.plaf.basic.BasicSplitPaneUI;
 /** MainPanel class defines the containing window
  *  for the application
  *  @author ACraig, RMizelle
- *  @version V0.7
+ *  @version V0.8
  */
 public class MainPanel extends JPanel implements MouseListener, MouseMotionListener
 {
@@ -30,15 +30,16 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
 
     //images
     //private ImageIcon startScreen  = new ImageIcon("images/backgrounds/startScreen.png");
+
     //main buttons for screens
     private Button[] buttons = new Button[12];
     private static final int HOMEBUTTON = 0;
     private static final int EXPORTBUTTON = 1;
     private static final int SETTINGSBUTTON = 2;
-    private static final int NEWCOURSEBUTTON = 3;
+    private static final int NEWDECKBUTTON = 3;
     private static final int UPDATEBUTTON = 4;
-    private static final int ARROWUPCOURSES = 5;
-    private static final int ARROWDOWNCOURSES = 6;
+    private static final int LEFTARROWCOURSES = 5;
+    private static final int RIGHTARROWCOURSES = 6;
     private static final int COURSEBUTTON1 = 7;
     private static final int COURSEBUTTON2 = 8;
     private static final int COURSEBUTTON3 = 9;
@@ -53,9 +54,10 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
 
     private static final int SIZE = 500;
 
+    //keeps track of how many times the setting button has been clicked
+    //0 means it has not been clicked or it is clicked again to exit the settings menu. Do not highlight the button
+    //1 means it has been clicked. Keep the button highlighted
     int numberOfSettingsClicks = 0;
-
-   // private int numberOfCourses = 0;
 
     //mouse location
     protected static int mouseX;
@@ -86,52 +88,52 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
         ImageIcon exportButton2 = new ImageIcon("resources/images/home1.png");
         buttons[EXPORTBUTTON] = new Button(r2, "export", exportButton1, exportButton2);
 
-        Shape r3 = new Ellipse2D.Float(xSIZE - (3*topBarHeight) - 60, 2, topBarHeight-5, topBarHeight-5); //circle
+        Shape r3 = new Ellipse2D.Float(xSIZE - (3*topBarHeight) - 60, 2, topBarHeight, topBarHeight-5); //circle
         ImageIcon settingsButton1 = new ImageIcon("resources/images/settings1.png");
         ImageIcon settingsButton2 = new ImageIcon("resources/images/settings2.png");
         buttons[SETTINGSBUTTON] = new Button(r3, "settings", settingsButton1, settingsButton2);
 
-        Shape r4 = new Ellipse2D.Float(xSIZE - (2*topBarHeight) - 40, 2, topBarHeight-5, topBarHeight-5); //circle
-        ImageIcon newCourseButton1 = new ImageIcon("resources/images/home1.png");
-        ImageIcon newCourseButton2 = new ImageIcon("resources/images/home1.png"); //same image as homeButton1
-        buttons[NEWCOURSEBUTTON] = new Button(r4, "newCourse", newCourseButton1, newCourseButton2);
+        Shape r4 = new Ellipse2D.Float(xSIZE - (2*topBarHeight) - 40, 2, topBarHeight, topBarHeight-5); //circle
+        ImageIcon newDeckButton1 = new ImageIcon("resources/images/newDeck1.png");
+        ImageIcon newDeckButton2 = new ImageIcon("resources/images/newDeck2.png"); //same image as homeButton1
+        buttons[NEWDECKBUTTON] = new Button(r4, "newDeck", newDeckButton1, newDeckButton2);
 
         Shape r5 = new Ellipse2D.Float(xSIZE - (topBarHeight) - 20, 2, topBarHeight-5, topBarHeight-5); //circle
         ImageIcon updateButton1 = new ImageIcon("resources/images/home1.png");
         ImageIcon updateButton2 = new ImageIcon("resources/images/home1.png"); //same image as homeButton1
         buttons[UPDATEBUTTON] = new Button(r5, "update", updateButton1, updateButton2);
 
-        Shape r6 = new Rectangle(0, topBarHeight, leftBarSize, topBarHeight-15);
-        ImageIcon arrowUpCourses1 = new ImageIcon("resources/images/arrowUp1.png");
-        ImageIcon arrowUpCourses2 = new ImageIcon("resources/images/arrowUp2.png");
-        buttons[ARROWUPCOURSES] = new Button(r6, "arrowUpCourses", arrowUpCourses1, arrowUpCourses2);
+        Shape r6 = new Rectangle(0, topBarHeight + 3+80 + 80 + 80 + 80 + 80 + 3, leftBarSize/2, ySIZE - (topBarHeight + 3+80 + 80 + 80 + 80 + 80 + 3+33));
+        ImageIcon leftArrowCourses1 = new ImageIcon("resources/images/arrowLeft1.png");
+        ImageIcon leftArrowCourses2 = new ImageIcon("resources/images/arrowLeft2.png");
+        buttons[LEFTARROWCOURSES] = new Button(r6, "leftArrowCourses", leftArrowCourses1, leftArrowCourses2);
 
-        Shape r7 = new Rectangle(0, ySIZE - topBarHeight -18, leftBarSize, topBarHeight-15);
-        ImageIcon arrowDownCourses1 = new ImageIcon("resources/images/arrowDown1.png");
-        ImageIcon arrowDownCourses2 = new ImageIcon("resources/images/arrowDown2.png");
-        buttons[ARROWDOWNCOURSES] = new Button(r7, "arrowDownCourses", arrowDownCourses1, arrowDownCourses2);
+        Shape r7 = new Rectangle(leftBarSize/2, topBarHeight + 3+80 + 80 + 80 + 80 + 80 + 3, leftBarSize/2, ySIZE - (topBarHeight + 3+80 + 80 + 80 + 80 + 80 + 3+33));
+        ImageIcon rightArrowCourses1 = new ImageIcon("resources/images/arrowRight1.png");
+        ImageIcon rightArrowCourses2 = new ImageIcon("resources/images/arrowRight2.png");
+        buttons[RIGHTARROWCOURSES] = new Button(r7, "rightArrowCourses", rightArrowCourses1, rightArrowCourses2);
 
-        Shape r8 = new Rectangle(0, topBarHeight + topBarHeight - 15, leftBarSize, 77);
+        Shape r8 = new Rectangle(0, topBarHeight+3, leftBarSize, 80);
         ImageIcon courseButton11 = new ImageIcon("resources/images/course1.png");
         ImageIcon courseButton12 = new ImageIcon("resources/images/course2.png");
         buttons[COURSEBUTTON1] = new Button(r8, "courseButton1", courseButton11, courseButton12);
 
-        Shape r9 = new Rectangle(0, topBarHeight + topBarHeight - 15 + 77, leftBarSize, 77);
+        Shape r9 = new Rectangle(0, topBarHeight +3 + 80, leftBarSize, 80);
         ImageIcon courseButton21 = new ImageIcon("resources/images/course1.png");
         ImageIcon courseButton22 = new ImageIcon("resources/images/course2.png");
         buttons[COURSEBUTTON2] = new Button(r9, "courseButton2", courseButton21, courseButton22);
 
-        Shape r10 = new Rectangle(0, topBarHeight + topBarHeight - 15 + 77 + 77, leftBarSize, 77);
+        Shape r10 = new Rectangle(0, topBarHeight +3 + 80 + 80, leftBarSize, 80);
         ImageIcon courseButton31 = new ImageIcon("resources/images/course1.png");
         ImageIcon courseButton32 = new ImageIcon("resources/images/course2.png");
         buttons[COURSEBUTTON3] = new Button(r10, "courseButton3", courseButton31, courseButton32);
 
-        Shape r11 = new Rectangle(0, topBarHeight + topBarHeight - 15 + 77 + 77 + 77, leftBarSize, 78);
+        Shape r11 = new Rectangle(0, topBarHeight +3 + 80 + 80 + 80, leftBarSize, 80);
         ImageIcon courseButton41 = new ImageIcon("resources/images/course1.png");
         ImageIcon courseButton42 = new ImageIcon("resources/images/course2.png");
         buttons[COURSEBUTTON4] = new Button(r11, "courseButton4", courseButton41, courseButton42);
 
-        Shape r12 = new Rectangle(0, topBarHeight + topBarHeight - 15 + 77 + 77 + 77 + 78, leftBarSize, 79);
+        Shape r12 = new Rectangle(0, topBarHeight + 3+80 + 80 + 80 + 80, leftBarSize, 80);
         ImageIcon courseButton51 = new ImageIcon("resources/images/course1.png");
         ImageIcon courseButton52 = new ImageIcon("resources/images/course2.png");
         buttons[COURSEBUTTON5] = new Button(r12, "courseButton5", courseButton51, courseButton52);
@@ -146,6 +148,10 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
 
     }
 
+    /**
+     * Paints the screen depending on what screenMode is chosen
+     * @param g
+     */
     public void showBoard(Graphics g) {
         if (screenMode == HOMESCREEN) {
 
@@ -162,6 +168,11 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
             g.setColor(new Color(110, 220, 230));
             g.fillRect(leftBarSize,0,xSIZE-leftBarSize, topBarHeight);
 
+            g.setColor(Color.BLACK);
+            g.fillRect(0,topBarHeight, leftBarSize, 3);
+
+            g.fillRect(0, topBarHeight + 3+80 + 80 + 80 + 80 + 80, leftBarSize, 3);
+
             //draw buttons
             buttons[HOMEBUTTON].drawButton(g);
             buttons[HOMEBUTTON].setEnabled(true);
@@ -172,19 +183,19 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
             buttons[SETTINGSBUTTON].drawButton(g);
             buttons[SETTINGSBUTTON].setEnabled(true);
             buttons[SETTINGSBUTTON].setVisible(true);
-            buttons[NEWCOURSEBUTTON].drawButton(g);
-            buttons[NEWCOURSEBUTTON].setEnabled(true);
-            buttons[NEWCOURSEBUTTON].setVisible(true);
+            buttons[NEWDECKBUTTON].drawButton(g);
+            buttons[NEWDECKBUTTON].setEnabled(true);
+            buttons[NEWDECKBUTTON].setVisible(true);
             buttons[UPDATEBUTTON].drawButton(g);
             buttons[UPDATEBUTTON].setEnabled(true);
             buttons[UPDATEBUTTON].setVisible(true);
-            buttons[ARROWUPCOURSES].drawButton(g);
-            buttons[ARROWUPCOURSES].setEnabled(true);
-            buttons[ARROWUPCOURSES].setVisible(true);
-            buttons[ARROWDOWNCOURSES].drawButton(g);
-            buttons[ARROWDOWNCOURSES].setVisible(true);
-            buttons[ARROWDOWNCOURSES].setEnabled(true);
-            buttons[COURSEBUTTON1].drawButton(g);
+            buttons[LEFTARROWCOURSES].drawButton(g);
+            buttons[LEFTARROWCOURSES].setEnabled(true);
+            buttons[LEFTARROWCOURSES].setVisible(true);
+            buttons[RIGHTARROWCOURSES].drawButton(g);
+            buttons[RIGHTARROWCOURSES].setVisible(true);
+            buttons[RIGHTARROWCOURSES].setEnabled(true);
+            buttons[COURSEBUTTON1].drawButton(g); //course names will be displayed depending on the courses of the user
             buttons[COURSEBUTTON1].setEnabled(true);
             buttons[COURSEBUTTON1].setVisible(true);
             buttons[COURSEBUTTON2].drawButton(g);
@@ -212,7 +223,7 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                 //Above, new line is not working. Not sure why. Need to fix
                 for(Button bu : buttons)
                 {
-                    if(bu.getTitle().equals("home") || bu.getTitle().equals("settings"))
+                    if(bu.getTitle().equals("home") || bu.getTitle().equals("settings")) //enable home, settings, and buttons within settings only
                         bu.setEnabled(true);
                     else
                         bu.setEnabled(false);
@@ -220,7 +231,7 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
             }
             repaint();
         }
-        else //if(gameMode == )
+        else //if(screenMode == )
         {
             g.setColor(new Color(0, 0, 0));
             g.fillRect(0,0,xSIZE, ySIZE);
@@ -236,12 +247,20 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
         }
     }
 
+    /**
+     *
+     * @param g the <code>Graphics</code> object to protect
+     */
     public void paintComponent(Graphics g)
     {
         super.paintComponent(g);
         showBoard(g);
     }
 
+    /**
+     * Controls actions for when the mouse is clicked
+     * @param e the event to be processed
+     */
     public void mouseClicked(MouseEvent e)
     {
        // int button = e.getButton();
@@ -285,7 +304,7 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                        else //numberOfSettingsClicks == 1
                        numberOfSettingsClicks = 0;
                    }
-                   if(b.getTitle().equals("newCourse"))
+                   if(b.getTitle().equals("newDeck"))
                    {
                        screenMode = 1; //change this for what to do when newCourse is clicked
                    }
@@ -293,14 +312,14 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                    {
                        screenMode = 1; //change this for what to do when update is clicked
                    }
-                   if(b.getTitle().equals("arrowUpCourses"))
+                   if(b.getTitle().equals("arrowLeftCourses"))
                    {
                        //if there are more courses to show, then yes we can use it
                        //if there are no more courses to show, then do not do anything
                    }
-                   if(b.getTitle().equals("arrowDownCourses"))
+                   if(b.getTitle().equals("arrowRightCourses"))
                    {
-                       //if there are more courses to show below, then yes we can use it
+                       //if there are more courses to show, then yes we can use it
                        //if there are no more courses to show, then do not do anything
                    }
                }
@@ -316,7 +335,10 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
     public void mouseEntered( MouseEvent e )
     {}
 
-
+    /**
+     * Controls actions for when the mouse is moved
+     * @param e the event to be processed
+     */
     public void mouseMoved( MouseEvent e)
     {
         mouseX = e.getX();
