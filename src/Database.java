@@ -1,3 +1,5 @@
+import javax.swing.*;
+import javax.swing.tree.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -16,8 +18,9 @@ import java.util.Scanner;
  */
 public class Database {
 
-    private ArrayList<Course> database;
+    private final ArrayList<Course> database;
     private File data;
+    private JTree tree;
 
     /** 0-arg constructor implements ArrayList of
      *  Course objects from a text document.
@@ -57,6 +60,11 @@ public class Database {
 
     //////////////////// Data Methods ////////////////////
 
+    /** returns JTree representing database */
+    public JTree getTree() {
+        return tree;
+    }
+
     /** importData method instantiates database using data.txt
      *  @return true if successfully instantiated database, false if error
      */
@@ -65,6 +73,11 @@ public class Database {
         int cIndex = -1;
         // deck index
         int dIndex = -1;
+
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode("Testlet");
+        DefaultMutableTreeNode course = null;
+        DefaultMutableTreeNode deck = null;
+        DefaultMutableTreeNode flashcard = null;
 
         try {
             //creates scanner
@@ -77,26 +90,36 @@ public class Database {
                     database.add(new Course(line.substring(6).trim()));
                     //resets deck and course index
                     dIndex = -1;
+                    //adds TreeNode to root
+                    course = new DefaultMutableTreeNode(line.substring(6).trim());
+                    root.add(course);
                     // increments course index
                     cIndex++;
                 }
                 //else if data is a deck
                 else if (line.contains("****")) {
                     //extrapolates name and description
-                    String parts[] = line.substring(4).split(",");
+                    String[] parts = line.substring(4).split(",");
                     if (parts.length == 1) {
                         database.get(cIndex).add(new Deck(parts[0]));
                     }
                     else {
                         database.get(cIndex).add(new Deck(parts[0], parts[1]));
                     }
+                    //adds TreeNode
+                    deck = new DefaultMutableTreeNode(parts[0]);
+                    course.add(deck);
+                    //increments index
                     dIndex++;
                 }
                 //else if data is a flashcard
                 else if (line.contains("**")) {
                     //extrapolates term and definition
-                    String parts[] = line.substring(2).split(",");
-                    database.get(cIndex).get(dIndex).add(new Flashcard(parts[0], parts[1]));
+                    String[] parts = line.substring(2).split(",");
+                    database.get(cIndex).get(dIndex).add(new Flashcard(parts[0].trim(), parts[1].trim()));
+                    //adds TreeNode
+                    flashcard = new DefaultMutableTreeNode(parts[0].trim() + ": " + parts[1]);
+                    deck.add(flashcard);
                 }
                 else {
                     System.out.println("ERROR: Data Corrupted");
@@ -108,6 +131,7 @@ public class Database {
             e.printStackTrace();
             return false;
         }
+        tree = new JTree(root);
         return true;
     }
 
