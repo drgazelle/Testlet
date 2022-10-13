@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.util.Scanner;
 
 /** DatabaseTester is a test class that ensures
@@ -8,9 +9,11 @@ import java.util.Scanner;
  */
 public class DatabaseTester {
     public static void main(String[] args) {
+        //terminal scanner
         Scanner input = new Scanner(System.in);
         // creates database class and imports data.txt
         Database data = new Database();
+        //wipes old database
         data.clear();
 
         data.add(new Course("Algebra"));
@@ -33,6 +36,16 @@ public class DatabaseTester {
         //Adds decks and flashcards to Biology
         data.get(2).add(new Deck("Cells", "Science 7 HNs"));
         data.get(2).get(0).importQuizlet("Cell\tThe smallest unit that is able to preform basic functions of life.####Nucleus\tThe structure in a eukaryotic cell that contains the genetic material a cell needs to reproduce and function.####Cell Membrane\tThe outer boundary of the cytoplasm, a layer that controls what enters and leaves the cell; a protective covering enclosing the cell.####Cell Wall\tA protective outer-covering that lays just outside the membrane of a plant cell.####Cytoplasm\tA thick, gelatin like material contained within the cell membrane. Most of the work of the cell is carried out in the cytoplasm.####Organelle\tA structure in a cell that enclosed by a membrane and preforms a particular function.####Organ\tA structure in a plant or an animal that is made up of different tissues working together to preform a particular function.####Organism\tAn individual living thing, made up of one or many cells, that is capable of growing and reproducing.####Endoplasmic Recticulum (E.R)\tSystem of a membrane channels used for transport within the cells manufactures proteins and part of the cell membrane####Tissue\tA group to cells that are organized to do a specific job.####Organ System\tA group of organs that together preform a function that helps the body meet it's needs for energy and materials.####Chloroplast\tAn organelle in a plant cell where energy from sunlight is used to make sugar during the process of photosynthesis contain green pigments called chlorophyll.####Vacuole\tFluid-filled organelle enclosed by the membrane; holds water, waste, or other materials; works with the cell membrane to move materials into or out of the cell; a plant cell contains a larger central vacuole.####Mitochondrion\tOrganelle in both plant and animal cells that uses oxygen to get energy from food.####");
+
+        JFrame frame = new JFrame();
+        JScrollPane treeView = new JScrollPane(data.getTree());
+        frame.add(treeView);
+        frame.setSize(960, 540);
+        frame.setLocation(50, 50);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setResizable(false);
+        frame.setVisible(true);
+
         data.exportDatabase();
     }
 }
