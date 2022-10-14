@@ -46,9 +46,11 @@ public class DatabaseTester {
         data.get(2).add(new Deck("Microscope Science", "Science 7 HNs"));
         data.get(2).get(1).importQuizlet("Arm\tThe arm supports the body above the stage. Always carry a microscope by the arm and base.####Eyepiece\tObjects are viewed through the eye piece. The eye piece contains a lens that commonly magnifies an image 10x.####Base\tThe base supports the microscope.####Body\tSeparates the lens in the eye piece from the objective lenses below####Coarse adjustment knob\tThis knob is used to focus the image on an object when it is viewed through the low-power lens.####Fine adjustment knob\tThis knob is used to focus the image on an object when it is viewed through the high-power lens.####Light/Mirror\tSome microscopes use light that is reflected through the stage by a mirror. Other microscopes have their own light source.####Stage\tThe stage supports the object being viewed.####Stage clip\thold the slides in place on the stage.####Revolving nosepiece\tThe nose piece holds the objective lenses above the stage and rotates so that all lenses my be used.####Diaphragm\tUsed to adjust the amount of light passing through the slide and into an objective lens.####Low-power Objective Lens\tSmallest lens on the nose piece. It magnifies 4x.####Medium-power Objective Lens\tIt magnifies at 10x####High-power Objective Lens\tLargest lens on the nose piece. It magnifies 40x.####");
 
-        JFrame frame = new JFrame();
-        JScrollPane treeView = new JScrollPane(data.getTree());
+        //Frame methods
+        JFrame frame = new JFrame("Database");
+        JScrollPane treeView = new JScrollPane(data.toTree());
         frame.add(treeView);
+        frame.setIconImage(new ImageIcon("resources/icons/deck.png").getImage());
         frame.setSize(960, 540);
         frame.setLocation(50, 50);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

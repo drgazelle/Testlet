@@ -1,5 +1,5 @@
-import javax.swing.*;
-import javax.swing.tree.*;
+import javax.swing.JTree;
+import javax.swing.tree.DefaultMutableTreeNode;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -60,8 +60,36 @@ public class Database {
 
     //////////////////// Data Methods ////////////////////
 
-    /** returns JTree representing database */
-    public JTree getTree() {
+    /** Converts database structure to JTree.
+     * @return JTree representation of database
+     */
+    public JTree toTree() {
+        //JTree variables
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode();
+        DefaultMutableTreeNode course;
+        DefaultMutableTreeNode deck;
+        DefaultMutableTreeNode flashcard;
+
+        //Loops through database tree
+        for(Course c : database) {
+            //adds course TreeNode to root
+            course = new DefaultMutableTreeNode(c.getName());
+            root.add(course);
+            for(Deck d : c.get()) {
+                //adds deck TreeNode to course
+                deck = new DefaultMutableTreeNode(d.getName());
+                course.add(deck);
+                for(Flashcard f : d.get()){
+                    //adds flashcard TreeNode to root
+                    flashcard = new DefaultMutableTreeNode(f.getDef() + ": " + f.getTerm());
+                    deck.add(flashcard);
+                }
+            }
+        }
+
+        //instantiates JTree
+        tree = new JTree(root);
+        tree.setRootVisible(false);
         return tree;
     }
 
@@ -74,11 +102,6 @@ public class Database {
         // deck index
         int dIndex = -1;
 
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode("Testlet");
-        DefaultMutableTreeNode course = null;
-        DefaultMutableTreeNode deck = null;
-        DefaultMutableTreeNode flashcard = null;
-
         try {
             //creates scanner
             Scanner input = new Scanner(data);
@@ -90,9 +113,6 @@ public class Database {
                     database.add(new Course(line.substring(6).trim()));
                     //resets deck and course index
                     dIndex = -1;
-                    //adds TreeNode to root
-                    course = new DefaultMutableTreeNode(line.substring(6).trim());
-                    root.add(course);
                     // increments course index
                     cIndex++;
                 }
@@ -106,9 +126,6 @@ public class Database {
                     else {
                         database.get(cIndex).add(new Deck(parts[0], parts[1]));
                     }
-                    //adds TreeNode
-                    deck = new DefaultMutableTreeNode(parts[0]);
-                    course.add(deck);
                     //increments index
                     dIndex++;
                 }
@@ -117,9 +134,6 @@ public class Database {
                     //extrapolates term and definition
                     String[] parts = line.substring(2).split(",");
                     database.get(cIndex).get(dIndex).add(new Flashcard(parts[0].trim(), parts[1].trim()));
-                    //adds TreeNode
-                    flashcard = new DefaultMutableTreeNode(parts[0].trim() + ": " + parts[1]);
-                    deck.add(flashcard);
                 }
                 else {
                     System.out.println("ERROR: Data Corrupted");
@@ -131,7 +145,6 @@ public class Database {
             e.printStackTrace();
             return false;
         }
-        tree = new JTree(root);
         return true;
     }
 
