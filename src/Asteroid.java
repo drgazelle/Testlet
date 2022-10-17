@@ -23,7 +23,7 @@ public class Asteroid {
         x = dx;
         y = dy;
         pictures = p;
-        animationDelay = ad;
+        animationDelay = ad; //
         animationIndex = 0;
         numFrames = 0;
     }

@@ -153,7 +153,7 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
         ImageIcon flashCardButton2 = new ImageIcon("resources/images/flashcards2.png");
         buttons[FLASHCARDS] = new Button(r8, "flashcards", flashCardButton1, flashCardButton2);
 
-        Shape r9 = new Rectangle(0, topBarHeight +3 + 91, leftBarSize, 91);
+        Shape r9 = new Rectangle(0, topBarHeight +3 + 91, leftBarSize, 91); //
         ImageIcon learnButton1 = new ImageIcon("resources/images/learn1.png");
         ImageIcon learnButton2 = new ImageIcon("resources/images/learn2.png");
         buttons[LEARN] = new Button(r9, "learn", learnButton1, learnButton2);
