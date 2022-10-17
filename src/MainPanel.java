@@ -86,8 +86,14 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
     protected static int mouseX;
     protected static int mouseY;
 
+    //database variables
+    private Database data;
+
     /** 0-arg constructor */
     public MainPanel() {
+        //creates database
+        data = new Database();
+
         addMouseListener(this);
         addMouseMotionListener(this);
         mouseX = SIZE/2;
@@ -346,6 +352,15 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                    }
                    if (b.getTitle().equals("export")) {
                        screenMode = 1; //change this for what to do when export is clicked
+                       JFrame frame = new JFrame("Database");
+                       JScrollPane treeView = new JScrollPane(data.toTree());
+                       frame.add(treeView);
+                       frame.setIconImage(new ImageIcon("resources/icons/deck.png").getImage());
+                       frame.setSize(960, 540);
+                       frame.setLocation(50, 50);
+                       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                       frame.setResizable(false);
+                       frame.setVisible(true);
                    }
                    if (b.getTitle().equals("settings")) {
                        if (numberOfSettingsClicks == 0)
