@@ -81,7 +81,7 @@ public class Database implements TreeSelectionListener {
      */
     public JTree toTree() {
         //JTree variables
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode();
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode("Database");
         DefaultMutableTreeNode course;
         DefaultMutableTreeNode deck;
         DefaultMutableTreeNode flashcard;
@@ -89,15 +89,15 @@ public class Database implements TreeSelectionListener {
         //Loops through database tree
         for(Course c : database) {
             //adds course TreeNode to root
-            course = new DefaultMutableTreeNode(c.getName());
+            course = new DefaultMutableTreeNode(c);
             root.add(course);
             for(Deck d : c.get()) {
                 //adds deck TreeNode to course
-                deck = new DefaultMutableTreeNode(d.getName());
+                deck = new DefaultMutableTreeNode(d);
                 course.add(deck);
                 for(Flashcard f : d.get()){
                     //adds flashcard TreeNode to root
-                    flashcard = new DefaultMutableTreeNode(f.getDef() + ": " + f.getTerm());
+                    flashcard = new DefaultMutableTreeNode(f);
                     deck.add(flashcard);
                 }
             }
@@ -176,7 +176,7 @@ public class Database implements TreeSelectionListener {
             FileWriter output = new FileWriter(data);
             //loops through courses
             for (Course c : database) {
-                output.write("******" + c.getName() + "\n");
+                output.write("******" + c.toString() + "\n");
                 //loops through decks
                 for (Deck d : c.get()) {
                     output.write("****" + d.getName() + "," + d.getDescription() + "\n");
@@ -301,10 +301,9 @@ public class Database implements TreeSelectionListener {
         DefaultMutableTreeNode node = (DefaultMutableTreeNode)
                 tree.getLastSelectedPathComponent();
 
-        /* if nothing is selected */
+        //if nothing is selected
         if (node == null) return;
-
-        /* retrieve the node that was selected */
+        //retrieve the node that was selected
         Object nodeInfo = node.getUserObject();
     }
 }
