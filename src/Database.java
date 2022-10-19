@@ -1,5 +1,8 @@
-import javax.swing.JTree;
+import javax.swing.*;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeSelectionModel;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -16,7 +19,7 @@ import java.util.Scanner;
  *  @author RMizelle
  *  @version V1.1
  */
-public class Database {
+public class Database implements TreeSelectionListener {
 
     private final ArrayList<Course> database;
     private File data;
@@ -60,6 +63,19 @@ public class Database {
 
     //////////////////// Data Methods ////////////////////
 
+    /** Displays a JFrame containing the JTree representation of Database */
+    public void showDatabaseGUI() {
+
+        JFrame frame = new JFrame("Database");
+        JScrollPane treeView = new JScrollPane(toTree());
+        frame.add(treeView);
+        frame.setIconImage(new ImageIcon("resources/icons/deck.png").getImage());
+        frame.setSize(960, 540);
+        frame.setLocation(50, 50);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setResizable(false);
+        frame.setVisible(true);
+    }
     /** Converts database structure to JTree.
      * @return JTree representation of database
      */
@@ -90,6 +106,9 @@ public class Database {
         //instantiates JTree
         tree = new JTree(root);
         tree.setRootVisible(false);
+        tree.addTreeSelectionListener(this);
+        tree.getSelectionModel().setSelectionMode
+                (TreeSelectionModel.SINGLE_TREE_SELECTION);
         return tree;
     }
 
@@ -275,5 +294,17 @@ public class Database {
      */
     public int size() {
         return database.size();
+    }
+
+    @Override
+    public void valueChanged(TreeSelectionEvent e) {
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode)
+                tree.getLastSelectedPathComponent();
+
+        /* if nothing is selected */
+        if (node == null) return;
+
+        /* retrieve the node that was selected */
+        Object nodeInfo = node.getUserObject();
     }
 }
