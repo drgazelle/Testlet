@@ -184,4 +184,10 @@ public class Deck {
     public void move(int indexStart, int indexEnd) {
         deck.add(indexEnd, deck.remove(indexStart));
     }
+
+    /* toString method for JTree */
+    @Override
+    public String toString() {
+        return name;
+    }
 }

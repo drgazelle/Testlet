@@ -144,4 +144,10 @@ public class Course {
     public void move(int indexStart, int indexEnd) {
         course.add(indexEnd, course.remove(indexStart));
     }
+
+    @Override
+    /* toString method for JTree */
+    public String toString() {
+        return name;
+    }
 }

@@ -51,4 +51,10 @@ public class Flashcard {
         term = def;
         def = term;
     }
+
+    /* toString method for JTree */
+    @Override
+    public String toString() {
+        return def + ": " + term;
+    }
 }
