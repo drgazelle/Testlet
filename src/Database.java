@@ -2,8 +2,8 @@ import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
+import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -26,6 +26,7 @@ public class Database implements TreeSelectionListener {
     private File data;
     private JTree tree;
     private Deck userDeck;
+    JLabel selectionText;
 
     /** 0-arg constructor implements ArrayList of
      *  Course objects from a text document.
@@ -68,14 +69,39 @@ public class Database implements TreeSelectionListener {
     /** Displays a JFrame containing the JTree representation of Database */
     public void showDatabaseGUI() {
         JFrame frame = new JFrame("Database");
+        //content panel
+        JPanel panel = new JPanel(new BorderLayout());
+
+        //JTree UI
         JScrollPane treeView = new JScrollPane(toTree());
-        frame.add(treeView);
+
+        //JTree Commands panel
+        JPanel options = new JPanel(new GridLayout(0,3));
+        //Allows Users to add Courses or Decks
+        JButton ADD_COMMAND = new JButton("Add");
+        //Allows Users to remove Courses or Decks
+        JButton REMOVE_COMMAND = new JButton("Remove");
+        //Allows Users to clear Database
+        JButton CLEAR_COMMAND = new JButton("Clear");
+        options.add(ADD_COMMAND);
+        options.add(REMOVE_COMMAND);
+        options.add(CLEAR_COMMAND);
+
+        selectionText = new JLabel("Please Select a Deck");
+
+        panel.add(selectionText, BorderLayout.BEFORE_FIRST_LINE);
+        panel.add(treeView, BorderLayout.CENTER);
+        panel.add(options, BorderLayout.AFTER_LAST_LINE);
+
+        frame.setContentPane(panel);
         frame.setIconImage(new ImageIcon("resources/icons/deck.png").getImage());
-        frame.setSize(960, 540);
+        frame.setSize(640, 380);
         frame.setLocation(50, 50);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setResizable(false);
         frame.setVisible(true);
+
+
     }
     /** Converts database structure to JTree.
      * @return JTree representation of database
@@ -297,6 +323,8 @@ public class Database implements TreeSelectionListener {
         return database.size();
     }
 
+    ////////////////////  Listener Methods ////////////////////
+
     /** Implements TreeSelectionListeners */
     @Override
     public void valueChanged(TreeSelectionEvent e) {
@@ -307,10 +335,16 @@ public class Database implements TreeSelectionListener {
         if (node == null) return;
         //retrieve the node that was selected
         Object nodeInfo = node.getUserObject();
-        DefaultMutableTreeNode parent = node.getPreviousNode();
+        DefaultMutableTreeNode parent = (DefaultMutableTreeNode) node.getParent();
         System.out.println("User Selected: " + nodeInfo.toString());
+        //Checks if parent is Deck
+        if (parent.getUserObject() instanceof Deck) {
+            nodeInfo = parent.getUserObject();
+        }
+        //Checks if node is Deck
         if (nodeInfo instanceof Deck) {
             userDeck = (Deck) nodeInfo;
+            selectionText.setText(userDeck.toString());
         }
     }
 }
