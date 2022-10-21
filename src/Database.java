@@ -68,15 +68,20 @@ public class Database implements TreeSelectionListener {
 
     /** Displays a JFrame containing the JTree representation of Database */
     public void showDatabaseGUI() {
-        JFrame frame = new JFrame("Database");
+        JFrame.setDefaultLookAndFeelDecorated(true);
+        JFrame frame = new JFrame();
         //content panel
         JPanel panel = new JPanel(new BorderLayout());
-
+        panel.setBackground(Color.LIGHT_GRAY);
         //JTree UI
         JScrollPane treeView = new JScrollPane(toTree());
 
         //JTree Commands panel
-        JPanel options = new JPanel(new GridLayout(0,3));
+        JPanel options = new JPanel(new GridLayout(0,5));
+        //Allows Users to add Courses or Decks
+        JButton CONFIRM_COMMAND = new JButton("Confirm");
+        CONFIRM_COMMAND.setBackground(new Color(154,205,50));
+        CONFIRM_COMMAND.setOpaque(true);
         //Allows Users to add Courses or Decks
         JButton ADD_COMMAND = new JButton("Add");
         //Allows Users to remove Courses or Decks
@@ -86,6 +91,9 @@ public class Database implements TreeSelectionListener {
         options.add(ADD_COMMAND);
         options.add(REMOVE_COMMAND);
         options.add(CLEAR_COMMAND);
+
+        options.add(new JLabel(""));
+        options.add(CONFIRM_COMMAND);
 
         selectionText = new JLabel("Please Select a Deck");
 
@@ -344,7 +352,7 @@ public class Database implements TreeSelectionListener {
         //Checks if node is Deck
         if (nodeInfo instanceof Deck) {
             userDeck = (Deck) nodeInfo;
-            selectionText.setText(userDeck.toString());
+            selectionText.setText("Selected Deck: " + userDeck.toString());
         }
     }
 }
