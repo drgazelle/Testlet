@@ -372,7 +372,7 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                        screenMode = 1; //change this for what to do when newCourse is clicked
                    }
                    if (b.getTitle().equals("update")) {
-                       screenMode = 1; //change this for what to do when update is clicked
+                       data.showDatabaseGUI();
                    }
                    if (b.getTitle().equals("flashcards"))
                    {

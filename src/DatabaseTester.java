@@ -1,4 +1,3 @@
-import javax.swing.*;
 import java.util.Scanner;
 
 /** DatabaseTester is a test class that ensures
@@ -20,7 +19,7 @@ public class DatabaseTester {
         data.add(new Course("Geometry"));
         data.add(new Course("Biology"));
 
-        //Adds decks and flashcards to Algebra
+        //Adds decks and flashcards to Course
         data.get(0).add(new Deck("Deck 1", "Description 1"));
         data.get(0).get(0).add(new Flashcard("Term", "Def"));
         data.get(0).get(0).add(new Flashcard("Term", "Def"));
@@ -48,7 +47,6 @@ public class DatabaseTester {
 
         //Frame methods
         data.showDatabaseGUI();
-
         data.exportDatabase();
     }
 }

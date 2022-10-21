@@ -2,6 +2,7 @@ import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -24,6 +25,7 @@ public class Database implements TreeSelectionListener {
     private final ArrayList<Course> database;
     private File data;
     private JTree tree;
+    private Deck userDeck;
 
     /** 0-arg constructor implements ArrayList of
      *  Course objects from a text document.
@@ -65,7 +67,6 @@ public class Database implements TreeSelectionListener {
 
     /** Displays a JFrame containing the JTree representation of Database */
     public void showDatabaseGUI() {
-
         JFrame frame = new JFrame("Database");
         JScrollPane treeView = new JScrollPane(toTree());
         frame.add(treeView);
@@ -296,6 +297,7 @@ public class Database implements TreeSelectionListener {
         return database.size();
     }
 
+    /** Implements TreeSelectionListeners */
     @Override
     public void valueChanged(TreeSelectionEvent e) {
         DefaultMutableTreeNode node = (DefaultMutableTreeNode)
@@ -305,5 +307,10 @@ public class Database implements TreeSelectionListener {
         if (node == null) return;
         //retrieve the node that was selected
         Object nodeInfo = node.getUserObject();
+        DefaultMutableTreeNode parent = node.getPreviousNode();
+        System.out.println("User Selected: " + nodeInfo.toString());
+        if (nodeInfo instanceof Deck) {
+            userDeck = (Deck) nodeInfo;
+        }
     }
 }
