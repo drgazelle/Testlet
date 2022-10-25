@@ -2,8 +2,11 @@ import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -20,13 +23,21 @@ import java.util.Scanner;
  *  @author RMizelle
  *  @version V1.1
  */
-public class Database implements TreeSelectionListener {
+public class Database implements TreeSelectionListener, ActionListener {
 
     private final ArrayList<Course> database;
     private File data;
     private JTree tree;
     private Deck userDeck;
+    private Object userSelected;
+
+    private JFrame frame;
     JLabel selectionText;
+
+    private static String ADD_COMMAND = "add";
+    private static String REMOVE_COMMAND = "remove";
+    private static String CLEAR_COMMAND = "clear";
+    private static String CONFIRM_COMMAND = "confirm";
 
     /** 0-arg constructor implements ArrayList of
      *  Course objects from a text document.
@@ -69,33 +80,47 @@ public class Database implements TreeSelectionListener {
     /** Displays a JFrame containing the JTree representation of Database */
     public void showDatabaseGUI() {
         JFrame.setDefaultLookAndFeelDecorated(true);
-        JFrame frame = new JFrame();
+        frame = new JFrame();
         //content panel
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBackground(Color.LIGHT_GRAY);
+
+        //Sets Decks selection text
+        selectionText = new JLabel("Please Select a Deck");
+
         //JTree UI
         JScrollPane treeView = new JScrollPane(toTree());
 
         //JTree Commands panel
         JPanel options = new JPanel(new GridLayout(0,5));
         //Allows Users to add Courses or Decks
-        JButton CONFIRM_COMMAND = new JButton("Confirm");
-        CONFIRM_COMMAND.setBackground(new Color(154,205,50));
-        CONFIRM_COMMAND.setOpaque(true);
+        JButton confirmButton = new JButton("Confirm");
+        confirmButton.setBackground(new Color(154,205,50));
+        confirmButton.setOpaque(true);
+        confirmButton.setActionCommand(CONFIRM_COMMAND);
+        confirmButton.addActionListener(this);
+
         //Allows Users to add Courses or Decks
-        JButton ADD_COMMAND = new JButton("Add");
+        JButton addButton = new JButton("Add");
+        addButton.setActionCommand(ADD_COMMAND);
+        addButton.addActionListener(this);
+
         //Allows Users to remove Courses or Decks
-        JButton REMOVE_COMMAND = new JButton("Remove");
+        JButton removeButton = new JButton("Remove");
+        removeButton.setActionCommand(REMOVE_COMMAND);
+        removeButton.addActionListener(this);
+
         //Allows Users to clear Database
-        JButton CLEAR_COMMAND = new JButton("Clear");
-        options.add(ADD_COMMAND);
-        options.add(REMOVE_COMMAND);
-        options.add(CLEAR_COMMAND);
+        JButton clearButton = new JButton("Clear");
+        clearButton.setActionCommand(CLEAR_COMMAND);
+        clearButton.addActionListener(this);
 
+        //adds to options panel
+        options.add(addButton);
+        options.add(removeButton);
+        options.add(clearButton);
         options.add(new JLabel(""));
-        options.add(CONFIRM_COMMAND);
-
-        selectionText = new JLabel("Please Select a Deck");
+        options.add(confirmButton);
 
         panel.add(selectionText, BorderLayout.BEFORE_FIRST_LINE);
         panel.add(treeView, BorderLayout.CENTER);
@@ -108,9 +133,8 @@ public class Database implements TreeSelectionListener {
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setResizable(false);
         frame.setVisible(true);
-
-
     }
+
     /** Converts database structure to JTree.
      * @return JTree representation of database
      */
@@ -343,8 +367,10 @@ public class Database implements TreeSelectionListener {
         if (node == null) return;
         //retrieve the node that was selected
         Object nodeInfo = node.getUserObject();
+        //sets current selected
+        userSelected = nodeInfo;
         DefaultMutableTreeNode parent = (DefaultMutableTreeNode) node.getParent();
-        System.out.println("User Selected: " + nodeInfo.toString());
+        System.out.println("[Database] User Selected: " + nodeInfo.toString());
         //Checks if parent is Deck
         if (parent.getUserObject() instanceof Deck) {
             nodeInfo = parent.getUserObject();
@@ -353,6 +379,35 @@ public class Database implements TreeSelectionListener {
         if (nodeInfo instanceof Deck) {
             userDeck = (Deck) nodeInfo;
             selectionText.setText("Selected Deck: " + userDeck.toString());
+        }
+    }
+
+    /** Implements Action Listener */
+    public void actionPerformed(ActionEvent e) {
+        String command = e.getActionCommand();
+
+        if (ADD_COMMAND.equals(command)) {
+            //Add button clicked
+            System.out.println("[Database] User Selected: Add Button");
+        }
+        else if (REMOVE_COMMAND.equals(command)) {
+            //Remove button clicked
+            System.out.println("[Database] User Selected: Remove Button");
+        }
+        else if (CLEAR_COMMAND.equals(command)) {
+            //Clear button clicked.
+            //wipes JTree
+            DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
+            DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
+            root.removeAllChildren();
+            model.reload();
+            wipe();
+            System.out.println("[Database] User Selected: Clear Button");
+        }
+        else if (CONFIRM_COMMAND.equals(command)) {
+            System.out.println("[Database] User Selected: Confirm Button");
+            frame.dispose();
+            MainPanel.setDeck(userDeck);
         }
     }
 }

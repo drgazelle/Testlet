@@ -88,6 +88,7 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
 
     //database variables
     private Database data;
+    private static Deck deck;
 
     /** 0-arg constructor */
     public MainPanel() {
@@ -314,6 +315,12 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
         showBoard(g);
     }
 
+    /** Setter method for Deck */
+    public static void setDeck(Deck d){
+        deck = d;
+        System.out.println("[MainPanel] Confirmed " + deck.toString() + " as Selected Deck");
+    }
+
     /**
      * Controls actions for when the mouse is clicked
      * @param e the event to be processed
@@ -352,15 +359,7 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                    }
                    if (b.getTitle().equals("export")) {
                        screenMode = 1; //change this for what to do when export is clicked
-                       JFrame frame = new JFrame("Database");
-                       JScrollPane treeView = new JScrollPane(data.toTree());
-                       frame.add(treeView);
-                       frame.setIconImage(new ImageIcon("resources/icons/deck.png").getImage());
-                       frame.setSize(960, 540);
-                       frame.setLocation(50, 50);
-                       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                       frame.setResizable(false);
-                       frame.setVisible(true);
+                       data.showDatabaseGUI();
                    }
                    if (b.getTitle().equals("settings")) {
                        if (numberOfSettingsClicks == 0)
