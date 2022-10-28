@@ -98,8 +98,15 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
     protected static int mouseX;
     protected static int mouseY;
 
+    //database variables
+    private Database data;
+    private static Deck deck;
+
     /** 0-arg constructor */
     public MainPanel() {
+        //creates database
+        data = new Database();
+
         addMouseListener(this);
         addMouseMotionListener(this);
         mouseX = SIZE/2;
@@ -365,6 +372,12 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
     {
         super.paintComponent(g);
         showBoard(g);
+    }
+
+    /** Setter method for Deck */
+    public static void setDeck(Deck d){
+        deck = d;
+        System.out.println("[MainPanel] Confirmed " + deck.toString() + " as Selected Deck");
     }
 
     /**
