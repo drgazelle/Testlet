@@ -33,44 +33,56 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
 
     //the top bar's height is 50 (y)
     private static final int topBarHeight = 50;
+    private boolean homeScreenDisplay = false;
+    private boolean learnDisplay = false;
+    private boolean testDisplay = false;
+    private boolean matchingDisplay = false;
+    private ImageIcon testletCharacter = new ImageIcon("resources/images/Testlet_Character.png");
+    private ImageIcon testletCharacterSpeechBubble = new ImageIcon("resources/images/TestletHomeSpeechBubble.png");
 
+    //for gravity and asteroids
     private boolean gravityStartDisplay = false;
     private boolean gravityDisplay = false;
-
     private static final int asteroidTextSize = 25;
     private static int DELAY = 1;
     private static Timer t;
-    private static int frame;
+    private static int frameGravity;
     private static int asteroidX, asteroidY;
     private ImageIcon[] asteroidImages = {new ImageIcon("resources/images/asteroid1.png")};
     private Asteroid asteroid1;
+
+    //for flashcards
+    private int termOddDefEven = 1; //keeps track of which side of the flash card to show
+    private boolean flipCard = false;
+    private boolean flashcardsDisplay = false;
+    private static final int flashCardTextSize = 25;
+    private static int frameFlashCard;
+    private Flashcard flashcard1;
 
     //images
     //private ImageIcon startScreen  = new ImageIcon("images/backgrounds/startScreen.png");
 
     //array of buttons
-    private Button[] buttons = new Button[11];
+    private Button[] buttons = new Button[13];
 
     //each int represents a different button.
     private static final int HOMEBUTTON = 0;
     private static final int EXPORTBUTTON = 1;
     private static final int SETTINGSBUTTON = 2;
     private static final int NEWDECKBUTTON = 3;
-    private static final int UPDATEBUTTON = 4;
-//    private static final int LEFTARROWCOURSES = 5;
-//    private static final int RIGHTARROWCOURSES = 6;
-    private static final int FLASHCARDS = 5;
-    private static final int LEARN = 6;
-    private static final int TEST = 7;
-    private static final int GRAVITY = 8;
-    private static final int MATCHING = 9;
-    private static final int GRAVITYSTARTGAME = 10;
-
+   // private static final int UPDATEBUTTON = 4;
+    private static final int FLASHCARDS = 4;
+    private static final int LEARN = 5;
+    private static final int TEST = 6;
+    private static final int GRAVITY = 7;
+    private static final int MATCHING = 8;
+    private static final int GRAVITYSTARTGAME = 9;
+    private static final int FLASHCARDFLIP = 10;
+    private static final int PREVIOUSCARD = 11;
+    private static final int NEXTCARD = 12;
 
     //screen modes
     private static final int HOMESCREEN = 0;
-    private static final int FLASHCARDMODE = 1;
-    private static final int LEARNMODE = 2;
 
     //keeps track of what screen mode should be shown on the screen
     private static int screenMode;
@@ -104,10 +116,13 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
         asteroidY = -50;
 
         asteroid1 = new Asteroid(new Flashcard("hello", "5 letter word for hi"), asteroidX, asteroidY, asteroidImages, 400);
+        flashcard1 = new Flashcard("test1", "test2");
 
         t = new Timer(DELAY, new Listener());
         t.start();
-        frame = 0;
+        frameGravity = 0;
+        frameFlashCard = 0;
+
         //add buttons here
         //example below:
         //                          x    y    width   height
@@ -125,35 +140,25 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
         //initializes the button with shape, title, and its images
         buttons[HOMEBUTTON] = new Button(r1, "home", homeButton1, homeButton2);
 
-        Shape r2 = new Ellipse2D.Float(xSIZE - (4*topBarHeight) - 80, 2, topBarHeight, topBarHeight-5); //circle
+        Shape r2 = new Ellipse2D.Float(xSIZE - (3*topBarHeight) - 30, 4, topBarHeight-4, topBarHeight-5-4); //circle
         ImageIcon exportButton1 = new ImageIcon("resources/images/export1.png");
-        ImageIcon exportButton2 = new ImageIcon("resources/images/home1.png");
+        ImageIcon exportButton2 = new ImageIcon("resources/images/export2.png");
         buttons[EXPORTBUTTON] = new Button(r2, "export", exportButton1, exportButton2);
 
-        Shape r3 = new Ellipse2D.Float(xSIZE - (3*topBarHeight) - 60, 2, topBarHeight, topBarHeight-5); //circle
+        Shape r3 = new Ellipse2D.Float(xSIZE - (2*topBarHeight) - 20, 4, topBarHeight-4, topBarHeight-5-4); //circle
         ImageIcon settingsButton1 = new ImageIcon("resources/images/settings1.png");
         ImageIcon settingsButton2 = new ImageIcon("resources/images/settings2.png");
         buttons[SETTINGSBUTTON] = new Button(r3, "settings", settingsButton1, settingsButton2);
 
-        Shape r4 = new Ellipse2D.Float(xSIZE - (2*topBarHeight) - 40, 2, topBarHeight, topBarHeight-5); //circle
+        Shape r4 = new Ellipse2D.Float(xSIZE - (topBarHeight) - 10, 4, topBarHeight-4, topBarHeight-5-4); //circle
         ImageIcon newDeckButton1 = new ImageIcon("resources/images/newDeck1.png");
         ImageIcon newDeckButton2 = new ImageIcon("resources/images/newDeck2.png"); //same image as homeButton1
         buttons[NEWDECKBUTTON] = new Button(r4, "newDeck", newDeckButton1, newDeckButton2);
 
-        Shape r5 = new Ellipse2D.Float(xSIZE - (topBarHeight) - 20, 2, topBarHeight-5, topBarHeight-5); //circle
-        ImageIcon updateButton1 = new ImageIcon("resources/images/home1.png");
-        ImageIcon updateButton2 = new ImageIcon("resources/images/home1.png"); //same image as homeButton1
-        buttons[UPDATEBUTTON] = new Button(r5, "update", updateButton1, updateButton2);
-
-//        Shape r6 = new Rectangle(0, topBarHeight + 3+80 + 80 + 80 + 80 + 80 + 3, leftBarSize/2, ySIZE - (topBarHeight + 3+80 + 80 + 80 + 80 + 80 + 3+33));
-//        ImageIcon leftArrowCourses1 = new ImageIcon("resources/images/arrowLeft1.png");
-//        ImageIcon leftArrowCourses2 = new ImageIcon("resources/images/arrowLeft2.png");
-//        buttons[LEFTARROWCOURSES] = new Button(r6, "leftArrowCourses", leftArrowCourses1, leftArrowCourses2);
-//
-//        Shape r7 = new Rectangle(leftBarSize/2, topBarHeight + 3+80 + 80 + 80 + 80 + 80 + 3, leftBarSize/2, ySIZE - (topBarHeight + 3+80 + 80 + 80 + 80 + 80 + 3+33));
-//        ImageIcon rightArrowCourses1 = new ImageIcon("resources/images/arrowRight1.png");
-//        ImageIcon rightArrowCourses2 = new ImageIcon("resources/images/arrowRight2.png");
-//        buttons[RIGHTARROWCOURSES] = new Button(r7, "rightArrowCourses", rightArrowCourses1, rightArrowCourses2);
+//        Shape r5 = new Ellipse2D.Float(xSIZE - (topBarHeight) - 20, 2, topBarHeight-5, topBarHeight-5); //circle
+//        ImageIcon updateButton1 = new ImageIcon("resources/images/home1.png");
+//        ImageIcon updateButton2 = new ImageIcon("resources/images/home1.png"); //same image as homeButton1
+//        buttons[UPDATEBUTTON] = new Button(r5, "update", updateButton1, updateButton2);
 
         Shape r8 = new Rectangle(0, topBarHeight+3, leftBarSize, 91);
         ImageIcon flashCardButton1 = new ImageIcon("resources/images/flashcards1.png");
@@ -189,6 +194,21 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
 //        ImageIcon course1Button1 = new ImageIcon("src/home1.png");
 //        ImageIcon course1Button2 = new ImageIcon("src/home1.png"); //same image as homeButton1
 //        buttons[COURSE1BUTTON] = new Button(r6, "course1", course1Button1, course1Button2);
+
+        Shape r14 = new Rectangle(flashcard1.getX(), flashcard1.getY(), flashCardTextSize*20, flashCardTextSize*12);
+        ImageIcon flashCardFlipButton1 = new ImageIcon("resources/images/gravityStart1.png");
+        ImageIcon flashCardFlipButton2 = new ImageIcon("resources/images/gravityStart2.png");
+        buttons[FLASHCARDFLIP] = new Button(r14, "flashCardFlip", flashCardFlipButton1, flashCardFlipButton2);
+
+        Shape r15 = new Rectangle(310, 420, 101, 53);
+        ImageIcon previousCardButton1 = new ImageIcon("resources/images/prevflashcard1.png");
+        ImageIcon previousCardButton2 = new ImageIcon("resources/images/prevflashcard2.png");
+        buttons[PREVIOUSCARD] = new Button(r15, "previousCard", previousCardButton1, previousCardButton2);
+
+        Shape r16 = new Rectangle(750, 420, 101, 53);
+        ImageIcon nextCardButton1 = new ImageIcon("resources/images/nextflashcard1.png");
+        ImageIcon nextCardButton2 = new ImageIcon("resources/images/nextflashcard2.png");
+        buttons[NEXTCARD] = new Button(r16, "nextCard", nextCardButton1, nextCardButton2);
 
         //sets the screen mode
         screenMode = HOMESCREEN;
@@ -227,16 +247,63 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
             buttons[MATCHING].setEnabled(true);
             buttons[MATCHING].setVisible(true);
 
+            if(homeScreenDisplay == true)
+            {
+                g.drawImage(testletCharacter.getImage(), leftBarSize+30, topBarHeight+30, 313, 410, null);
+                g.drawImage(testletCharacterSpeechBubble.getImage(), leftBarSize+30+230, topBarHeight+20, 300, 130, null);
+            }
+
             if(gravityStartDisplay == true)
             {
                 buttons[GRAVITYSTARTGAME].drawButton(g);
                 buttons[GRAVITYSTARTGAME].setEnabled(true);
                 buttons[GRAVITYSTARTGAME].setVisible(true);
+
+                buttons[FLASHCARDFLIP].setEnabled(false);
+                buttons[PREVIOUSCARD].setEnabled(false);
+                buttons[NEXTCARD].setEnabled(false);
             }
 
             if(gravityDisplay == true)
             {
                 g.drawImage(asteroid1.getPicture().getImage(), asteroid1.getX(), asteroid1.getY(), asteroidTextSize * 5, asteroidTextSize * 5, null);
+            }
+
+            if(flashcardsDisplay == true)
+            {
+                buttons[GRAVITYSTARTGAME].setEnabled(false);
+                buttons[GRAVITYSTARTGAME].setVisible(false);
+
+                buttons[FLASHCARDFLIP].drawButton(g);
+                buttons[FLASHCARDFLIP].setEnabled(true);
+                buttons[FLASHCARDFLIP].setVisible(false);
+                buttons[PREVIOUSCARD].drawButton(g);
+                buttons[PREVIOUSCARD].setEnabled(true);
+                buttons[PREVIOUSCARD].setVisible(true);
+                buttons[NEXTCARD].drawButton(g);
+                buttons[NEXTCARD].setEnabled(true);
+                buttons[NEXTCARD].setVisible(true);
+
+                if(flipCard == true)
+                {
+                    g.drawImage(flashcard1.getPicture(true).getImage(), flashcard1.getX(), flashcard1.getY(), flashCardTextSize*20, flashCardTextSize*12, null); //400x300
+                }
+                else //if(flipCard == false)
+                {
+                    g.drawImage(flashcard1.getPicture(false).getImage(), flashcard1.getX(), flashcard1.getY(), flashCardTextSize * 20, flashCardTextSize * 12, null); //400x300
+                    g.setColor(Color.BLACK);
+                    g.setFont(new Font("Helvetica", Font.PLAIN, 30));
+                    if(termOddDefEven % 2 == 0) //even, show the definition
+                     {
+                         g.drawString("Definition", 350, 150);
+                         g.drawString(flashcard1.getDef(), 530, 260);
+                     }
+                     else //termOddDefEven is odd, show term
+                     {
+                         g.drawString("Term", 350, 150);
+                         g.drawString(flashcard1.getTerm(), 530, 260);
+                     }
+                }
             }
 
             //top bar with settings buttons
@@ -255,15 +322,9 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
             buttons[NEWDECKBUTTON].drawButton(g);
             buttons[NEWDECKBUTTON].setEnabled(true);
             buttons[NEWDECKBUTTON].setVisible(true);
-            buttons[UPDATEBUTTON].drawButton(g);
-            buttons[UPDATEBUTTON].setEnabled(true);
-            buttons[UPDATEBUTTON].setVisible(true);
-//            buttons[LEFTARROWCOURSES].drawButton(g);
-//            buttons[LEFTARROWCOURSES].setEnabled(true);
-//            buttons[LEFTARROWCOURSES].setVisible(true);
-//            buttons[RIGHTARROWCOURSES].drawButton(g);
-//            buttons[RIGHTARROWCOURSES].setVisible(true);
-//            buttons[RIGHTARROWCOURSES].setEnabled(true);
+//            buttons[UPDATEBUTTON].drawButton(g);
+//            buttons[UPDATEBUTTON].setEnabled(true);
+//            buttons[UPDATEBUTTON].setVisible(true);
 
             g.setColor(Color.BLACK);
             g.fillRect(0,topBarHeight, leftBarSize, 3);
@@ -298,8 +359,6 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
             buttons[HOMEBUTTON].drawButton(g);
             buttons[HOMEBUTTON].setEnabled(true);
             buttons[HOMEBUTTON].setVisible(true);
-
-
 
             repaint();
         }
@@ -355,11 +414,16 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                        screenMode = HOMESCREEN;
                        if (numberOfSettingsClicks == 1)
                            numberOfSettingsClicks = 0;
+                       learnDisplay = false;
+                       testDisplay = false;
                        gravityDisplay = false;
+                       gravityStartDisplay = false;
+                       flashcardsDisplay = false;
+                       homeScreenDisplay = true;
+                       matchingDisplay = false;
                    }
                    if (b.getTitle().equals("export")) {
                        screenMode = 1; //change this for what to do when export is clicked
-                       data.showDatabaseGUI();
                    }
                    if (b.getTitle().equals("settings")) {
                        if (numberOfSettingsClicks == 0)
@@ -370,35 +434,72 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                    if (b.getTitle().equals("newDeck")) {
                        screenMode = 1; //change this for what to do when newCourse is clicked
                    }
-                   if (b.getTitle().equals("update")) {
-                       data.showDatabaseGUI();
-                   }
                    if (b.getTitle().equals("flashcards"))
                    {
-gravityDisplay = false;
+                       homeScreenDisplay = false;
+                       learnDisplay = false;
+                       testDisplay = false;
+                       gravityDisplay = false;
+                       gravityStartDisplay = false;
+                       flashcardsDisplay = true;
+                       termOddDefEven = 1;
+                       matchingDisplay = false;
                    }
                    if (b.getTitle().equals("learn"))
                    {
-gravityDisplay = false;
+                       homeScreenDisplay = false;
+                       gravityDisplay = false;
+                       learnDisplay = true;
+                       testDisplay = false;
+                       gravityStartDisplay = false;
+                       flashcardsDisplay = false;
+                       matchingDisplay = false;
                    }
                    if (b.getTitle().equals("test"))
                    {
-gravityDisplay = false;
+                       homeScreenDisplay = false;
+                       gravityDisplay = false;
+                       learnDisplay = false;
+                       testDisplay = true;
+                       gravityStartDisplay = false;
+                       flashcardsDisplay = false;
+                       matchingDisplay = false;
                    }
                    if (b.getTitle().equals("gravity"))
                    {
+                       homeScreenDisplay = false;
+                       flashcardsDisplay = false;
+                       learnDisplay = false;
+                       testDisplay = false;
                        gravityDisplay = false;
-                    gravityStartDisplay = true;
+                       gravityStartDisplay = true;
+                       matchingDisplay = false;
                    }
                    if(b.getTitle().equals("gravityStartGame"))
                    {
+                       homeScreenDisplay = false;
+                       flashcardsDisplay = false;
+                       learnDisplay = false;
+                       testDisplay = false;
                        gravityStartDisplay = false;
                        gravityDisplay = true;
+                       matchingDisplay = false;
                        asteroid1.setY(asteroidY); //resets the asteroid position when the gravity button is clicked
                    }
                    if(b.getTitle().equals("matching"))
                    {
-gravityDisplay = false;
+                       homeScreenDisplay = false;
+                       flashcardsDisplay = false;
+                       learnDisplay = false;
+                       testDisplay = false;
+                       gravityStartDisplay = false;
+                       gravityDisplay = false;
+                       matchingDisplay = true;
+                   }
+                   if(b.getTitle().equals("flashCardFlip"))
+                   {
+                       flipCard = true;
+                       termOddDefEven++;
                    }
                }
               } //end of buttons for loop
@@ -432,6 +533,26 @@ gravityDisplay = false;
         {
             buttons[SETTINGSBUTTON].highlight();
         }
+        if(gravityDisplay == true || gravityStartDisplay == true)
+        {
+            buttons[GRAVITY].highlight();
+        }
+        if(flashcardsDisplay == true)
+        {
+            buttons[FLASHCARDS].highlight();
+        }
+        if(learnDisplay == true)
+        {
+            buttons[LEARN].highlight();
+        }
+        if(testDisplay == true)
+        {
+            buttons[TEST].highlight();
+        }
+        if(matchingDisplay == true)
+        {
+            buttons[MATCHING].highlight();
+        }
     }
 
     public void mouseDragged( MouseEvent e)
@@ -444,13 +565,24 @@ gravityDisplay = false;
     {
       public void actionPerformed(ActionEvent e) //this is called for each timer iteration
       {
-          frame++;
-          if(frame == Integer.MAX_VALUE)
-              frame = 0;
+          frameGravity++;
+          if(frameGravity == Integer.MAX_VALUE)
+              frameGravity = 0;
           asteroid1.moveDown(); //decreases y value (position in pixel space) by 1 to have the appearance of the asteroid falling down
           //you could make a method within asteroid that relates to animation delay and the y value
           //new variable numFramesY, divide by animation delay. When numFramesY % animation delay == 0, then decrease the y value by one
           //for harder levels, the animation delay is less to make the asteroids go faster.
+
+          if(flashcard1.continueFlipAnimation() == false)
+          {
+              flipCard = false;
+              frameFlashCard = 0;
+          }
+
+          frameFlashCard++;
+          if(frameFlashCard == Integer.MAX_VALUE)
+              frameFlashCard = 0;
+
           repaint();
       }
     }

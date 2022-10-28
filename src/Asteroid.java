@@ -23,20 +23,34 @@ public class Asteroid {
         x = dx;
         y = dy;
         pictures = p;
-        animationDelay = ad; //
+        animationDelay = ad;
         animationIndex = 0;
         numFrames = 0;
     }
 
+    /**
+     * Accessor method for x value
+     * @return x
+     */
     public int getX()
     {
         return x;
     }
+
+    /**
+     * Accessor method for y value
+     * @return y
+     */
     public int getY()
     {
         return y;
     }
 
+    /**
+     * Accessor method for which picture should be displayed to the screen
+     * based on animation delay and array of ImageIcons
+     * @return ImageIcon that should be displayed to screen
+     */
     public ImageIcon getPicture()
     {
         if(animationIndex < 0 || animationIndex >= pictures.length)
@@ -50,12 +64,28 @@ public class Asteroid {
         return temp;
     }
 
+    /**
+     * Setter method for y value in pixel space
+     * @param yVal new y value
+     */
     public void setY(int yVal)
     {
         y = yVal;
     }
 
+    /**
+     * Setter method for x value in pixel space
+     * @param xVal new x value
+     */
+    public void setX(int xVal)
+    {
+        x = xVal;
+    }
 
+    /**
+     * Increases y-value for pixel space by one
+     * Used for the asteroid to appear like it is falling
+     */
     public void moveDown()
     {
         y++;
