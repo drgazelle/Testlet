@@ -1,11 +1,8 @@
 import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.*;
 
-import javax.swing.tree.TreePath;
-import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -177,6 +174,36 @@ public class Database implements TreeSelectionListener, ActionListener {
         return tree;
     }
 
+    /** Converts JTree to database structure */
+    private void toDatabase() {
+        //clears database
+        database.clear();
+        //navigates database
+        DefaultMutableTreeNode root = (DefaultMutableTreeNode) tree.getModel().getRoot();
+        for (int x = 0; x < root.getChildCount(); x++) {
+            //Course node -> Course object
+            DefaultMutableTreeNode node = (DefaultMutableTreeNode) root.getChildAt(x);
+            Course c = (Course) node.getUserObject();
+            //navigate courses
+            for(int y = 0; y < node.getChildCount(); y++) {
+                //Deck node -> Deck object
+                node = (DefaultMutableTreeNode) node.getChildAt(y);
+                Deck d = (Deck) node.getUserObject();
+                //navigate flashcard
+                for (int z = 0; z < node.getChildCount(); z++) {
+                    //flashcard node -> flashcard object
+                    node = (DefaultMutableTreeNode) node.getChildAt(z);
+                    //adds flashcards to deck
+                    d.add((Flashcard) node.getUserObject());
+                }
+                //adds deck to course
+                c.add(d);
+            }
+            //adds course to database
+            database.add(c);
+        }
+    }
+
     /** importData method instantiates database using data.txt
      *  @return true if successfully instantiated database, false if error
      */
@@ -286,6 +313,8 @@ public class Database implements TreeSelectionListener, ActionListener {
         }
         return list.toArray();
     }
+
+
 
     /** Accessor method for database
      * @return ArrayList of Courses
