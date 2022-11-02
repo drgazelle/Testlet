@@ -296,12 +296,12 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                     if(termOddDefEven % 2 == 0) //even, show the definition
                      {
                          g.drawString("Definition", 350, 150);
-                         g.drawString(flashcard1.getDef(), 530, 260);
+                     //    g.drawString(deck.get(0).getDef(), 530, 260);
                      }
                      else //termOddDefEven is odd, show term
                      {
                          g.drawString("Term", 350, 150);
-                         g.drawString(flashcard1.getTerm(), 530, 260);
+                       //  g.drawString(deck.get(0).getTerm(), 530, 260);
                      }
                 }
             }
@@ -423,7 +423,7 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                        matchingDisplay = false;
                    }
                    if (b.getTitle().equals("export")) {
-                       screenMode = 1; //change this for what to do when export is clicked
+                       data.showDatabaseGUI();
                    }
                    if (b.getTitle().equals("settings")) {
                        if (numberOfSettingsClicks == 0)
