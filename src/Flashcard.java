@@ -110,7 +110,7 @@ public class Flashcard {
     /* toString method for JTree */
     @Override
     public String toString() {
-        return def + ": " + term;
+        return term;
     }
 
     //ava added here

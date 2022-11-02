@@ -3,6 +3,8 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+
+import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -12,6 +14,7 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 /** Database class creates a tree that
@@ -21,7 +24,7 @@ import java.util.Scanner;
  *  <p> Database > Course > Deck > Flashcard </p>
  *
  *  @author RMizelle
- *  @version V1.1
+ *  @version V1.2
  */
 public class Database implements TreeSelectionListener, ActionListener {
 
@@ -93,6 +96,7 @@ public class Database implements TreeSelectionListener, ActionListener {
 
         //JTree Commands panel
         JPanel options = new JPanel(new GridLayout(0,5));
+        options.setBackground(Color.lightGray);
         //Allows Users to add Courses or Decks
         JButton confirmButton = new JButton("Confirm");
         confirmButton.setBackground(new Color(154,205,50));
@@ -122,10 +126,12 @@ public class Database implements TreeSelectionListener, ActionListener {
         options.add(new JLabel(""));
         options.add(confirmButton);
 
+        //adds panels to JFrame
         panel.add(selectionText, BorderLayout.BEFORE_FIRST_LINE);
         panel.add(treeView, BorderLayout.CENTER);
         panel.add(options, BorderLayout.AFTER_LAST_LINE);
 
+        //sets frame attributes
         frame.setContentPane(panel);
         frame.setIconImage(new ImageIcon("resources/icons/deck.png").getImage());
         frame.setSize(640, 380);
@@ -271,6 +277,16 @@ public class Database implements TreeSelectionListener, ActionListener {
 
     ////////////////////  Database Methods ////////////////////
 
+    /** Converts TreePath to corresponding Objects */
+    public Object[] databasePath(TreePath path) {
+        ArrayList<Object> list = new ArrayList<>();
+        while (path.getParentPath() != null) {
+            list.add(0, ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject());
+            path = path.getParentPath();
+        }
+        return list.toArray();
+    }
+
     /** Accessor method for database
      * @return ArrayList of Courses
      */
@@ -392,10 +408,58 @@ public class Database implements TreeSelectionListener, ActionListener {
         }
         else if (REMOVE_COMMAND.equals(command)) {
             //Remove button clicked
+
             System.out.println("[Database] User Selected: Remove Button");
+
+            DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
+            TreePath path = tree.getSelectionPath();
+
+            if (path != null) {
+                DefaultMutableTreeNode node = (DefaultMutableTreeNode)
+                        path.getLastPathComponent();
+                if (node.getParent() != null) {
+                    model.removeNodeFromParent(node);
+                }
+            }
+
+            Course c;
+            Deck d;
+
+            Object[] dataPath = databasePath(path);
+            //deletes flashcard
+            if (dataPath.length == 3) {
+                //accesses course
+                c = database.get(database.indexOf((Course) dataPath[0]));
+                //accesses deck
+                d = c.get(c.indexOf((Deck) dataPath[1]));
+                //removes flashcard
+                d.remove(d.indexOf((Flashcard) dataPath[2]));
+            }
+            //deletes deck
+            else if (dataPath.length == 2) {
+                //accesses course
+                c = database.get(database.indexOf((Course) dataPath[0]));
+                //deletes deck
+                c.remove(c.indexOf((Deck) dataPath[1]));
+            }
+            //deletes course
+            else if (dataPath.length == 1) {
+                //removes course
+                c = database.remove(database.indexOf((Course) dataPath[0]));
+            }
+
+            System.out.println("[Database] User Removed " + userSelected.toString());
+
+            //unselects deck is removed
+            if (userSelected == userDeck) {
+                userDeck = null;
+            }
+            //unselects current object
+            userSelected = null;
         }
         else if (CLEAR_COMMAND.equals(command)) {
             //Clear button clicked.
+
             //wipes JTree
             DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
             DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
