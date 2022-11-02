@@ -100,7 +100,7 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
 
     //database variables
     private Database data;
-    private static Deck deck;
+    private static Deck deck = null;
 
     /** 0-arg constructor */
     public MainPanel() {
@@ -375,9 +375,14 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
     }
 
     /** Setter method for Deck */
-    public static void setDeck(Deck d){
+    public static boolean setDeck(Deck d) {
+        if (d == null) {
+            System.out.println("[MainPanel] No Deck Selected");
+            return false;
+        }
         deck = d;
         System.out.println("[MainPanel] Confirmed " + deck.toString() + " as Selected Deck");
+        return true;
     }
 
     /**

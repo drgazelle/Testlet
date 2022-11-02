@@ -31,7 +31,7 @@ public class Database implements TreeSelectionListener, ActionListener {
     private final ArrayList<Course> database;
     private File data;
     private JTree tree;
-    private Deck userDeck;
+    private Deck userDeck = null;
     private Object userSelected;
 
     private JFrame frame;
@@ -422,11 +422,13 @@ public class Database implements TreeSelectionListener, ActionListener {
                 }
             }
 
+            // temp variables
             Course c;
             Deck d;
 
+            //retrieves pathway of objects
             Object[] dataPath = databasePath(path);
-            //deletes flashcard
+            // if: flashcard
             if (dataPath.length == 3) {
                 //accesses course
                 c = database.get(database.indexOf((Course) dataPath[0]));
@@ -435,19 +437,19 @@ public class Database implements TreeSelectionListener, ActionListener {
                 //removes flashcard
                 d.remove(d.indexOf((Flashcard) dataPath[2]));
             }
-            //deletes deck
+            // else if: deck
             else if (dataPath.length == 2) {
                 //accesses course
                 c = database.get(database.indexOf((Course) dataPath[0]));
                 //deletes deck
                 c.remove(c.indexOf((Deck) dataPath[1]));
             }
-            //deletes course
+            // else if: course
             else if (dataPath.length == 1) {
                 //removes course
                 c = database.remove(database.indexOf((Course) dataPath[0]));
             }
-
+            //outputs to terminal
             System.out.println("[Database] User Removed " + userSelected.toString());
 
             //unselects deck is removed
