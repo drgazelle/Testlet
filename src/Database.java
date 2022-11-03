@@ -25,7 +25,7 @@ import java.util.Scanner;
  */
 public class Database implements TreeSelectionListener, ActionListener {
 
-    private final ArrayList<Course> database;
+    private ArrayList<Course> database;
     private File data;
     private JTree tree;
     private Deck userDeck = null;
@@ -175,9 +175,9 @@ public class Database implements TreeSelectionListener, ActionListener {
     }
 
     /** Converts JTree to database structure */
-    private void toDatabase() {
-        //clears database
-        database.clear();
+    private ArrayList<Course> toDatabase() {
+        //creates temp array
+        ArrayList<Course> temp = new ArrayList<>();
         //navigates database
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) tree.getModel().getRoot();
         for (int x = 0; x < root.getChildCount(); x++) {
@@ -200,8 +200,12 @@ public class Database implements TreeSelectionListener, ActionListener {
                 c.add(d);
             }
             //adds course to database
-            database.add(c);
+            temp.add(c);
         }
+        //reassigns database;
+        database = temp;
+
+        return database;
     }
 
     /** importData method instantiates database using data.txt
@@ -432,6 +436,7 @@ public class Database implements TreeSelectionListener, ActionListener {
         String command = e.getActionCommand();
 
         if (ADD_COMMAND.equals(command)) {
+            toDatabase();
             //Add button clicked
             System.out.println("[Database] User Selected: Add Button");
         }
@@ -450,7 +455,6 @@ public class Database implements TreeSelectionListener, ActionListener {
                     model.removeNodeFromParent(node);
                 }
             }
-
             // temp variables
             Course c;
             Deck d;
