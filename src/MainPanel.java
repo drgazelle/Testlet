@@ -57,6 +57,7 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
     private boolean flashcardsDisplay = false;
     private static final int flashCardTextSize = 25;
     private static int frameFlashCard;
+    private int flashcardShownInt = 0;
     private Flashcard flashcard1;
 
     //images
@@ -155,11 +156,6 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
         ImageIcon newDeckButton2 = new ImageIcon("resources/images/newDeck2.png"); //same image as homeButton1
         buttons[NEWDECKBUTTON] = new Button(r4, "newDeck", newDeckButton1, newDeckButton2);
 
-//        Shape r5 = new Ellipse2D.Float(xSIZE - (topBarHeight) - 20, 2, topBarHeight-5, topBarHeight-5); //circle
-//        ImageIcon updateButton1 = new ImageIcon("resources/images/home1.png");
-//        ImageIcon updateButton2 = new ImageIcon("resources/images/home1.png"); //same image as homeButton1
-//        buttons[UPDATEBUTTON] = new Button(r5, "update", updateButton1, updateButton2);
-
         Shape r8 = new Rectangle(0, topBarHeight+3, leftBarSize, 91);
         ImageIcon flashCardButton1 = new ImageIcon("resources/images/flashcards1.png");
         ImageIcon flashCardButton2 = new ImageIcon("resources/images/flashcards2.png");
@@ -190,11 +186,6 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
         ImageIcon gravityStartGameButton2 = new ImageIcon("resources/images/gravityStart2.png");
         buttons[GRAVITYSTARTGAME] = new Button(r13, "gravityStartGame", gravityStartGameButton1, gravityStartGameButton2);
 
-//        Shape r6 = new Ellipse2D.Float(0, 0, topBarHeight, topBarHeight); //circle
-//        ImageIcon course1Button1 = new ImageIcon("src/home1.png");
-//        ImageIcon course1Button2 = new ImageIcon("src/home1.png"); //same image as homeButton1
-//        buttons[COURSE1BUTTON] = new Button(r6, "course1", course1Button1, course1Button2);
-
         Shape r14 = new Rectangle(flashcard1.getX(), flashcard1.getY(), flashCardTextSize*20, flashCardTextSize*12);
         ImageIcon flashCardFlipButton1 = new ImageIcon("resources/images/gravityStart1.png");
         ImageIcon flashCardFlipButton2 = new ImageIcon("resources/images/gravityStart2.png");
@@ -212,7 +203,6 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
 
         //sets the screen mode
         screenMode = HOMESCREEN;
-
     }
 
     /**
@@ -291,18 +281,44 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                 else //if(flipCard == false)
                 {
                     g.drawImage(flashcard1.getPicture(false).getImage(), flashcard1.getX(), flashcard1.getY(), flashCardTextSize * 20, flashCardTextSize * 12, null); //400x300
-                    g.setColor(Color.BLACK);
-                    g.setFont(new Font("Helvetica", Font.PLAIN, 30));
+                    if(deck == null)
+                    {
+                        g.setColor(Color.RED);
+                        g.setFont(new Font("Helvetica", Font.PLAIN, 30));
+                        g.drawString("Select a deck!", 490, 260);
+                    }
                     if(termOddDefEven % 2 == 0) //even, show the definition
                      {
+                         g.setColor(Color.BLACK);
+                         g.setFont(new Font("Helvetica", Font.PLAIN, 30));
                          g.drawString("Definition", 350, 150);
-                     //    g.drawString(deck.get(0).getDef(), 530, 260);
+                         if(deck != null)
+                         g.drawString(deck.get(flashcardShownInt).getDef(), 530, 260);
                      }
                      else //termOddDefEven is odd, show term
                      {
+                         g.setColor(Color.BLACK);
+                         g.setFont(new Font("Helvetica", Font.PLAIN, 30));
                          g.drawString("Term", 350, 150);
-                       //  g.drawString(deck.get(0).getTerm(), 530, 260);
+                         if(deck != null)
+                         g.drawString(deck.get(flashcardShownInt).getTerm(), 530, 260);
                      }
+                }
+            }
+
+            if(learnDisplay == true)
+            {
+                if(deck == null)
+                {
+                    g.setColor(Color.RED);
+                    g.setFont(new Font("Helvetica", Font.PLAIN, 30));
+                    g.drawString("Select a deck!", 490, 260);
+                }
+                else
+                {
+                    g.setColor(Color.BLACK);
+                    g.setFont(new Font("Helvetica", Font.PLAIN, 30));
+                   // g.drawString(deck.get((int) (Math.random() * (deck.size()))).getDef(), 300, 200);
                 }
             }
 
@@ -322,9 +338,6 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
             buttons[NEWDECKBUTTON].drawButton(g);
             buttons[NEWDECKBUTTON].setEnabled(true);
             buttons[NEWDECKBUTTON].setVisible(true);
-//            buttons[UPDATEBUTTON].drawButton(g);
-//            buttons[UPDATEBUTTON].setEnabled(true);
-//            buttons[UPDATEBUTTON].setVisible(true);
 
             g.setColor(Color.BLACK);
             g.fillRect(0,topBarHeight, leftBarSize, 3);
@@ -506,6 +519,16 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                        flipCard = true;
                        termOddDefEven++;
                    }
+                   if(b.getTitle().equals("nextCard"))
+                   {
+                       if((deck!= null) && (flashcardShownInt + 1 < deck.size()))
+                           flashcardShownInt++;
+                   }
+                   if(b.getTitle().equals("prevCard"))
+                   {
+                       if((deck != null) && (flashcardShownInt - 1 >= 0))
+                           flashcardShownInt--;
+                   }
                }
               } //end of buttons for loop
     } //end of mouseClicked
@@ -557,6 +580,14 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
         if(matchingDisplay == true)
         {
             buttons[MATCHING].highlight();
+        }
+        if(flashcardShownInt == 0)
+        {
+            buttons[PREVIOUSCARD].highlight();
+        }
+        if((deck == null) || ((deck != null) && (flashcardShownInt == deck.size()-1)))
+        {
+            buttons[NEXTCARD].highlight();
         }
     }
 
