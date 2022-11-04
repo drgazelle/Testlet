@@ -47,6 +47,5 @@ public class DatabaseTester {
 
         //Frame methods
         data.showDatabaseGUI();
-        data.exportDatabase();
     }
 }

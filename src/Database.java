@@ -1,4 +1,10 @@
-import javax.swing.*;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.*;
@@ -11,7 +17,6 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
 
 /** Database class creates a tree that
@@ -25,7 +30,7 @@ import java.util.Scanner;
  */
 public class Database implements TreeSelectionListener, ActionListener {
 
-    private ArrayList<Course> database;
+    private final ArrayList<Course> database;
     private File data;
     private JTree tree;
     private Deck userDeck = null;
@@ -34,10 +39,10 @@ public class Database implements TreeSelectionListener, ActionListener {
     private JFrame frame;
     JLabel selectionText;
 
-    private static String ADD_COMMAND = "add";
-    private static String REMOVE_COMMAND = "remove";
-    private static String CLEAR_COMMAND = "clear";
-    private static String CONFIRM_COMMAND = "confirm";
+    private static final String ADD_COMMAND = "add";
+    private static final String REMOVE_COMMAND = "remove";
+    private static final String CLEAR_COMMAND = "clear";
+    private static final String CONFIRM_COMMAND = "confirm";
 
     /** 0-arg constructor implements ArrayList of
      *  Course objects from a text document.
@@ -175,37 +180,18 @@ public class Database implements TreeSelectionListener, ActionListener {
     }
 
     /** Converts JTree to database structure */
-    private ArrayList<Course> toDatabase() {
-        //creates temp array
-        ArrayList<Course> temp = new ArrayList<>();
+    private void updateDatabase() {
+        //clears database
+        database.clear();
         //navigates database
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) tree.getModel().getRoot();
         for (int x = 0; x < root.getChildCount(); x++) {
             //Course node -> Course object
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) root.getChildAt(x);
             Course c = (Course) node.getUserObject();
-            //navigate courses
-            for(int y = 0; y < node.getChildCount(); y++) {
-                //Deck node -> Deck object
-                node = (DefaultMutableTreeNode) node.getChildAt(y);
-                Deck d = (Deck) node.getUserObject();
-                //navigate flashcard
-                for (int z = 0; z < node.getChildCount(); z++) {
-                    //flashcard node -> flashcard object
-                    node = (DefaultMutableTreeNode) node.getChildAt(z);
-                    //adds flashcards to deck
-                    d.add((Flashcard) node.getUserObject());
-                }
-                //adds deck to course
-                c.add(d);
-            }
             //adds course to database
-            temp.add(c);
+            database.add(c);
         }
-        //reassigns database;
-        database = temp;
-
-        return database;
     }
 
     /** importData method instantiates database using data.txt
@@ -255,6 +241,8 @@ public class Database implements TreeSelectionListener, ActionListener {
                     return false;
                 }
             }
+            //closes scanner
+            input.close();
         } catch (FileNotFoundException e) {
             System.out.println("ERROR: Couldn't Read File");
             e.printStackTrace();
@@ -282,6 +270,7 @@ public class Database implements TreeSelectionListener, ActionListener {
                     }
                 }
             }
+            //closes fileReader
             output.close();
         }
         catch (IOException e) {
@@ -317,8 +306,6 @@ public class Database implements TreeSelectionListener, ActionListener {
         }
         return list.toArray();
     }
-
-
 
     /** Accessor method for database
      * @return ArrayList of Courses
@@ -436,7 +423,6 @@ public class Database implements TreeSelectionListener, ActionListener {
         String command = e.getActionCommand();
 
         if (ADD_COMMAND.equals(command)) {
-            toDatabase();
             //Add button clicked
             System.out.println("[Database] User Selected: Add Button");
         }
@@ -455,39 +441,19 @@ public class Database implements TreeSelectionListener, ActionListener {
                     model.removeNodeFromParent(node);
                 }
             }
-            // temp variables
-            Course c;
-            Deck d;
-
-            //retrieves pathway of objects
-            Object[] dataPath = databasePath(path);
-            // if: flashcard
-            if (dataPath.length == 3) {
-                //accesses course
-                c = database.get(database.indexOf((Course) dataPath[0]));
-                //accesses deck
-                d = c.get(c.indexOf((Deck) dataPath[1]));
-                //removes flashcard
-                d.remove(d.indexOf((Flashcard) dataPath[2]));
-            }
-            // else if: deck
-            else if (dataPath.length == 2) {
-                //accesses course
-                c = database.get(database.indexOf((Course) dataPath[0]));
-                //deletes deck
-                c.remove(c.indexOf((Deck) dataPath[1]));
-            }
-            // else if: course
-            else if (dataPath.length == 1) {
-                //removes course
-                c = database.remove(database.indexOf((Course) dataPath[0]));
-            }
+            updateDatabase();
             //outputs to terminal
             System.out.println("[Database] User Removed " + userSelected.toString());
 
             //unselects deck is removed
             if (userSelected == userDeck) {
                 userDeck = null;
+                selectionText.setText("Please Select a Deck");
+            }
+            for (Object obj : databasePath(path)) {
+                if (obj == userSelected) {
+                    selectionText.setText("Please Select a Deck");
+                }
             }
             //unselects current object
             userSelected = null;
@@ -500,13 +466,16 @@ public class Database implements TreeSelectionListener, ActionListener {
             DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
             root.removeAllChildren();
             model.reload();
-            wipe();
+            //wipes database
+            database.clear();
             System.out.println("[Database] User Selected: Clear Button");
         }
         else if (CONFIRM_COMMAND.equals(command)) {
             System.out.println("[Database] User Selected: Confirm Button");
-            frame.dispose();
+            updateDatabase();
+            exportDatabase();
             MainPanel.setDeck(userDeck);
+            frame.dispose();
         }
     }
 }
