@@ -5,6 +5,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
+import javax.swing.event.TreeModelEvent;
+import javax.swing.event.TreeModelListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.*;
@@ -12,11 +14,13 @@ import javax.swing.tree.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.EventObject;
 import java.util.Scanner;
 
 /** Database class creates a tree that
@@ -28,7 +32,7 @@ import java.util.Scanner;
  *  @author RMizelle
  *  @version V1.2
  */
-public class Database implements TreeSelectionListener, ActionListener {
+public class Database implements TreeSelectionListener, TreeModelListener, ActionListener {
 
     private final ArrayList<Course> database;
     private File data;
@@ -169,9 +173,11 @@ public class Database implements TreeSelectionListener, ActionListener {
                 }
             }
         }
-
+        DefaultTreeModel treeModel = new DefaultTreeModel(root);
         //instantiates JTree
-        tree = new JTree(root);
+        tree = new JTree(treeModel);
+        tree.setCellEditor(new DatabaseTreeCellEditor(tree, (DefaultTreeCellRenderer) tree.getCellRenderer()));
+        tree.setEditable(true);
         tree.setRootVisible(false);
         tree.addTreeSelectionListener(this);
         tree.getSelectionModel().setSelectionMode
@@ -477,5 +483,48 @@ public class Database implements TreeSelectionListener, ActionListener {
             MainPanel.setDeck(userDeck);
             frame.dispose();
         }
+    }
+
+    @Override
+    public void treeNodesChanged(TreeModelEvent e) {
+
+    }
+
+    @Override
+    public void treeNodesInserted(TreeModelEvent e) {
+
+    }
+
+    @Override
+    public void treeNodesRemoved(TreeModelEvent e) {
+
+    }
+
+    @Override
+    public void treeStructureChanged(TreeModelEvent e) {
+
+    }
+}
+
+/** DatabaseTreeCellEditor class modifies DefaultTreeCellEditor to block modification of flashcards
+ *  <p> Special thanks to Rob Spoor for isCellEditable() method basis </p>
+ *  @author RMizelle, Rob Spoor
+ */
+class DatabaseTreeCellEditor extends DefaultTreeCellEditor {
+
+    public DatabaseTreeCellEditor(JTree tree, DefaultTreeCellRenderer renderer) {
+        super(tree, renderer);
+    }
+    public boolean isCellEditable(EventObject event) {
+        if(!super.isCellEditable(event)) {
+            return false;
+        }
+        if(event != null && event.getSource() instanceof JTree && event instanceof MouseEvent) {
+            MouseEvent mouseEvent = (MouseEvent) event;
+            JTree tree = (JTree) event.getSource();
+            TreePath path = tree.getPathForLocation(mouseEvent.getX(), mouseEvent.getY());
+            return path.getPathCount() != 4;
+        }
+        return false;
     }
 }
