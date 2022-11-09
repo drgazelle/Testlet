@@ -455,6 +455,36 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
         if (ADD_COMMAND.equals(command)) {
             //Add button clicked
             System.out.println("[Database] User Selected: Add Button");
+
+            DefaultMutableTreeNode parentNode = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
+            DefaultMutableTreeNode newNode = null;
+
+            //generates new node
+            if (parentNode.getAllowsChildren()) {
+                int level = parentNode.getLevel();
+                //database
+                if (level == 0) {
+                    newNode = new DefaultMutableTreeNode(new Course("Course"));
+                }
+                //course
+                else if (level == 1) {
+                    newNode = new DefaultMutableTreeNode(new Deck("Deck"));
+                    System.out.print("Deck");
+                }
+                //deck
+                else if (level == 2) {
+                    newNode = new DefaultMutableTreeNode(new Flashcard("Term", "Def"), false);
+                    System.out.print("Flashcard");
+                }
+                System.out.println("[Database] Added new " + newNode.getUserObject().toString() + " to " + parentNode.getUserObject().toString());
+
+                //inserts node into model
+                DefaultTreeModel treeModel = (DefaultTreeModel) tree.getModel();
+                treeModel.insertNodeInto(newNode, parentNode, parentNode.getChildCount());
+            }
+            else {
+                System.out.println("[Database] User Selection is a Child Node");
+            }
         }
         else if (REMOVE_COMMAND.equals(command)) {
             //Remove button clicked
@@ -479,15 +509,6 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
             if (userSelected == userDeck) {
                 userDeck = null;
                 selectionText.setText("Please Select a Deck");
-            }
-            for (Object obj : databasePath(path)) {
-                if (obj == userDeck) {
-                    userDeck = null;
-                    selectionText.setText("Please Select a Deck");
-                }
-                if (obj == userSelected) {
-                    selectionText.setText("Please Select a Deck");
-                }
             }
             //unselects current object
             userSelected = null;
@@ -543,6 +564,8 @@ class DatabaseTreeCellEditor extends DefaultTreeCellEditor {
     public DatabaseTreeCellEditor(JTree tree, DefaultTreeCellRenderer renderer) {
         super(tree, renderer);
     }
+
+    @Override
     public boolean isCellEditable(EventObject event) {
         if(!super.isCellEditable(event)) {
             return false;
@@ -555,4 +578,7 @@ class DatabaseTreeCellEditor extends DefaultTreeCellEditor {
         }
         return false;
     }
+
+
+
 }
