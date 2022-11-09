@@ -147,7 +147,9 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
         frame.setVisible(true);
     }
 
-    /** Converts database structure to JTree.
+    /** Converts database structure to JTree,
+     * adds tree listeners
+     *
      * @return JTree representation of database
      */
     public JTree toTree() {
@@ -174,6 +176,7 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
             }
         }
         DefaultTreeModel treeModel = new DefaultTreeModel(root);
+        treeModel.addTreeModelListener(this);
         //instantiates JTree
         tree = new JTree(treeModel);
         tree.setCellEditor(new DatabaseTreeCellEditor(tree, (DefaultTreeCellRenderer) tree.getCellRenderer()));
@@ -192,10 +195,27 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
         //navigates database
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) tree.getModel().getRoot();
         for (int x = 0; x < root.getChildCount(); x++) {
-            //Course node -> Course object
-            DefaultMutableTreeNode node = (DefaultMutableTreeNode) root.getChildAt(x);
-            Course c = (Course) node.getUserObject();
+            //Tree node -> Course object
+            DefaultMutableTreeNode nodeC = (DefaultMutableTreeNode) root.getChildAt(x);
+            Course c = new Course(nodeC.getUserObject().toString());
+            //navigates course children
+            for (int y = 0; y < nodeC.getChildCount(); y++) {
+                //Tree node -> Deck object
+                DefaultMutableTreeNode nodeD = (DefaultMutableTreeNode) nodeC.getChildAt(y);
+                Deck d = new Deck(nodeD.getUserObject().toString());
+                //navigates Deck children
+                for(int z = 0; z < nodeD.getChildCount(); z++) {
+                    //Tree node -> Flashcard object
+                    DefaultMutableTreeNode nodeF = (DefaultMutableTreeNode) nodeD.getChildAt(z);
+                    Flashcard f = (Flashcard) (nodeF.getUserObject());
+                    nodeF.setUserObject(f);
+                    d.add(f);
+                }
+                nodeD.setUserObject(d);
+                c.add(d);
+            }
             //adds course to database
+            nodeC.setUserObject(c);
             database.add(c);
         }
     }
@@ -303,13 +323,17 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
 
     ////////////////////  Database Methods ////////////////////
 
-    /** Converts TreePath to corresponding Objects */
+    /** Converts TreePath to corresponding Objects
+     * @return Object[] of TreePath excluding root (i.e. [Course, Deck, Flashcard])
+     */
     public Object[] databasePath(TreePath path) {
         ArrayList<Object> list = new ArrayList<>();
+        //works from child to root
         while (path.getParentPath() != null) {
             list.add(0, ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject());
             path = path.getParentPath();
         }
+        //converts ArrayList to Array
         return list.toArray();
     }
 
@@ -457,6 +481,10 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
                 selectionText.setText("Please Select a Deck");
             }
             for (Object obj : databasePath(path)) {
+                if (obj == userDeck) {
+                    userDeck = null;
+                    selectionText.setText("Please Select a Deck");
+                }
                 if (obj == userSelected) {
                     selectionText.setText("Please Select a Deck");
                 }
@@ -487,7 +515,7 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
 
     @Override
     public void treeNodesChanged(TreeModelEvent e) {
-
+        updateDatabase();
     }
 
     @Override
