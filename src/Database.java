@@ -1,10 +1,5 @@
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTree;
+import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import javax.swing.event.TreeSelectionEvent;
@@ -89,7 +84,7 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
     /** Displays a JFrame containing the JTree representation of Database */
     public void showDatabaseGUI() {
         JFrame.setDefaultLookAndFeelDecorated(true);
-        frame = new JFrame();
+        frame = new JFrame("Database");
         //content panel
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBackground(Color.LIGHT_GRAY);
@@ -139,7 +134,7 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
 
         //sets frame attributes
         frame.setContentPane(panel);
-        frame.setIconImage(new ImageIcon("resources/icons/deck.png").getImage());
+        frame.setIconImage(new ImageIcon("resources/icons/database.png").getImage());
         frame.setSize(640, 380);
         frame.setLocation(50, 50);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -179,6 +174,7 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
         treeModel.addTreeModelListener(this);
         //instantiates JTree
         tree = new JTree(treeModel);
+        tree.setCellRenderer(new DatabaseTreeCellRender());
         tree.setCellEditor(new DatabaseTreeCellEditor(tree, (DefaultTreeCellRenderer) tree.getCellRenderer()));
         tree.setEditable(true);
         tree.setRootVisible(false);
@@ -592,4 +588,58 @@ class DatabaseTreeCellEditor extends DefaultTreeCellEditor {
 
 
 
+}
+
+/** DatabaseTreeCellRender modifies Default TreeCellEditor to use custom icons
+ * @author RMizelle
+ */
+class DatabaseTreeCellRender extends DefaultTreeCellRenderer {
+
+    private Border border = BorderFactory.createEmptyBorder ( 2, 0, 2, 0);
+
+    @Override
+    public Component getTreeCellRendererComponent(
+            JTree tree,
+            Object value,
+            boolean sel,
+            boolean expanded,
+            boolean leaf,
+            int row,
+            boolean hasFocus) {
+
+        super.getTreeCellRendererComponent(
+                tree, value, sel,
+                expanded, leaf, row,
+                hasFocus);
+
+        //sets user object
+
+        Object userObject = ((DefaultMutableTreeNode) value).getUserObject();
+        ImageIcon imageIcon;
+        int dimensions = 36;
+        //course node
+        if (userObject instanceof Course) {
+            imageIcon = new ImageIcon(new ImageIcon("resources/icons/course.png").getImage().getScaledInstance(dimensions, dimensions, Image.SCALE_DEFAULT));
+            this.setIcon(imageIcon);
+        }
+        //closed deck node
+        else if (userObject instanceof Deck && !expanded) {
+            imageIcon = new ImageIcon(new ImageIcon("resources/icons/deck.png").getImage().getScaledInstance(dimensions, dimensions, Image.SCALE_DEFAULT));
+            this.setIcon(imageIcon);
+        }
+        //open deck node
+        else if (userObject instanceof Deck) {
+            imageIcon = new ImageIcon(new ImageIcon("resources/icons/deckOpen.png").getImage().getScaledInstance(dimensions, dimensions, Image.SCALE_DEFAULT));
+            this.setIcon(imageIcon);
+        }
+        //flashcard node
+        else if (userObject instanceof Flashcard) {
+            imageIcon = new ImageIcon(new ImageIcon("resources/icons/flashcard.png").getImage().getScaledInstance(dimensions, dimensions, Image.SCALE_DEFAULT));
+            this.setIcon(imageIcon);
+        }
+        //sets border
+        this.setBorder(border);
+
+        return this;
+    }
 }
