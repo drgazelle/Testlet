@@ -456,8 +456,15 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
             //Add button clicked
             System.out.println("[Database] User Selected: Add Button");
 
-            DefaultMutableTreeNode parentNode = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
+            DefaultMutableTreeNode parentNode = null;
             DefaultMutableTreeNode newNode = null;
+
+            if (tree.getLastSelectedPathComponent() == null) {
+                parentNode = (DefaultMutableTreeNode) tree.getModel().getRoot();
+            }
+            else {
+                parentNode = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
+            }
 
             //generates new node
             if (parentNode.getAllowsChildren()) {
@@ -501,17 +508,21 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
                     model.removeNodeFromParent(node);
                 }
             }
-            updateDatabase();
-            //outputs to terminal
-            System.out.println("[Database] User Removed " + userSelected.toString());
+            if (userSelected != null) {
+                //outputs to terminal
+                System.out.println("[Database] User Removed " + userSelected.toString());
 
-            //unselects deck is removed
-            if (userSelected == userDeck) {
-                userDeck = null;
-                selectionText.setText("Please Select a Deck");
+                //unselects deck is removed
+                if (userSelected == userDeck) {
+                    userDeck = null;
+                    selectionText.setText("Please Select a Deck");
+                }
+                //unselects current object
+                userSelected = null;
             }
-            //unselects current object
-            userSelected = null;
+            else {
+                System.out.println("[Database] No Objected Selected to be Removed");
+            }
         }
         else if (CLEAR_COMMAND.equals(command)) {
             //Clear button clicked.
