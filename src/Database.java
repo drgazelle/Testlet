@@ -1,9 +1,6 @@
 import javax.swing.*;
 import javax.swing.border.Border;
-import javax.swing.event.TreeModelEvent;
-import javax.swing.event.TreeModelListener;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
+import javax.swing.event.*;
 import javax.swing.tree.*;
 
 import java.awt.*;
@@ -28,6 +25,9 @@ import java.util.Scanner;
  *  @version V1.2
  */
 public class Database implements TreeSelectionListener, TreeModelListener, ActionListener {
+
+    private final Font font = new Font("atkinson hyperlegible", Font.PLAIN, 18);
+    private final Color menuColor = new Color(135, 206, 235);
 
     private final ArrayList<Course> database;
     private File data;
@@ -79,7 +79,7 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
         }
     }
 
-    //////////////////// Data Methods ////////////////////
+    //////////////////// Display Methods ////////////////////
 
     /** Displays a JFrame containing the JTree representation of Database */
     public void showDatabaseGUI() {
@@ -87,38 +87,43 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
         frame = new JFrame("Database");
         //content panel
         JPanel panel = new JPanel(new BorderLayout());
-        panel.setBackground(Color.LIGHT_GRAY);
+        panel.setBackground(menuColor);
 
         //Sets Decks selection text
         selectionText = new JLabel("Please Select a Deck");
+        selectionText.setFont(font);
 
         //JTree UI
         JScrollPane treeView = new JScrollPane(toTree());
 
         //JTree Commands panel
         JPanel options = new JPanel(new GridLayout(0,5));
-        options.setBackground(Color.lightGray);
+        options.setBackground(menuColor);
         //Allows Users to add Courses or Decks
         JButton confirmButton = new JButton("Confirm");
         confirmButton.setBackground(new Color(154,205,50));
         confirmButton.setOpaque(true);
         confirmButton.setActionCommand(CONFIRM_COMMAND);
         confirmButton.addActionListener(this);
+        confirmButton.setFont(font);
 
         //Allows Users to add Courses or Decks
         JButton addButton = new JButton("Add");
         addButton.setActionCommand(ADD_COMMAND);
         addButton.addActionListener(this);
+        addButton.setFont(font);
 
         //Allows Users to remove Courses or Decks
         JButton removeButton = new JButton("Remove");
         removeButton.setActionCommand(REMOVE_COMMAND);
         removeButton.addActionListener(this);
+        removeButton.setFont(font);
 
         //Allows Users to clear Database
         JButton clearButton = new JButton("Clear");
         clearButton.setActionCommand(CLEAR_COMMAND);
         clearButton.addActionListener(this);
+        clearButton.setFont(font);
 
         //adds to options panel
         options.add(addButton);
@@ -165,7 +170,7 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
                 course.add(deck);
                 for(Flashcard f : d.get()){
                     //adds flashcard TreeNode to root
-                    flashcard = new DefaultMutableTreeNode(f);
+                    flashcard = new DefaultMutableTreeNode(f, false);
                     deck.add(flashcard);
                 }
             }
@@ -178,9 +183,11 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
         tree.setCellEditor(new DatabaseTreeCellEditor(tree, (DefaultTreeCellRenderer) tree.getCellRenderer()));
         tree.setEditable(true);
         tree.setRootVisible(false);
+        tree.setFont(font);
         tree.addTreeSelectionListener(this);
         tree.getSelectionModel().setSelectionMode
                 (TreeSelectionModel.SINGLE_TREE_SELECTION);
+
         return tree;
     }
 
@@ -216,6 +223,8 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
         }
     }
 
+    //////////////////// Data Methods ////////////////////
+
     /** importData method instantiates database using data.txt
      *  @return true if successfully instantiated database, false if error
      */
@@ -241,14 +250,8 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
                 }
                 //else if data is a deck
                 else if (line.contains("****")) {
-                    //extrapolates name and description
-                    String[] parts = line.substring(4).split(",");
-                    if (parts.length == 1) {
-                        database.get(cIndex).add(new Deck(parts[0]));
-                    }
-                    else {
-                        database.get(cIndex).add(new Deck(parts[0], parts[1]));
-                    }
+                    //extrapolates name adds new deck
+                        database.get(cIndex).add(new Deck(line.substring(4).trim()));
                     //increments index
                     dIndex++;
                 }
@@ -285,7 +288,7 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
                 output.write("******" + c.toString() + "\n");
                 //loops through decks
                 for (Deck d : c.get()) {
-                    output.write("****" + d.getName() + "," + d.getDescription() + "\n");
+                    output.write("****" + d.getName() + "\n");
                     //loops through flashcard
                     for(Flashcard f: d.get()) {
                         output.write("**" + f.getTerm() + "," + f.getDef() + "\n");
@@ -452,7 +455,7 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
             //Add button clicked
             System.out.println("[Database] User Selected: Add Button");
 
-            DefaultMutableTreeNode parentNode = null;
+            DefaultMutableTreeNode parentNode;
             DefaultMutableTreeNode newNode = null;
 
             if (tree.getLastSelectedPathComponent() == null) {
@@ -522,14 +525,19 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
         }
         else if (CLEAR_COMMAND.equals(command)) {
             //Clear button clicked.
-
-            //wipes JTree
-            DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
-            DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
-            root.removeAllChildren();
-            model.reload();
-            //wipes database
-            database.clear();
+            int n = JOptionPane.showConfirmDialog(frame,
+                    "This will delete ALL of your data, do you want to proceed?",
+                    "WARNING",
+                    JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+            if (n == 0) {
+                //wipes JTree
+                DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
+                DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
+                root.removeAllChildren();
+                model.reload();
+                //wipes database
+                database.clear();
+            }
             System.out.println("[Database] User Selected: Clear Button");
         }
         else if (CONFIRM_COMMAND.equals(command)) {
@@ -541,9 +549,11 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
         }
     }
 
+    /** updates database everytime a node is changed */
     @Override
     public void treeNodesChanged(TreeModelEvent e) {
         updateDatabase();
+        tree.updateUI();
     }
 
     @Override
@@ -585,9 +595,6 @@ class DatabaseTreeCellEditor extends DefaultTreeCellEditor {
         }
         return false;
     }
-
-
-
 }
 
 /** DatabaseTreeCellRender modifies Default TreeCellEditor to use custom icons
@@ -595,8 +602,9 @@ class DatabaseTreeCellEditor extends DefaultTreeCellEditor {
  */
 class DatabaseTreeCellRender extends DefaultTreeCellRenderer {
 
-    private Border border = BorderFactory.createEmptyBorder ( 2, 0, 2, 0);
+    private Border border = BorderFactory.createEmptyBorder ( 2, 2, 2, 2);
 
+    /** Adds icons and border */
     @Override
     public Component getTreeCellRendererComponent(
             JTree tree,
@@ -612,28 +620,28 @@ class DatabaseTreeCellRender extends DefaultTreeCellRenderer {
                 expanded, leaf, row,
                 hasFocus);
 
-        //sets user object
+        int level = ((DefaultMutableTreeNode) value).getLevel();
 
-        Object userObject = ((DefaultMutableTreeNode) value).getUserObject();
         ImageIcon imageIcon;
-        int dimensions = 36;
+        //Dimensions of Icons
+        final int dimensions = 36;
         //course node
-        if (userObject instanceof Course) {
+        if (level == 1) {
             imageIcon = new ImageIcon(new ImageIcon("resources/icons/course.png").getImage().getScaledInstance(dimensions, dimensions, Image.SCALE_DEFAULT));
             this.setIcon(imageIcon);
         }
         //closed deck node
-        else if (userObject instanceof Deck && !expanded) {
+        else if (level == 2 && !expanded) {
             imageIcon = new ImageIcon(new ImageIcon("resources/icons/deck.png").getImage().getScaledInstance(dimensions, dimensions, Image.SCALE_DEFAULT));
             this.setIcon(imageIcon);
         }
         //open deck node
-        else if (userObject instanceof Deck) {
+        else if (level == 2) {
             imageIcon = new ImageIcon(new ImageIcon("resources/icons/deckOpen.png").getImage().getScaledInstance(dimensions, dimensions, Image.SCALE_DEFAULT));
             this.setIcon(imageIcon);
         }
         //flashcard node
-        else if (userObject instanceof Flashcard) {
+        else if (level == 3) {
             imageIcon = new ImageIcon(new ImageIcon("resources/icons/flashcard.png").getImage().getScaledInstance(dimensions, dimensions, Image.SCALE_DEFAULT));
             this.setIcon(imageIcon);
         }
