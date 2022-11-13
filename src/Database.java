@@ -4,9 +4,7 @@ import javax.swing.event.*;
 import javax.swing.tree.*;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -132,10 +130,17 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
         options.add(new JLabel(""));
         options.add(confirmButton);
 
+        //text-fields Testing
+        JTextField term = new JTextField(20);
+
+        JSplitPane inputs = new JSplitPane(JSplitPane.VERTICAL_SPLIT, term, options);
+        inputs.setContinuousLayout(true);
+
         //adds panels to JFrame
-        panel.add(selectionText, BorderLayout.BEFORE_FIRST_LINE);
+        panel.add(selectionText, BorderLayout.NORTH);
         panel.add(treeView, BorderLayout.CENTER);
-        panel.add(options, BorderLayout.AFTER_LAST_LINE);
+        panel.add(inputs, BorderLayout.SOUTH);
+
 
         //sets frame attributes
         frame.setContentPane(panel);
@@ -152,7 +157,7 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
      *
      * @return JTree representation of database
      */
-    public JTree toTree() {
+    private JTree toTree() {
         //JTree variables
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Database");
         DefaultMutableTreeNode course;
@@ -181,6 +186,7 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
         tree = new JTree(treeModel);
         tree.setCellRenderer(new DatabaseTreeCellRender());
         tree.setCellEditor(new DatabaseTreeCellEditor(tree, (DefaultTreeCellRenderer) tree.getCellRenderer()));
+        tree.addMouseListener(getMouseListener(tree));
         tree.setEditable(true);
         tree.setRootVisible(false);
         tree.setFont(font);
@@ -487,6 +493,7 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
                 //inserts node into model
                 DefaultTreeModel treeModel = (DefaultTreeModel) tree.getModel();
                 treeModel.insertNodeInto(newNode, parentNode, parentNode.getChildCount());
+                treeModel.reload(parentNode);
             }
             else {
                 System.out.println("[Database] User Selection is a Child Node");
@@ -558,7 +565,8 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
 
     @Override
     public void treeNodesInserted(TreeModelEvent e) {
-
+        updateDatabase();
+        tree.updateUI();
     }
 
     @Override
@@ -570,6 +578,45 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
     public void treeStructureChanged(TreeModelEvent e) {
 
     }
+
+    /** MouseListener that enables tree to be deselected when outside of rows
+     *
+     * <p> Special thanks to Ioan M for code basis </p>
+     * @param tree to be listened to
+     * @return modified mouse listener
+     */
+    private static MouseListener getMouseListener(final JTree tree) {
+        return new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if(tree.getRowForLocation(e.getX(),e.getY()) == -1) {
+                    System.out.println("[Database] User Clicked outside of JTree");
+                    tree.clearSelection();
+                }
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        };
+    }
+
 }
 
 /** DatabaseTreeCellEditor class modifies DefaultTreeCellEditor to block modification of flashcards
