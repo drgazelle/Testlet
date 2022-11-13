@@ -7,18 +7,7 @@ import java.util.ArrayList;
  */
 public class Deck {
     private ArrayList<Flashcard> deck;
-    private String name, description;
-
-    /** 2-arg constructor instantiates Flashcard
-     * ArrayList and defines both name and description.
-     * @param name Deck name
-     * @param description Deck description
-     */
-    public Deck(String name, String description) {
-        deck = new ArrayList<Flashcard>();
-        this.name = name;
-        this.description = description;
-    }
+    private String name;
 
     /** 1-arg constructor instantiates Flashcard
      * ArrayList and defines name.
@@ -27,7 +16,6 @@ public class Deck {
     public Deck(String name) {
         deck = new ArrayList<Flashcard>();
         this.name = name;
-        description = "";
     }
 
     /**
@@ -37,7 +25,6 @@ public class Deck {
     public Deck() {
         deck = new ArrayList<Flashcard>();
         name = "";
-        description = "";
     }
 
     //////////////////// Name Methods ////////////////////
@@ -50,17 +37,6 @@ public class Deck {
     /** Accessor method for name */
     public String getName() {
         return name;
-    }
-
-    //////////////////// Description Methods ////////////////////
-
-    /** Modifies deck description */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-    /** Accessor method for description */
-    public String getDescription() {
-        return description;
     }
 
     //////////////////// Deck Methods ////////////////////
