@@ -60,11 +60,14 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
     private int flashcardShownInt = 0;
     private Flashcard flashcard1;
 
+    //for learn
+    private static MyQueue<Flashcard> learnQueue = new MyQueue();
+
     //images
     //private ImageIcon startScreen  = new ImageIcon("images/backgrounds/startScreen.png");
 
     //array of buttons
-    private Button[] buttons = new Button[13];
+    private Button[] buttons = new Button[17];
 
     //each int represents a different button.
     private static final int HOMEBUTTON = 0;
@@ -81,6 +84,10 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
     private static final int FLASHCARDFLIP = 10;
     private static final int PREVIOUSCARD = 11;
     private static final int NEXTCARD = 12;
+    private static final int LEARNA = 13;
+    private static final int LEARNB = 14;
+    private static final int LEARNC = 15;
+    private static final int LEARND = 16;
 
     //screen modes
     private static final int HOMESCREEN = 0;
@@ -201,6 +208,26 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
         ImageIcon nextCardButton2 = new ImageIcon("resources/images/nextflashcard2.png");
         buttons[NEXTCARD] = new Button(r16, "nextCard", nextCardButton1, nextCardButton2);
 
+        Shape r17 = new Rectangle(205, 350, 182, 150);
+        ImageIcon learnA1 = new ImageIcon("resources/images/learnA1.png");
+        ImageIcon learnA2 = new ImageIcon("resources/images/learnA2.png"); //change image
+        buttons[LEARNA] = new Button(r17, "learnA", learnA1, learnA2);
+
+        Shape r18 = new Rectangle(390, 350, 182, 150);
+        ImageIcon learnB1 = new ImageIcon("resources/images/learnA1.png"); //change images
+        ImageIcon learnB2 = new ImageIcon("resources/images/learnA2.png");
+        buttons[LEARNB] = new Button(r18, "learnB", learnB1, learnB2);
+
+        Shape r19 = new Rectangle(575, 350, 182, 150);
+        ImageIcon learnC1 = new ImageIcon("resources/images/learnA1.png"); //change images
+        ImageIcon learnC2 = new ImageIcon("resources/images/learnA2.png");
+        buttons[LEARNC] = new Button(r19, "learnC", learnC1, learnC2);
+
+        Shape r20 = new Rectangle(760, 350, 182, 150);
+        ImageIcon learnD1 = new ImageIcon("resources/images/learnA1.png"); //change images
+        ImageIcon learnD2 = new ImageIcon("resources/images/learnA2.png");
+        buttons[LEARND] = new Button(r20, "learnD", learnD1, learnD2);
+
         //sets the screen mode
         screenMode = HOMESCREEN;
     }
@@ -308,6 +335,18 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
 
             if(learnDisplay == true)
             {
+                buttons[GRAVITYSTARTGAME].setEnabled(false);
+                buttons[GRAVITYSTARTGAME].setVisible(false);
+
+                buttons[LEARNA].drawButton(g);
+                buttons[LEARNA].setEnabled(true);
+                buttons[LEARNB].drawButton(g);
+                buttons[LEARNB].setEnabled(true);
+                buttons[LEARNC].drawButton(g);
+                buttons[LEARNC].setEnabled(true);
+                buttons[LEARND].drawButton(g);
+                buttons[LEARND].setEnabled(true);
+
                 if(deck == null)
                 {
                     g.setColor(Color.RED);
@@ -319,6 +358,7 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                     g.setColor(Color.BLACK);
                     g.setFont(new Font("Helvetica", Font.PLAIN, 30));
                    // g.drawString(deck.get((int) (Math.random() * (deck.size()))).getDef(), 300, 200);
+                    g.drawString(learnQueue.peek().getTerm(), 490, 260);
                 }
             }
 
@@ -398,6 +438,31 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
         return true;
     }
 
+    public static void makeLearnQueue()
+    {
+        Deck copyOfDeck = new Deck();
+        for(int i = 0; i<deck.size(); i++)
+        {
+            copyOfDeck.add(deck.get(i));
+        }
+
+        int firstIndex = 0;
+        int secondIndex = 0;
+        Flashcard temp;
+
+       for(int j = 0; j<250; j++)
+       {
+           firstIndex = (int)(Math.random()*(copyOfDeck.size()));
+           secondIndex = (int)(Math.random()*(copyOfDeck.size()));
+           temp = copyOfDeck.get(firstIndex);
+           copyOfDeck.set(firstIndex, copyOfDeck.get(secondIndex));
+           copyOfDeck.set(secondIndex, temp);
+       }
+
+       for(int k = 0; k<copyOfDeck.size(); k++)
+        learnQueue.add(copyOfDeck.get(k));
+    }
+
     /**
      * Controls actions for when the mouse is clicked
      * @param e the event to be processed
@@ -472,6 +537,8 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                        gravityStartDisplay = false;
                        flashcardsDisplay = false;
                        matchingDisplay = false;
+
+                       makeLearnQueue();
                    }
                    if (b.getTitle().equals("test"))
                    {
