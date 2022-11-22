@@ -24,18 +24,22 @@ import java.util.Scanner;
  */
 public class Database implements TreeSelectionListener, TreeModelListener, ActionListener {
 
+    //UI Modifiers
     private final Font font = new Font("atkinson hyperlegible", Font.PLAIN, 18);
     private final Color menuColor = new Color(135, 206, 235);
+    private JFrame frame;
+    JLabel selectionText;
+    JTextField nameEditor;
+    JTextField defEditor;
 
+    //Database variables
     private final ArrayList<Course> database;
     private File data;
     private JTree tree;
     private Deck userDeck = null;
     private Object userSelected;
 
-    private JFrame frame;
-    JLabel selectionText;
-
+    //Command Variables
     private static final String ADD_COMMAND = "add";
     private static final String REMOVE_COMMAND = "remove";
     private static final String CLEAR_COMMAND = "clear";
@@ -131,9 +135,20 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
         options.add(confirmButton);
 
         //text-fields Testing
-        JTextField term = new JTextField(20);
+        JPanel editPanel = new JPanel(new GridLayout(0,3));
 
-        JSplitPane inputs = new JSplitPane(JSplitPane.VERTICAL_SPLIT, term, options);
+        nameEditor = new JTextField(20);
+        nameEditor.addActionListener(this);
+
+        defEditor = new JTextField(20);
+        defEditor.addActionListener(this);
+
+        editPanel.add(new JLabel("Name"));
+        editPanel.add(nameEditor);
+        editPanel.add(defEditor);
+
+
+        JSplitPane inputs = new JSplitPane(JSplitPane.VERTICAL_SPLIT, editPanel, options);
         inputs.setContinuousLayout(true);
 
         //adds panels to JFrame
@@ -151,6 +166,7 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
         frame.setResizable(false);
         frame.setVisible(true);
     }
+
 
     /** Converts database structure to JTree,
      * adds tree listeners
@@ -442,6 +458,7 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
         userSelected = nodeInfo;
         DefaultMutableTreeNode parent = (DefaultMutableTreeNode) node.getParent();
         System.out.println("[Database] User Selected: " + nodeInfo.toString());
+        nameEditor.setText(nodeInfo.toString());
         //Checks if parent is Deck
         if (parent.getUserObject() instanceof Deck) {
             nodeInfo = parent.getUserObject();
@@ -450,6 +467,10 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
         if (nodeInfo instanceof Deck) {
             userDeck = (Deck) nodeInfo;
             selectionText.setText("Selected Deck: " + userDeck.toString());
+        }
+        //checks if node is Flashcard
+        if (userSelected instanceof Flashcard) {
+            defEditor.setText(((Flashcard) userSelected).getDef());
         }
     }
 
@@ -554,6 +575,21 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
             MainPanel.setDeck(userDeck);
             frame.dispose();
         }
+
+        //Text-field editors
+        String name = nameEditor.getText();
+        String def = defEditor.getText();
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
+        if (userSelected instanceof Flashcard) {
+            Flashcard card = (Flashcard) node.getUserObject();
+            card.setTerm(name);
+            card.setDef(def);
+            node.setUserObject(card);
+        }
+        else if (userSelected != null) {
+            node.setUserObject(name);
+        }
+        updateDatabase();
     }
 
     /** updates database everytime a node is changed */
