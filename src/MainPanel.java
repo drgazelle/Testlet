@@ -73,6 +73,17 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
     private String C;
     private String D;
 
+    private boolean showIncorrect1 = false;
+    private boolean showIncorrect2 = false;
+    private boolean showIncorrect3 = false;
+    private boolean showIncorrect4 = false;
+    private boolean showCorrect1 = false;
+    private boolean showCorrect2 = false;
+    private boolean showCorrect3 = false;
+    private boolean showCorrect4 = false;
+
+    private int currentTimer = -1;
+
     //images
     //private ImageIcon startScreen  = new ImageIcon("images/backgrounds/startScreen.png");
 
@@ -357,13 +368,79 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                 buttons[LEARND].drawButton(g);
                 buttons[LEARND].setEnabled(true);
 
+                if(showIncorrect1 == true) {
+                    //draw red colored button
+                }
+                if(showIncorrect2 == true) {
+                    //draw red colored button
+                }
+                if(showIncorrect3 == true) {
+                    //draw red colored button
+                }
+                if(showIncorrect4 == true) {
+                    //draw red colored button
+                }
+                if(showCorrect1 == true) {
+                    //draw green colored button
+                }
+                if(showCorrect2 == true) {
+                    //draw green colored button
+                }
+                if(showCorrect3 == true) {
+                    //draw green colored button
+                }
+                if(showCorrect4 == true) {
+                    //draw green colored button
+                }
+
+                if(frameGravity == currentTimer + 65)
+                {
+                    currentTimer = -1;
+                    showIncorrect1 = false;
+                    showIncorrect2 = false;
+                    showIncorrect3 = false;
+                    showIncorrect4 = false;
+                    showCorrect1 = false;
+                    showCorrect2 = false;
+                    showCorrect3 = false;
+                    showCorrect4 = false;
+                    if(!learnQueue.isEmpty()) {
+                        randomWrongAnswer1 = (int) (Math.random() * (deck.size()));
+                        while (deck.get(randomWrongAnswer1).getTerm().trim().equals(learnQueue.peek().getTerm().trim()))
+                            randomWrongAnswer1 = (int) (Math.random() * (deck.size()));
+
+                        randomWrongAnswer2 = (int) (Math.random() * (deck.size()));
+                        while (deck.get(randomWrongAnswer2).getTerm().trim().equals(deck.get(randomWrongAnswer1).getTerm().trim()) || deck.get(randomWrongAnswer2).getTerm().trim().equals(learnQueue.peek().getTerm().trim()))
+                            randomWrongAnswer2 = (int) (Math.random() * (deck.size()));
+
+                        randomWrongAnswer3 = (int) (Math.random() * (deck.size()));
+                        while (deck.get(randomWrongAnswer3).getTerm().trim().equals(deck.get(randomWrongAnswer1).getTerm().trim()) || deck.get(randomWrongAnswer3).getTerm().trim().equals(deck.get(randomWrongAnswer2).getTerm().trim()) || deck.get(randomWrongAnswer3).getTerm().trim().equals(learnQueue.peek().getTerm().trim()))
+                            randomWrongAnswer3 = (int) (Math.random() * (deck.size()));
+
+                        randomWrongAnswer4 = (int) (Math.random() * (deck.size()));
+                        while (deck.get(randomWrongAnswer4).getTerm().trim().equals(deck.get(randomWrongAnswer1).getTerm().trim()) || deck.get(randomWrongAnswer4).getTerm().trim().equals(deck.get(randomWrongAnswer2).getTerm().trim()) || deck.get(randomWrongAnswer4).getTerm().trim().equals(deck.get(randomWrongAnswer3).getTerm().trim()) || deck.get(randomWrongAnswer4).getTerm().trim().equals(learnQueue.peek().getTerm().trim()))
+                            randomWrongAnswer4 = (int) (Math.random() * (deck.size()));
+                    }
+                    learnQueue.remove();
+                    learnCardNumber++;
+                }
+
+                if(learnQueue.isEmpty())
+                {
+                    g.setColor(Color.WHITE);
+                    g.fillRect(200,50, xSIZE-200,ySIZE-50);
+                    g.setColor(Color.MAGENTA);
+                    g.setFont(new Font("Helvetica", Font.PLAIN, 30));
+                    g.drawString("Congratulations! You learned this deck!", 400, 260);
+                }
+
                 if(deck == null)
                 {
                     g.setColor(Color.RED);
                     g.setFont(new Font("Helvetica", Font.PLAIN, 30));
                     g.drawString("Select a deck!", 490, 260);
                 }
-                else
+                else if(!learnQueue.isEmpty())
                 {
                     g.setColor(Color.BLACK);
                     g.setFont(new Font("SansSerif", Font.BOLD, 20));
@@ -380,7 +457,6 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                     g.drawString(learnQueue.peek().getDef(), 215, 150);
                     g.setFont(new Font("SansSerif", Font.BOLD, 20));
                     g.drawString("Choose matching term", 212, 320);
-
 
                     if(randomAnswers == 1)
                     {
@@ -610,14 +686,19 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                            randomAnswers = (int) (Math.random() * (4)) + 1;
 
                            randomWrongAnswer1 = (int) (Math.random() * (deck.size()));
-                           while (deck.get(randomWrongAnswer1).getTerm().equals(learnQueue.peek().getTerm())) //NEED TO EDIT HERE
-                               //randomWrongAnswer2 = (int)(Math.random()*(deck.size()));
-                               while (deck.get(randomWrongAnswer2).getTerm().equals(deck.get(randomWrongAnswer1).getTerm()) || deck.get(randomWrongAnswer2).getTerm().equals(learnQueue.peek().getTerm()))
+                           while (deck.get(randomWrongAnswer1).getTerm().trim().equals(learnQueue.peek().getTerm().trim()))
+                               randomWrongAnswer1 = (int)(Math.random()*(deck.size()));
+
+                               randomWrongAnswer2 = (int) (Math.random() * (deck.size()));
+                               while (deck.get(randomWrongAnswer2).getTerm().trim().equals(deck.get(randomWrongAnswer1).getTerm().trim()) || deck.get(randomWrongAnswer2).getTerm().trim().equals(learnQueue.peek().getTerm().trim()))
                                    randomWrongAnswer2 = (int) (Math.random() * (deck.size()));
-                           while (deck.get(randomWrongAnswer3).getTerm().equals(deck.get(randomWrongAnswer1).getTerm()) || deck.get(randomWrongAnswer3).getTerm().equals(deck.get(randomWrongAnswer2).getTerm()) || deck.get(randomWrongAnswer3).getTerm().equals(learnQueue.peek().getTerm()))
+
+                           randomWrongAnswer3 = (int) (Math.random() * (deck.size()));
+                           while (deck.get(randomWrongAnswer3).getTerm().trim().equals(deck.get(randomWrongAnswer1).getTerm().trim()) || deck.get(randomWrongAnswer3).getTerm().trim().equals(deck.get(randomWrongAnswer2).getTerm().trim()) || deck.get(randomWrongAnswer3).getTerm().trim().equals(learnQueue.peek().getTerm().trim()))
                                randomWrongAnswer3 = (int) (Math.random() * (deck.size()));
+
                            randomWrongAnswer4 = (int) (Math.random() * (deck.size()));
-                           while (deck.get(randomWrongAnswer4).getTerm().equals(deck.get(randomWrongAnswer1).getTerm()) || deck.get(randomWrongAnswer4).getTerm().equals(deck.get(randomWrongAnswer2).getTerm()) || deck.get(randomWrongAnswer4).getTerm().equals(deck.get(randomWrongAnswer3).getTerm()) || deck.get(randomWrongAnswer4).getTerm().equals(learnQueue.peek().getTerm()))
+                           while (deck.get(randomWrongAnswer4).getTerm().trim().equals(deck.get(randomWrongAnswer1).getTerm().trim()) || deck.get(randomWrongAnswer4).getTerm().trim().equals(deck.get(randomWrongAnswer2).getTerm().trim()) || deck.get(randomWrongAnswer4).getTerm().trim().equals(deck.get(randomWrongAnswer3).getTerm().trim()) || deck.get(randomWrongAnswer4).getTerm().trim().equals(learnQueue.peek().getTerm().trim()))
                                randomWrongAnswer4 = (int) (Math.random() * (deck.size()));
                        }
                    }
@@ -679,83 +760,139 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                    }
                    if(b.getTitle().equals("learnA"))
                    {
+                       currentTimer = frameGravity;
                        randomAnswers = (int)(Math.random()*(4))+1;
-
-                       randomWrongAnswer1 = (int)(Math.random()*(deck.size()));
-                       while(deck.get(randomWrongAnswer1).getTerm().equals(learnQueue.peek().getTerm())) //NEED TO EDIT HERE
-                       //randomWrongAnswer2 = (int)(Math.random()*(deck.size()));
-                       while(deck.get(randomWrongAnswer2).getTerm().equals(deck.get(randomWrongAnswer1).getTerm()) || deck.get(randomWrongAnswer2).getTerm().equals(learnQueue.peek().getTerm()))
-                           randomWrongAnswer2 = (int)(Math.random()*(deck.size()));
-                       while(deck.get(randomWrongAnswer3).getTerm().equals(deck.get(randomWrongAnswer1).getTerm()) || deck.get(randomWrongAnswer3).getTerm().equals(deck.get(randomWrongAnswer2).getTerm()) || deck.get(randomWrongAnswer3).getTerm().equals(learnQueue.peek().getTerm()))
-                           randomWrongAnswer3 = (int)(Math.random()*(deck.size()));
-                       randomWrongAnswer4 = (int)(Math.random()*(deck.size()));
-                       while(deck.get(randomWrongAnswer4).getTerm().equals(deck.get(randomWrongAnswer1).getTerm()) || deck.get(randomWrongAnswer4).getTerm().equals(deck.get(randomWrongAnswer2).getTerm()) || deck.get(randomWrongAnswer4).getTerm().equals(deck.get(randomWrongAnswer3).getTerm()) || deck.get(randomWrongAnswer4).getTerm().equals(learnQueue.peek().getTerm()))
-                           randomWrongAnswer4 = (int)(Math.random()*(deck.size()));
 
                        if(A.equals(learnQueue.peek().getTerm())) //correct
                        {
-                           learnQueue.remove();
+//                           learnQueue.remove();
+//                           learnCardNumber++;
+                           showCorrect1 = true;
                        }
+                       else
+                       {
+                           showIncorrect1 = true;
+                       }
+
+//                       if(!learnQueue.isEmpty()) {
+//                           randomWrongAnswer1 = (int) (Math.random() * (deck.size()));
+//                           while (deck.get(randomWrongAnswer1).getTerm().trim().equals(learnQueue.peek().getTerm().trim()))
+//                               randomWrongAnswer1 = (int) (Math.random() * (deck.size()));
+//
+//                           randomWrongAnswer2 = (int) (Math.random() * (deck.size()));
+//                           while (deck.get(randomWrongAnswer2).getTerm().trim().equals(deck.get(randomWrongAnswer1).getTerm().trim()) || deck.get(randomWrongAnswer2).getTerm().trim().equals(learnQueue.peek().getTerm().trim()))
+//                               randomWrongAnswer2 = (int) (Math.random() * (deck.size()));
+//
+//                           randomWrongAnswer3 = (int) (Math.random() * (deck.size()));
+//                           while (deck.get(randomWrongAnswer3).getTerm().trim().equals(deck.get(randomWrongAnswer1).getTerm().trim()) || deck.get(randomWrongAnswer3).getTerm().trim().equals(deck.get(randomWrongAnswer2).getTerm().trim()) || deck.get(randomWrongAnswer3).getTerm().trim().equals(learnQueue.peek().getTerm().trim()))
+//                               randomWrongAnswer3 = (int) (Math.random() * (deck.size()));
+//
+//                           randomWrongAnswer4 = (int) (Math.random() * (deck.size()));
+//                           while (deck.get(randomWrongAnswer4).getTerm().trim().equals(deck.get(randomWrongAnswer1).getTerm().trim()) || deck.get(randomWrongAnswer4).getTerm().trim().equals(deck.get(randomWrongAnswer2).getTerm().trim()) || deck.get(randomWrongAnswer4).getTerm().trim().equals(deck.get(randomWrongAnswer3).getTerm().trim()) || deck.get(randomWrongAnswer4).getTerm().trim().equals(learnQueue.peek().getTerm().trim()))
+//                               randomWrongAnswer4 = (int) (Math.random() * (deck.size()));
+//                       }
                    }
                    if(b.getTitle().equals("learnB"))
                    {
-                       randomAnswers = (int)(Math.random()*(4))+1;
-
-                       randomWrongAnswer1 = (int)(Math.random()*(deck.size()));
-                       while(deck.get(randomWrongAnswer1).getTerm().equals(learnQueue.peek().getTerm())) //NEED TO EDIT HERE
-                           //randomWrongAnswer2 = (int)(Math.random()*(deck.size()));
-                           while(deck.get(randomWrongAnswer2).getTerm().equals(deck.get(randomWrongAnswer1).getTerm()) || deck.get(randomWrongAnswer2).getTerm().equals(learnQueue.peek().getTerm()))
-                               randomWrongAnswer2 = (int)(Math.random()*(deck.size()));
-                       while(deck.get(randomWrongAnswer3).getTerm().equals(deck.get(randomWrongAnswer1).getTerm()) || deck.get(randomWrongAnswer3).getTerm().equals(deck.get(randomWrongAnswer2).getTerm()) || deck.get(randomWrongAnswer3).getTerm().equals(learnQueue.peek().getTerm()))
-                           randomWrongAnswer3 = (int)(Math.random()*(deck.size()));
-                       randomWrongAnswer4 = (int)(Math.random()*(deck.size()));
-                       while(deck.get(randomWrongAnswer4).getTerm().equals(deck.get(randomWrongAnswer1).getTerm()) || deck.get(randomWrongAnswer4).getTerm().equals(deck.get(randomWrongAnswer2).getTerm()) || deck.get(randomWrongAnswer4).getTerm().equals(deck.get(randomWrongAnswer3).getTerm()) || deck.get(randomWrongAnswer4).getTerm().equals(learnQueue.peek().getTerm()))
-                           randomWrongAnswer4 = (int)(Math.random()*(deck.size()));
-
+                       currentTimer = frameGravity;
                        if(B.equals(learnQueue.peek().getTerm())) //correct
                        {
-                           learnQueue.remove();
+//                           learnQueue.remove();
+//                           learnCardNumber++;
+                           showCorrect2 = true;
                        }
+                       else
+                       {
+                           showIncorrect2 = true;
+                       }
+
+//                       if(!learnQueue.isEmpty()) {
+//                           randomAnswers = (int) (Math.random() * (4)) + 1;
+//
+//                           randomWrongAnswer1 = (int) (Math.random() * (deck.size()));
+//                           while (deck.get(randomWrongAnswer1).getTerm().trim().equals(learnQueue.peek().getTerm().trim()))
+//                               randomWrongAnswer1 = (int) (Math.random() * (deck.size()));
+//
+//                           randomWrongAnswer2 = (int) (Math.random() * (deck.size()));
+//                           while (deck.get(randomWrongAnswer2).getTerm().trim().equals(deck.get(randomWrongAnswer1).getTerm().trim()) || deck.get(randomWrongAnswer2).getTerm().trim().equals(learnQueue.peek().getTerm().trim()))
+//                               randomWrongAnswer2 = (int) (Math.random() * (deck.size()));
+//
+//                           randomWrongAnswer3 = (int) (Math.random() * (deck.size()));
+//                           while (deck.get(randomWrongAnswer3).getTerm().trim().equals(deck.get(randomWrongAnswer1).getTerm().trim()) || deck.get(randomWrongAnswer3).getTerm().trim().equals(deck.get(randomWrongAnswer2).getTerm().trim()) || deck.get(randomWrongAnswer3).getTerm().trim().equals(learnQueue.peek().getTerm().trim()))
+//                               randomWrongAnswer3 = (int) (Math.random() * (deck.size()));
+//
+//                           randomWrongAnswer4 = (int) (Math.random() * (deck.size()));
+//                           while (deck.get(randomWrongAnswer4).getTerm().trim().equals(deck.get(randomWrongAnswer1).getTerm().trim()) || deck.get(randomWrongAnswer4).getTerm().trim().equals(deck.get(randomWrongAnswer2).getTerm().trim()) || deck.get(randomWrongAnswer4).getTerm().trim().equals(deck.get(randomWrongAnswer3).getTerm().trim()) || deck.get(randomWrongAnswer4).getTerm().trim().equals(learnQueue.peek().getTerm().trim()))
+//                               randomWrongAnswer4 = (int) (Math.random() * (deck.size()));
+//                       }
                    }
                    if(b.getTitle().equals("learnC"))
                    {
-                       randomAnswers = (int)(Math.random()*(4))+1;
-
-                       randomWrongAnswer1 = (int)(Math.random()*(deck.size()));
-                       while(deck.get(randomWrongAnswer1).getTerm().equals(learnQueue.peek().getTerm())) //NEED TO EDIT HERE
-                           //randomWrongAnswer2 = (int)(Math.random()*(deck.size()));
-                           while(deck.get(randomWrongAnswer2).getTerm().equals(deck.get(randomWrongAnswer1).getTerm()) || deck.get(randomWrongAnswer2).getTerm().equals(learnQueue.peek().getTerm()))
-                               randomWrongAnswer2 = (int)(Math.random()*(deck.size()));
-                       while(deck.get(randomWrongAnswer3).getTerm().equals(deck.get(randomWrongAnswer1).getTerm()) || deck.get(randomWrongAnswer3).getTerm().equals(deck.get(randomWrongAnswer2).getTerm()) || deck.get(randomWrongAnswer3).getTerm().equals(learnQueue.peek().getTerm()))
-                           randomWrongAnswer3 = (int)(Math.random()*(deck.size()));
-                       randomWrongAnswer4 = (int)(Math.random()*(deck.size()));
-                       while(deck.get(randomWrongAnswer4).getTerm().equals(deck.get(randomWrongAnswer1).getTerm()) || deck.get(randomWrongAnswer4).getTerm().equals(deck.get(randomWrongAnswer2).getTerm()) || deck.get(randomWrongAnswer4).getTerm().equals(deck.get(randomWrongAnswer3).getTerm()) || deck.get(randomWrongAnswer4).getTerm().equals(learnQueue.peek().getTerm()))
-                           randomWrongAnswer4 = (int)(Math.random()*(deck.size()));
-
+                       currentTimer = frameGravity;
                        if(C.equals(learnQueue.peek().getTerm())) //correct
                        {
-                           learnQueue.remove();
+//                           learnQueue.remove();
+//                           learnCardNumber++;
+                           showCorrect3 = true;
                        }
+                       else
+                       {
+                           showIncorrect3 = true;
+                       }
+
+//                       if(!learnQueue.isEmpty()) {
+//                           randomAnswers = (int) (Math.random() * (4)) + 1;
+//
+//                           randomWrongAnswer1 = (int) (Math.random() * (deck.size()));
+//                           while (deck.get(randomWrongAnswer1).getTerm().trim().equals(learnQueue.peek().getTerm().trim()))
+//                               randomWrongAnswer1 = (int) (Math.random() * (deck.size()));
+//
+//                           randomWrongAnswer2 = (int) (Math.random() * (deck.size()));
+//                           while (deck.get(randomWrongAnswer2).getTerm().trim().equals(deck.get(randomWrongAnswer1).getTerm().trim()) || deck.get(randomWrongAnswer2).getTerm().trim().equals(learnQueue.peek().getTerm().trim()))
+//                               randomWrongAnswer2 = (int) (Math.random() * (deck.size()));
+//
+//                           randomWrongAnswer3 = (int) (Math.random() * (deck.size()));
+//                           while (deck.get(randomWrongAnswer3).getTerm().trim().equals(deck.get(randomWrongAnswer1).getTerm().trim()) || deck.get(randomWrongAnswer3).getTerm().trim().equals(deck.get(randomWrongAnswer2).getTerm().trim()) || deck.get(randomWrongAnswer3).getTerm().trim().equals(learnQueue.peek().getTerm().trim()))
+//                               randomWrongAnswer3 = (int) (Math.random() * (deck.size()));
+//
+//                           randomWrongAnswer4 = (int) (Math.random() * (deck.size()));
+//                           while (deck.get(randomWrongAnswer4).getTerm().trim().equals(deck.get(randomWrongAnswer1).getTerm().trim()) || deck.get(randomWrongAnswer4).getTerm().trim().equals(deck.get(randomWrongAnswer2).getTerm().trim()) || deck.get(randomWrongAnswer4).getTerm().trim().equals(deck.get(randomWrongAnswer3).getTerm().trim()) || deck.get(randomWrongAnswer4).getTerm().trim().equals(learnQueue.peek().getTerm().trim()))
+//                               randomWrongAnswer4 = (int) (Math.random() * (deck.size()));
+//                       }
                    }
                    if(b.getTitle().equals("learnD"))
                    {
-                       randomAnswers = (int)(Math.random()*(4))+1;
-
-                       randomWrongAnswer1 = (int)(Math.random()*(deck.size()));
-                       while(deck.get(randomWrongAnswer1).getTerm().equals(learnQueue.peek().getTerm())) //NEED TO EDIT HERE
-                           //randomWrongAnswer2 = (int)(Math.random()*(deck.size()));
-                           while(deck.get(randomWrongAnswer2).getTerm().equals(deck.get(randomWrongAnswer1).getTerm()) || deck.get(randomWrongAnswer2).getTerm().equals(learnQueue.peek().getTerm()))
-                               randomWrongAnswer2 = (int)(Math.random()*(deck.size()));
-                       while(deck.get(randomWrongAnswer3).getTerm().equals(deck.get(randomWrongAnswer1).getTerm()) || deck.get(randomWrongAnswer3).getTerm().equals(deck.get(randomWrongAnswer2).getTerm()) || deck.get(randomWrongAnswer3).getTerm().equals(learnQueue.peek().getTerm()))
-                           randomWrongAnswer3 = (int)(Math.random()*(deck.size()));
-                       randomWrongAnswer4 = (int)(Math.random()*(deck.size()));
-                       while(deck.get(randomWrongAnswer4).getTerm().equals(deck.get(randomWrongAnswer1).getTerm()) || deck.get(randomWrongAnswer4).getTerm().equals(deck.get(randomWrongAnswer2).getTerm()) || deck.get(randomWrongAnswer4).getTerm().equals(deck.get(randomWrongAnswer3).getTerm()) || deck.get(randomWrongAnswer4).getTerm().equals(learnQueue.peek().getTerm()))
-                           randomWrongAnswer4 = (int)(Math.random()*(deck.size()));
-
+                       currentTimer = frameGravity;
                        if(D.equals(learnQueue.peek().getTerm())) //correct
                        {
-                           learnQueue.remove();
+//                           learnQueue.remove();
+//                           learnCardNumber++;
+                           showCorrect4 = true;
                        }
+                       else
+                       {
+                           showIncorrect4 = true;
+                       }
+
+//                       if(!learnQueue.isEmpty()) {
+//                           randomAnswers = (int) (Math.random() * (4)) + 1;
+//
+//                           randomWrongAnswer1 = (int) (Math.random() * (deck.size()));
+//                           while (deck.get(randomWrongAnswer1).getTerm().trim().equals(learnQueue.peek().getTerm().trim()))
+//                               randomWrongAnswer1 = (int) (Math.random() * (deck.size()));
+//
+//                           randomWrongAnswer2 = (int) (Math.random() * (deck.size()));
+//                           while (deck.get(randomWrongAnswer2).getTerm().trim().equals(deck.get(randomWrongAnswer1).getTerm().trim()) || deck.get(randomWrongAnswer2).getTerm().trim().equals(learnQueue.peek().getTerm().trim()))
+//                               randomWrongAnswer2 = (int) (Math.random() * (deck.size()));
+//
+//                           randomWrongAnswer3 = (int) (Math.random() * (deck.size()));
+//                           while (deck.get(randomWrongAnswer3).getTerm().trim().equals(deck.get(randomWrongAnswer1).getTerm().trim()) || deck.get(randomWrongAnswer3).getTerm().trim().equals(deck.get(randomWrongAnswer2).getTerm().trim()) || deck.get(randomWrongAnswer3).getTerm().trim().equals(learnQueue.peek().getTerm().trim()))
+//                               randomWrongAnswer3 = (int) (Math.random() * (deck.size()));
+//
+//                           randomWrongAnswer4 = (int) (Math.random() * (deck.size()));
+//                           while (deck.get(randomWrongAnswer4).getTerm().trim().equals(deck.get(randomWrongAnswer1).getTerm().trim()) || deck.get(randomWrongAnswer4).getTerm().trim().equals(deck.get(randomWrongAnswer2).getTerm().trim()) || deck.get(randomWrongAnswer4).getTerm().trim().equals(deck.get(randomWrongAnswer3).getTerm().trim()) || deck.get(randomWrongAnswer4).getTerm().trim().equals(learnQueue.peek().getTerm().trim()))
+//                               randomWrongAnswer4 = (int) (Math.random() * (deck.size()));
+//                       }
                    }
                }
               } //end of buttons for loop
