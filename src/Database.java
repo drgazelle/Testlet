@@ -15,12 +15,14 @@ import java.util.Scanner;
 
 /** Database class creates a tree that
  *  can be imported and exported to a
- *  text document
+ *  text document. The data can be
+ *  modified graphically in the form
+ *  of a JTree.
  *
  *  <p> Database > Course > Deck > Flashcard </p>
  *
  *  @author RMizelle
- *  @version V1.2
+ *  @version V2.0
  */
 public class Database implements TreeSelectionListener, TreeModelListener, ActionListener {
 
@@ -152,7 +154,6 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
         c.fill = GridBagConstraints.HORIZONTAL;
         c.anchor = GridBagConstraints.PAGE_START;
 
-
         //term constraints
         c.gridx = 0;
         c.weightx = 0;
@@ -201,7 +202,6 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
         frame.setResizable(false);
         frame.setVisible(true);
     }
-
 
     /** Converts database structure to JTree,
      * adds tree listeners
@@ -620,10 +620,18 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
         }
         else if (IMPORT_COMMAND.equals(command)) {
             //Import button clicked
+            String instructions = "NOTICE: Only Quizlets sets created by the user can be imported \n\n" +
+                                    "STEP 1) Go to www.Quizlet.com\n" +
+                                    "STEP 2) Open a Quizlet Set\n" +
+                                    "STEP 3) Click on the three dots (...) and select 'export'\n\n" +
+                                    "STEP 4a) Make sure 'Between term and definition' is set to 'tab'\n" +
+                                    "STEP 4b) Set 'Between rows' to custom, typing '####' into the box\n" +
+                                    "STEP 4c) Copy the text at the bottom\n\n" +
+                                    "STEP 5) Paste the copied text to the text-box below and press 'OK'\n\n";
             //checks that userDeck is selected
             if (userDeck != null) {
                 //prompts user for Quizlet Set
-                String s = (String) JOptionPane.showInputDialog(frame, "WIP INSTRUCTIONS", "Import Quizlet", JOptionPane.PLAIN_MESSAGE, null, null, "Insert Here");
+                String s = (String) JOptionPane.showInputDialog(frame, instructions, "Import Quizlet", JOptionPane.PLAIN_MESSAGE, null, null, "");
                 //if not cancelled
                 if (s != null) {
                     DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
