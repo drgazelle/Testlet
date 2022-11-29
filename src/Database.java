@@ -486,7 +486,10 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
                 tree.getLastSelectedPathComponent();
 
         //if nothing is selected
-        if (node == null) return;
+        if (node == null) {
+            nameEditor.setText("");
+            return;
+        }
         //retrieve the node that was selected
         Object nodeInfo = node.getUserObject();
         //sets current selected
@@ -507,6 +510,10 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
         if (userSelected instanceof Flashcard) {
             defEditor.setText(((Flashcard) userSelected).getDef());
         }
+        else {
+            defEditor.setText("");
+        }
+
     }
 
     /** Implements Action Listener */
@@ -604,6 +611,7 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
             System.out.println("[Database] User Selected: Clear Button");
         }
         else if (CONFIRM_COMMAND.equals(command)) {
+            //Confirms button clicked
             System.out.println("[Database] User Selected: Confirm Button");
             updateDatabase();
             exportDatabase();
@@ -611,6 +619,7 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
             frame.dispose();
         }
         else if (IMPORT_COMMAND.equals(command)) {
+            //Import button clicked
             //checks that userDeck is selected
             if (userDeck != null) {
                 //prompts user for Quizlet Set
@@ -625,24 +634,16 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
                     //new Flashcards
                     Deck newDeck = (Deck) node.getUserObject();
                     //old Flashcards
-                    Object[] oldDeck = newDeck.getContent().toArray();
+                    int start = newDeck.size();
                     //if correctly formatted
                     if (newDeck.importQuizlet(s)) {
                         //sets node to deck
                         node.setUserObject(newDeck);
                         //loops through updated deck
-                        for (Flashcard c1 : newDeck.getContent()) {
-                            //loops through old deck
-                            for (Object c2 : oldDeck) {
-                                //compares flashcards
-                                if (!((Flashcard) c2).equals(c1)) {
-                                    DefaultMutableTreeNode child = new DefaultMutableTreeNode(c1);
-                                    child.setAllowsChildren(false);
-                                    //adds new child node
-                                    node.add(child);
-                                    break;
-                                }
-                            }
+                        for(int i = start; i < newDeck.size(); i++) {
+                            DefaultMutableTreeNode child = new DefaultMutableTreeNode(newDeck.get(i));
+                            child.setAllowsChildren(false);
+                            node.add(child);
                         }
                         //updates Tree and Deck
                         userDeck = newDeck;
@@ -650,7 +651,7 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
                     }
                     //if incorrectly formatted
                     else {
-                        JOptionPane.showMessageDialog(frame, "Failed to Import Set");
+                        JOptionPane.showMessageDialog(frame, "Failed to Import Set", "ERROR", JOptionPane.WARNING_MESSAGE);
                     }
                 }
             }
