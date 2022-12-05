@@ -109,6 +109,7 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
         options.setBackground(menuColor);
         //Allows Users to add Courses or Decks
         JButton confirmButton = new JButton("Confirm");
+        confirmButton.setToolTipText("Confirm Deck Selection");
         confirmButton.setBackground(new Color(154,205,50));
         confirmButton.setOpaque(true);
         confirmButton.setActionCommand(CONFIRM_COMMAND);
@@ -117,24 +118,28 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
 
         //Allows Users to add Courses or Decks
         JButton addButton = new JButton("Add");
+        addButton.setToolTipText("Add a New Item to Database Selection");
         addButton.setActionCommand(ADD_COMMAND);
         addButton.addActionListener(this);
         addButton.setFont(font);
 
         //Allows Users to import Quizlet Sets
         JButton importButton = new JButton("Import");
+        importButton.setToolTipText("Import Quizlet Sets");
         importButton.setActionCommand(IMPORT_COMMAND);
         importButton.addActionListener(this);
         importButton.setFont(font);
 
         //Allows Users to remove Courses or Decks
         JButton removeButton = new JButton("Remove");
+        removeButton.setToolTipText("Remove Selected Item");
         removeButton.setActionCommand(REMOVE_COMMAND);
         removeButton.addActionListener(this);
         removeButton.setFont(font);
 
         //Allows Users to clear Database
         JButton clearButton = new JButton("Clear");
+        clearButton.setToolTipText("Wipe Database");
         clearButton.setActionCommand(CLEAR_COMMAND);
         clearButton.addActionListener(this);
         clearButton.setFont(font);
@@ -774,7 +779,7 @@ class DatabaseTreeCellEditor extends DefaultTreeCellEditor {
  */
 class DatabaseTreeCellRender extends DefaultTreeCellRenderer {
 
-    private Border border = BorderFactory.createEmptyBorder ( 2, 2, 2, 2);
+    private Border border = BorderFactory.createEmptyBorder( 2, 2, 2, 2);
 
     /** Adds icons and border */
     @Override
