@@ -152,6 +152,8 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
         options.add(new JLabel(""));
         options.add(confirmButton);
 
+        Font fontSmall = font.deriveFont(Font.PLAIN, 14);
+
         //text-fields Testing
         JPanel editPanel = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
@@ -163,10 +165,16 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
         c.gridx = 0;
         c.weightx = 0;
         c.ipadx = 10;
+
         //term editor
-        editPanel.add(new JLabel("Term"), c);
+        JLabel boxText = new JLabel("Term");
+        boxText.setFont(fontSmall);
+        editPanel.add(boxText, c);
+
         nameEditor = new JTextField(20);
         nameEditor.addActionListener(this);
+        nameEditor.setFont(fontSmall);
+
         //term editor constraints
         c.gridx = 1;
         c.weightx = 1;
@@ -179,10 +187,13 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
         c.gridx = 2;
         c.weightx = 0;
         c.ipadx = 1;
-        editPanel.add(new JLabel("Definition"), c);
+        boxText = new JLabel("Definition");
+        boxText.setFont(fontSmall);
+        editPanel.add(boxText, c);
 
         defEditor = new JTextField(20);
         defEditor.addActionListener(this);
+        defEditor.setFont(fontSmall);
         //def editor constraints
         c.gridx = 3;
         c.weightx = 1;
@@ -746,7 +757,6 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
             }
         };
     }
-
 }
 
 /** DatabaseTreeCellEditor class modifies DefaultTreeCellEditor to block modification of flashcards
@@ -824,7 +834,6 @@ class DatabaseTreeCellRender extends DefaultTreeCellRenderer {
         }
         //sets border
         this.setBorder(border);
-
         return this;
     }
 }
