@@ -15,18 +15,23 @@ import java.util.Scanner;
 
 /** Database class creates a tree that
  *  can be imported and exported to a
- *  text document
+ *  text document. The data can be
+ *  modified graphically in the form
+ *  of a JTree.
  *
  *  <p> Database > Course > Deck > Flashcard </p>
  *
  *  @author RMizelle
- *  @version V1.2
+ *  @version V2.0
  */
 public class Database implements TreeSelectionListener, TreeModelListener, ActionListener {
 
     //UI Modifiers
     private final Font font = new Font("atkinson hyperlegible", Font.PLAIN, 18);
     private final Color menuColor = new Color(135, 206, 235);
+    private final int width = 640;
+    private final int height = 380;
+
     private JFrame frame;
     JLabel selectionText;
     JTextField nameEditor;
@@ -44,6 +49,7 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
     private static final String REMOVE_COMMAND = "remove";
     private static final String CLEAR_COMMAND = "clear";
     private static final String CONFIRM_COMMAND = "confirm";
+    private static final String IMPORT_COMMAND = "import";
 
     /** 0-arg constructor implements ArrayList of
      *  Course objects from a text document.
@@ -99,10 +105,11 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
         JScrollPane treeView = new JScrollPane(toTree());
 
         //JTree Commands panel
-        JPanel options = new JPanel(new GridLayout(0,5));
+        JPanel options = new JPanel(new GridLayout(0,6));
         options.setBackground(menuColor);
         //Allows Users to add Courses or Decks
         JButton confirmButton = new JButton("Confirm");
+        confirmButton.setToolTipText("Confirm Deck Selection");
         confirmButton.setBackground(new Color(154,205,50));
         confirmButton.setOpaque(true);
         confirmButton.setActionCommand(CONFIRM_COMMAND);
@@ -111,42 +118,87 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
 
         //Allows Users to add Courses or Decks
         JButton addButton = new JButton("Add");
+        addButton.setToolTipText("Add a New Item to Database Selection");
         addButton.setActionCommand(ADD_COMMAND);
         addButton.addActionListener(this);
         addButton.setFont(font);
 
+        //Allows Users to import Quizlet Sets
+        JButton importButton = new JButton("Import");
+        importButton.setToolTipText("Import Quizlet Sets");
+        importButton.setActionCommand(IMPORT_COMMAND);
+        importButton.addActionListener(this);
+        importButton.setFont(font);
+
         //Allows Users to remove Courses or Decks
         JButton removeButton = new JButton("Remove");
+        removeButton.setToolTipText("Remove Selected Item");
         removeButton.setActionCommand(REMOVE_COMMAND);
         removeButton.addActionListener(this);
         removeButton.setFont(font);
 
         //Allows Users to clear Database
         JButton clearButton = new JButton("Clear");
+        clearButton.setToolTipText("Wipe Database");
         clearButton.setActionCommand(CLEAR_COMMAND);
         clearButton.addActionListener(this);
         clearButton.setFont(font);
 
         //adds to options panel
         options.add(addButton);
+        options.add(importButton);
         options.add(removeButton);
         options.add(clearButton);
         options.add(new JLabel(""));
         options.add(confirmButton);
 
+        Font fontSmall = font.deriveFont(Font.PLAIN, 14);
+
         //text-fields Testing
-        JPanel editPanel = new JPanel(new GridLayout(0,3));
+        JPanel editPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        //base constraints
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.anchor = GridBagConstraints.PAGE_START;
+
+        //term constraints
+        c.gridx = 0;
+        c.weightx = 0;
+        c.ipadx = 10;
+
+        //term editor
+        JLabel boxText = new JLabel("Term");
+        boxText.setFont(fontSmall);
+        editPanel.add(boxText, c);
 
         nameEditor = new JTextField(20);
         nameEditor.addActionListener(this);
+        nameEditor.setFont(fontSmall);
+
+        //term editor constraints
+        c.gridx = 1;
+        c.weightx = 1;
+        c.ipadx = 0;
+
+        editPanel.add(nameEditor, c);
+
+        //def editor
+        //def constraints
+        c.gridx = 2;
+        c.weightx = 0;
+        c.ipadx = 1;
+        boxText = new JLabel("Definition");
+        boxText.setFont(fontSmall);
+        editPanel.add(boxText, c);
 
         defEditor = new JTextField(20);
         defEditor.addActionListener(this);
-
-        editPanel.add(new JLabel("Name"));
-        editPanel.add(nameEditor);
-        editPanel.add(defEditor);
-
+        defEditor.setFont(fontSmall);
+        //def editor constraints
+        c.gridx = 3;
+        c.weightx = 1;
+        c.ipadx = 0;
+        editPanel.add(defEditor, c);
 
         JSplitPane inputs = new JSplitPane(JSplitPane.VERTICAL_SPLIT, editPanel, options);
         inputs.setContinuousLayout(true);
@@ -160,13 +212,12 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
         //sets frame attributes
         frame.setContentPane(panel);
         frame.setIconImage(new ImageIcon("resources/icons/database.png").getImage());
-        frame.setSize(640, 380);
+        frame.setSize(width, height);
         frame.setLocation(50, 50);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setResizable(false);
         frame.setVisible(true);
     }
-
 
     /** Converts database structure to JTree,
      * adds tree listeners
@@ -451,7 +502,10 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
                 tree.getLastSelectedPathComponent();
 
         //if nothing is selected
-        if (node == null) return;
+        if (node == null) {
+            nameEditor.setText("");
+            return;
+        }
         //retrieve the node that was selected
         Object nodeInfo = node.getUserObject();
         //sets current selected
@@ -472,6 +526,10 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
         if (userSelected instanceof Flashcard) {
             defEditor.setText(((Flashcard) userSelected).getDef());
         }
+        else {
+            defEditor.setText("");
+        }
+
     }
 
     /** Implements Action Listener */
@@ -569,11 +627,58 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
             System.out.println("[Database] User Selected: Clear Button");
         }
         else if (CONFIRM_COMMAND.equals(command)) {
+            //Confirms button clicked
             System.out.println("[Database] User Selected: Confirm Button");
             updateDatabase();
             exportDatabase();
             MainPanel.setDeck(userDeck);
             frame.dispose();
+        }
+        else if (IMPORT_COMMAND.equals(command)) {
+            //Import button clicked
+            String instructions = "NOTICE: Only Quizlets sets created by the user can be imported \n\n" +
+                                    "STEP 1) Go to www.Quizlet.com\n" +
+                                    "STEP 2) Open a Quizlet Set\n" +
+                                    "STEP 3) Click on the three dots (...) and select 'export'\n\n" +
+                                    "STEP 4a) Make sure 'Between term and definition' is set to 'tab'\n" +
+                                    "STEP 4b) Set 'Between rows' to custom, typing '####' into the box\n" +
+                                    "STEP 4c) Copy the text at the bottom\n\n" +
+                                    "STEP 5) Paste the copied text to the text-box below and press 'OK'\n\n";
+            //checks that userDeck is selected
+            if (userDeck != null) {
+                //prompts user for Quizlet Set
+                String s = (String) JOptionPane.showInputDialog(frame, instructions, "Import Quizlet", JOptionPane.PLAIN_MESSAGE, null, null, "");
+                //if not cancelled
+                if (s != null) {
+                    DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
+                    //if child node selected
+                    if (node.getLevel() == 3) {
+                        node = (DefaultMutableTreeNode) node.getParent();
+                    }
+                    //new Flashcards
+                    Deck newDeck = (Deck) node.getUserObject();
+                    //old Flashcards
+                    int start = newDeck.size();
+                    //if correctly formatted
+                    if (newDeck.importQuizlet(s)) {
+                        //sets node to deck
+                        node.setUserObject(newDeck);
+                        //loops through updated deck
+                        for(int i = start; i < newDeck.size(); i++) {
+                            DefaultMutableTreeNode child = new DefaultMutableTreeNode(newDeck.get(i));
+                            child.setAllowsChildren(false);
+                            node.add(child);
+                        }
+                        //updates Tree and Deck
+                        userDeck = newDeck;
+                        tree.updateUI();
+                    }
+                    //if incorrectly formatted
+                    else {
+                        JOptionPane.showMessageDialog(frame, "Failed to Import Set", "ERROR", JOptionPane.WARNING_MESSAGE);
+                    }
+                }
+            }
         }
 
         //Text-field editors
@@ -652,7 +757,6 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
             }
         };
     }
-
 }
 
 /** DatabaseTreeCellEditor class modifies DefaultTreeCellEditor to block modification of flashcards
@@ -685,7 +789,7 @@ class DatabaseTreeCellEditor extends DefaultTreeCellEditor {
  */
 class DatabaseTreeCellRender extends DefaultTreeCellRenderer {
 
-    private Border border = BorderFactory.createEmptyBorder ( 2, 2, 2, 2);
+    private Border border = BorderFactory.createEmptyBorder( 2, 2, 2, 2);
 
     /** Adds icons and border */
     @Override
@@ -730,7 +834,6 @@ class DatabaseTreeCellRender extends DefaultTreeCellRenderer {
         }
         //sets border
         this.setBorder(border);
-
         return this;
     }
 }
