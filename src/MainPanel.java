@@ -84,6 +84,7 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
     private boolean showCorrect3 = false;
     private boolean showCorrect4 = false;
     private boolean nullDeckDuringLearn = false;
+    private String currentDeckName = "";
     //for test
     private int currentQuestion = 1;
     private static ArrayList<Flashcard> testQuestions = new ArrayList<>();
@@ -846,7 +847,7 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                 buttons[FLASHCARDFLIP].setEnabled(false);
                 buttons[FLASHCARDFLIP].setVisible(false);
                 buttons[PREVIOUSCARD].setVisible(false);
-                buttons[PREVIOUSCARD].setEnabled(true);
+                buttons[PREVIOUSCARD].setEnabled(false);
                 buttons[NEXTCARD].setVisible(false);
                 buttons[NEXTCARD].setEnabled(false);
 
@@ -862,6 +863,7 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
 
                 if(nullDeckDuringLearn == true && deck != null)
                 {
+                    currentDeckName = deck.getName();
                     nullDeckDuringLearn = false; //we don't want the if statement to be true again. Make one of the conditions false
 
                     g.setColor(Color.BLACK);
@@ -1032,6 +1034,17 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                         buttons[LEARND].setEnabled(false);
                         //draw green colored button
                     }
+                }
+
+                if(deck!= null && !currentDeckName.equals(deck.getName()))
+                {
+                    currentDeckName = deck.getName();
+                    //reset everything. We have a new deck!!
+
+                    learnCardNumber = 1;
+
+                    makeLearnQueue(); //make new queue with new deck terms and definitions
+
                 }
 
                 if(showIncorrect1 == true) {
@@ -1479,6 +1492,9 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
 
     public static void makeLearnQueue()
     {
+        while(!learnQueue.isEmpty()) //getting rid of old deck
+            learnQueue.remove();
+
         Deck copyOfDeck = new Deck();
         for(int i = 0; i<deck.size(); i++)
         {
@@ -1600,6 +1616,8 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                            while (deck.get(randomWrongAnswer4).getTerm().trim().equals(deck.get(randomWrongAnswer1).getTerm().trim()) || deck.get(randomWrongAnswer4).getTerm().trim().equals(deck.get(randomWrongAnswer2).getTerm().trim()) || deck.get(randomWrongAnswer4).getTerm().trim().equals(deck.get(randomWrongAnswer3).getTerm().trim()) || deck.get(randomWrongAnswer4).getTerm().trim().equals(learnQueue.peek().getTerm().trim()))
                                randomWrongAnswer4 = (int) (Math.random() * (deck.size()));
                        }
+                        if(deck!= null)
+                        currentDeckName = deck.getName();
                    }
                    if (b.getTitle().equals("test"))
                    {
