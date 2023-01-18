@@ -15,7 +15,7 @@ public class TestletDriver {
     public static void main(String[] args) {
         panel = new MainPanel();
         JFrame.setDefaultLookAndFeelDecorated(true);
-        JFrame frame = new JFrame("Testlet");
+        JFrame frame = new JFrame();
         // frame attributes
         frame.setContentPane(panel);
         frame.setSize(WIDTH, HEIGHT);
