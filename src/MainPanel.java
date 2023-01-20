@@ -497,6 +497,8 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                 buttons[LEARNC].setEnabled(false);
                 buttons[LEARND].setVisible(false);
                 buttons[LEARND].setEnabled(false);
+                buttons[TRYAGAIN].setVisible(false);
+                buttons[TRYAGAIN].setEnabled(false);
                 //activate test buttons
                // buttons[NEXTTESTQUESTION].drawButton(g);
                // buttons[NEXTTESTQUESTION].setEnabled(true);
@@ -1045,6 +1047,27 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
 
                     makeLearnQueue(); //make new queue with new deck terms and definitions
 
+                    randomWrongAnswer1 = (int) (Math.random() * (deck.size()));
+
+                    //checking if the string equals the actual answer does not work right now :(
+                    while ((deck.get(randomWrongAnswer1).getTerm()).equals(learnQueue.peek().getTerm())) {
+                        randomWrongAnswer1 = (int) (Math.random() * (deck.size()));
+                    }
+
+                    randomWrongAnswer2 = (int) (Math.random() * (deck.size()));
+                    while (randomWrongAnswer1 == randomWrongAnswer2 || (deck.get(randomWrongAnswer2).getTerm()).equals(learnQueue.peek().getTerm())) {
+                        randomWrongAnswer2 = (int) (Math.random() * (deck.size()));
+                    }
+
+                    randomWrongAnswer3 = (int) (Math.random() * (deck.size()));
+                    while (randomWrongAnswer1 == randomWrongAnswer3 || randomWrongAnswer3 == randomWrongAnswer2 || (deck.get(randomWrongAnswer3).getTerm()).equals(learnQueue.peek().getTerm())) {
+                        randomWrongAnswer3 = (int) (Math.random() * (deck.size()));
+                    }
+
+                    randomWrongAnswer4 = (int) (Math.random() * (deck.size()));
+                    while (randomWrongAnswer1 == randomWrongAnswer4 || randomWrongAnswer2 == randomWrongAnswer4 || randomWrongAnswer3 == randomWrongAnswer4 || (deck.get(randomWrongAnswer4).getTerm()).equals(learnQueue.peek().getTerm())) {
+                        randomWrongAnswer4 = (int) (Math.random() * (deck.size()));
+                    }
                 }
 
                 if(showIncorrect1 == true) {
@@ -1441,10 +1464,15 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
 
     public static void makeTestList()
     {
+        if(testQuestions.size()>0) //get rid of previous testQuestions array
+        {
+            testQuestions.clear();
+        }
+
         int[] numbers = new int[20];
         for(int h = 0; h<20; h++)
             numbers[h] = -1;
-        int newnumber = -1;
+        int newnumber;
         boolean equalsAnotherNumber = false;
         Deck copyOfDeck = new Deck();
 
