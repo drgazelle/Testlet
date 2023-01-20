@@ -51,7 +51,7 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
     private JLabel selectionText;
 
     private JTextField nameEditor;
-    private JComboBox defEditor;
+    private myCombo defEditor;
 
     //Database variables
     private final ArrayList<Course> database;
@@ -207,7 +207,7 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
         boxText.setFont(fontSmall);
         editPanel.add(boxText, c);
 
-        defEditor = new JComboBox();
+        defEditor = new myCombo();
         defEditor.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXX");
         defEditor.setSize(20, 1);
         defEditor.setEditable(true);
@@ -544,7 +544,8 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
         defEditor.removeAllItems();
         //checks if node is Flashcard
         if (userSelected instanceof Flashcard) {
-            defEditor.addItem(((Flashcard) userSelected).getDef());
+            String temp = String.valueOf(((Flashcard) userSelected).getDef());
+            defEditor.addItem(temp);
             String[] defs = defineWord(((Flashcard) userSelected).getTerm());
             if (defs != null) {
                 for (String def : defs) {
@@ -894,7 +895,7 @@ class DatabaseTreeCellRender extends DefaultTreeCellRenderer {
     }
 }
 
-public class myCombo extends JComboBox {
+class myCombo extends JComboBox {
     public myCombo() {
         super();
         setUI(new myComboUI());
