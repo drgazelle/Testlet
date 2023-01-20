@@ -1,10 +1,24 @@
+import com.jayway.jsonpath.JsonPath;
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.Unirest;
+import net.minidev.json.JSONArray;
+
 import javax.swing.*;
 import javax.swing.border.Border;
-import javax.swing.event.*;
+import javax.swing.event.TreeModelEvent;
+import javax.swing.event.TreeModelListener;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.plaf.basic.BasicComboBoxUI;
+import javax.swing.plaf.basic.BasicComboPopup;
+import javax.swing.plaf.basic.ComboPopup;
 import javax.swing.tree.*;
-
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -33,9 +47,11 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
     private final int height = 380;
 
     private JFrame frame;
-    JLabel selectionText;
-    JTextField nameEditor;
-    JTextField defEditor;
+    private JPanel editPanel;
+    private JLabel selectionText;
+
+    private JTextField nameEditor;
+    private myCombo defEditor;
 
     //Database variables
     private final ArrayList<Course> database;
@@ -155,7 +171,7 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
         Font fontSmall = font.deriveFont(Font.PLAIN, 14);
 
         //text-fields Testing
-        JPanel editPanel = new JPanel(new GridBagLayout());
+        editPanel = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         //base constraints
         c.fill = GridBagConstraints.HORIZONTAL;
@@ -191,7 +207,10 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
         boxText.setFont(fontSmall);
         editPanel.add(boxText, c);
 
-        defEditor = new JTextField(20);
+        defEditor = new myCombo();
+        defEditor.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXX");
+        defEditor.setSize(20, 1);
+        defEditor.setEditable(true);
         defEditor.addActionListener(this);
         defEditor.setFont(fontSmall);
         //def editor constraints
@@ -522,14 +541,52 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
             userDeck = (Deck) nodeInfo;
             selectionText.setText("Selected Deck: " + userDeck.toString());
         }
+        defEditor.removeAllItems();
         //checks if node is Flashcard
         if (userSelected instanceof Flashcard) {
-            defEditor.setText(((Flashcard) userSelected).getDef());
+            String temp = String.valueOf(((Flashcard) userSelected).getDef());
+            defEditor.addItem(temp);
+            String[] defs = defineWord(((Flashcard) userSelected).getTerm());
+            if (defs != null) {
+                for (String def : defs) {
+                    defEditor.addItem(def);
+                }
+            }
         }
-        else {
-            defEditor.setText("");
+    }
+
+    /** Returns an array of possible definitions for a given word
+     *  using the Webster-Merriam Dictionary
+     *
+     * @param word to be defined
+     * @return array of String depiciting possible definitions of word.
+     */
+    private String[] defineWord(String word) {
+        //API Pathway
+        String host = "https://dictionaryapi.com/api/v3/";
+        String x_wm_api_reference = "references/collegiate/json/";
+        String x_wm_api_key = "key=d5487c71-44f5-4a5f-89a7-e3bbf0b3acaf";
+
+        HttpResponse <JsonNode> response;
+        try {
+            response = Unirest.get(host + x_wm_api_reference +  word + "?" + x_wm_api_key).asJson();
+        } catch (Exception e) {
+            System.out.println("Failed to Access Webster-Merriam");
+            return null;
         }
 
+        String JSON = response.getBody().toString();
+        //finds array of definitions
+        JSONArray defs = JsonPath.read(JSON, "$..shortdef[0]");
+        //if not found, return;
+        if(defs.size() == 0) {
+            return null;
+        }
+        String[] arr = new String[defs.size()];
+        for(int i = 0; i < defs.size(); i++) {
+            arr[i] = defs.get(i).toString();
+        }
+        return arr;
     }
 
     /** Implements Action Listener */
@@ -683,7 +740,7 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
 
         //Text-field editors
         String name = nameEditor.getText();
-        String def = defEditor.getText();
+        String def = (String) defEditor.getSelectedItem();
         DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
         if (userSelected instanceof Flashcard) {
             Flashcard card = (Flashcard) node.getUserObject();
@@ -835,5 +892,24 @@ class DatabaseTreeCellRender extends DefaultTreeCellRenderer {
         //sets border
         this.setBorder(border);
         return this;
+    }
+}
+
+class myCombo extends JComboBox {
+    public myCombo() {
+        super();
+        setUI(new myComboUI());
+    }
+
+    public class myComboUI extends BasicComboBoxUI {
+        protected ComboPopup createPopup() {
+            BasicComboPopup popup = new BasicComboPopup(comboBox) {
+                protected JScrollPane createScroller() {
+                    return new JScrollPane(list, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+                            ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+                }
+            };
+            return popup;
+        }
     }
 }
