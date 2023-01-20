@@ -1,3 +1,10 @@
+import com.jayway.jsonpath.JsonPath;
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.Unirest;
+import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
+
 import javax.swing.*;
 //import java.util.*;
 import java.awt.*;
@@ -184,11 +191,14 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
     //database variables
     private Database data;
     private static Deck deck = null;
+    private String quote;
 
     /** 0-arg constructor */
     public MainPanel() {
         //creates database
         data = new Database();
+
+        quote = getQuote();
 
         addMouseListener(this);
         addMouseMotionListener(this);
@@ -353,33 +363,25 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
             g.setColor(new Color(220,220,220));
             g.fillRect(0,0,leftBarSize, ySIZE);
 
-            buttons[FLASHCARDS].drawButton(g); //course names will be displayed depending on the courses of the user
-            buttons[FLASHCARDS].setEnabled(true);
-            buttons[FLASHCARDS].setVisible(true);
-            buttons[LEARN].drawButton(g);
-            buttons[LEARN].setEnabled(true);
-            buttons[LEARN].setVisible(true);
-            buttons[TEST].drawButton(g);
-            buttons[TEST].setEnabled(true);
-            buttons[TEST].setVisible(true);
-            buttons[GRAVITY].drawButton(g);
-            buttons[GRAVITY].setEnabled(true);
-            buttons[GRAVITY].setVisible(true);
-            buttons[MATCHING].drawButton(g);
-            buttons[MATCHING].setEnabled(true);
-            buttons[MATCHING].setVisible(true);
+            //Activates Menu Buttons
+            for(int i = 4; i <= 8; i++) {
+                Button b = buttons[i];
+                b.drawButton(g);
+                b.setEnabled(true);
+                b.setVisible(true);
+            }
 
-            if(homeScreenDisplay == true)
+            if(homeScreenDisplay)
             {
                 g.drawImage(testletCharacter.getImage(), leftBarSize+30, topBarHeight+30, 313, 410, null);
                 g.drawImage(testletCharacterSpeechBubble.getImage(), leftBarSize+30+230, topBarHeight+20, 300, 130, null);
+                g.setColor(Color.BLACK);
+                g.drawString(quote, leftBarSize+30, TestletDriver.HEIGHT - 40);
             }
 
-            if(gravityStartDisplay == true)
+            if(gravityStartDisplay)
             {
-                buttons[GRAVITYSTARTGAME].drawButton(g);
-                buttons[GRAVITYSTARTGAME].setEnabled(true);
-                buttons[GRAVITYSTARTGAME].setVisible(true);
+                showButton(buttons[GRAVITYSTARTGAME], g);
 
                 buttons[FLASHCARDFLIP].setEnabled(false);
                 buttons[PREVIOUSCARD].setEnabled(false);
@@ -394,8 +396,7 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
             if(flashcardsDisplay == true)
             {
                 //deactivate gravity buttons
-                buttons[GRAVITYSTARTGAME].setEnabled(false);
-                buttons[GRAVITYSTARTGAME].setVisible(false);
+                hideButton(buttons[GRAVITYSTARTGAME]);
                 //deactivate learn buttons
                 buttons[LEARNA].setVisible(false);
                 buttons[LEARNA].setEnabled(false);
@@ -1324,6 +1325,31 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
         }
     }
 
+    /** Retrieves Random Quote from Zen Quotes API
+     *
+     * @return random quote with author
+     */
+    private String getQuote() {
+        HttpResponse<JsonNode> response;
+
+        try {
+            response = Unirest.get("https://zenquotes.io/api/random/").asJson();
+        } catch (Exception e) {
+            System.out.println("Failed to Access Webster-Merriam");
+            return null;
+        }
+
+        String JSON = response.getBody().toString();
+        //finds array of definitions
+        JSONArray quote = JsonPath.read(JSON, "$..q");
+        JSONArray author = JsonPath.read(JSON, "$..a");
+        //if not found, return;
+        if(quote.size() == 0 || author.size() == 0) {
+            return null;
+        }
+        return "\"" + quote.get(0).toString() + "\" - " + author.get(0).toString();
+    }
+
     /**
      *
      * @param g the <code>Graphics</code> object to protect
@@ -1332,6 +1358,26 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
     {
         super.paintComponent(g);
         showBoard(g);
+    }
+
+    /** Draws, enables, and shows a given button.
+     *
+     * @param b button to be enabled
+     * @param g graphics passthrough
+     */
+    public void showButton(Button b, Graphics g) {
+        b.drawButton(g);
+        b.setEnabled(true);
+        b.setVisible(true);
+    }
+
+    /** Disables and hides a button.
+     *
+     * @param b button to be enabled
+     */
+    public void hideButton(Button b) {
+        b.setEnabled(false);
+        b.setVisible(false);
     }
 
     public int getTestScore()
