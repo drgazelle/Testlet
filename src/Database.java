@@ -41,7 +41,7 @@ import java.util.Scanner;
 public class Database implements TreeSelectionListener, TreeModelListener, ActionListener {
 
     //UI Modifiers
-    private final Font font = new Font("atkinson hyperlegible", Font.PLAIN, 18);
+    private final Font font = new Font("Helvetica", Font.PLAIN, 18);
     private final Color menuColor = new Color(135, 206, 235);
     private final int width = 640;
     private final int height = 380;
@@ -108,7 +108,7 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
     /** Displays a JFrame containing the JTree representation of Database */
     public void showDatabaseGUI() {
         JFrame.setDefaultLookAndFeelDecorated(true);
-        frame = new JFrame("Database");
+        frame = new JFrame("Database: Powered By Merriam-Webster Inc.®");
         //content panel
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBackground(menuColor);
@@ -219,6 +219,17 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
         c.ipadx = 0;
         editPanel.add(defEditor, c);
 
+        //Webster-Merriam Icon
+        ImageIcon wb_logo = new ImageIcon("resources/icons/MWLogo_ForLightBackgrounds.png");
+        Image image = wb_logo.getImage(); // transform it
+        Image newimg = image.getScaledInstance(20, 20,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
+        wb_logo = new ImageIcon(newimg);  // transform it back
+        c.gridx = 4;
+        JLabel wb_label = new JLabel(wb_logo);
+        wb_label.setToolTipText("Powered by Merriam-Webster's Collegiate® Dictionary");
+
+        editPanel.add(wb_label);
+
         JSplitPane inputs = new JSplitPane(JSplitPane.VERTICAL_SPLIT, editPanel, options);
         inputs.setContinuousLayout(true);
 
@@ -236,6 +247,7 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setResizable(false);
         frame.setVisible(true);
+        frame.setFocusable(true);
     }
 
     /** Converts database structure to JTree,
@@ -745,7 +757,9 @@ public class Database implements TreeSelectionListener, TreeModelListener, Actio
         if (userSelected instanceof Flashcard) {
             Flashcard card = (Flashcard) node.getUserObject();
             card.setTerm(name);
-            card.setDef(def);
+            if (def != null) {
+                card.setDef(def);
+            }
             node.setUserObject(card);
         }
         else if (userSelected != null) {
