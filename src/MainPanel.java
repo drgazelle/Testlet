@@ -43,6 +43,7 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
     private boolean homeScreenDisplay = false;
     private boolean learnDisplay = false;
     private boolean testDisplay = false;
+    private boolean testSubmittedDisplay = false;
     private boolean matchingDisplay = false;
     private ImageIcon testletCharacter = new ImageIcon("resources/images/Testlet_Character.png");
     private ImageIcon testletCharacterSpeechBubble = new ImageIcon("resources/images/TestletHomeSpeechBubble.png");
@@ -94,6 +95,7 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
     private String currentDeckName = "";
     //for test
     private int currentQuestion = 1;
+    private boolean nullDeckDuringTest = false;
     private static ArrayList<Flashcard> testQuestions = new ArrayList<>();
     private ImageIcon answerBubble1 = new ImageIcon("resources/images/answerBubble1.png");
     private ImageIcon answerBubble2 = new ImageIcon("resources/images/answerBubble2.png");
@@ -118,12 +120,21 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
     private boolean question19Answered = false;
     private boolean question20Answered = false;
     private int currentTimer = -1;
+    private int[] correctMatching = {11,12,13,14,15}; //ints are indexes (currentQuestion - 1)
+    private int[] userInputMatching = new int[5];
+
+    private int termMouseX = -1;
+    private int termMouseY = -1;
+
+    private int defMouseX = -1;
+    private int defMouseY = -1;
+
 
     //images
     //private ImageIcon startScreen  = new ImageIcon("images/backgrounds/startScreen.png");
 
     //array of buttons
-    private Button[] buttons = new Button[23];
+    private Button[] buttons = new Button[38];
 
     //each int represents a different button.
     private static final int HOMEBUTTON = 0;
@@ -149,6 +160,23 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
     private static final int TRUEBUTTONFORTEST = 20;
     private static final int FALSEBUTTONFORTEST = 21;
     private static final int SUBMITTEST = 22;
+    private static final int MCQATESTBUTTON = 23;
+    private static final int MCQBTESTBUTTON = 24;
+    private static final int MCQCTESTBUTTON = 25;
+    private static final int MCQDTESTBUTTON = 26;
+    //matching test question buttons
+    private static final int MATCHINGTESTDEFINITION1 = 27;
+    private static final int MATCHINGTESTDEFINITION2 = 28;
+    private static final int MATCHINGTESTDEFINITION3 = 29;
+    private static final int MATCHINGTESTDEFINITION4 = 30;
+    private static final int MATCHINGTESTDEFINITION5 = 31;
+    private static final int MATCHINGTESTTERM1 = 32;
+    private static final int MATCHINGTESTTERM2 = 33;
+    private static final int MATCHINGTESTTERM3 = 34;
+    private static final int MATCHINGTESTTERM4 = 35;
+    private static final int MATCHINGTESTTERM5 = 36;
+    private static final int RESETMATCHING = 37;
+
     private boolean deckIsComplete = false;
     private boolean changeAnswers = false;
     private boolean trueFalse1;
@@ -169,7 +197,68 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
     private int trueFalseWrongAnswer4;
     private int trueFalseWrongAnswer5;
 
+    //assigned a value 1 through 4. holds a value for the correct answer choice
+    //1 represents A, 2 represents B, 3 represents C, 4 represents D
+    private int correctMultipleChoice1 = (int)(Math.random()*4 + 1);
+    private int correctMultipleChoice2 = (int)(Math.random()*4 + 1);
+    private int correctMultipleChoice3 = (int)(Math.random()*4 + 1);
+    private int correctMultipleChoice4 = (int)(Math.random()*4 + 1);
+    private int correctMultipleChoice5 = (int)(Math.random()*4 + 1);
+
+    int[] randomAnswersMCQ1 = new int[4];
+    int[] randomAnswersMCQ2 = new int[4];
+    int[] randomAnswersMCQ3 = new int[4];
+    int[] randomAnswersMCQ4 = new int[4];
+    int[] randomAnswersMCQ5 = new int[4];
+
+    private int randomAnswerA;
+    private int randomAnswerB;
+    private int randomAnswerC;
+    private int randomAnswerD;
+
+    private boolean randomAnswersSelectedMCQ1 = false;
+    private boolean randomAnswersSelectedMCQ2 = false;
+    private boolean randomAnswersSelectedMCQ3 = false;
+    private boolean randomAnswersSelectedMCQ4 = false;
+    private boolean randomAnswersSelectedMCQ5 = false;
+
+    //NEED TO MAKE BUTTONS OR USE LEARN BUTTONS FOR THE MULTIPLE ANSWER CHOICES. buttons will set value of these ints
+    private int chosenAnswerMultipleChoice1 = 0;
+    private int chosenAnswerMultipleChoice2 = 0;
+    private int chosenAnswerMultipleChoice3 = 0;
+    private int chosenAnswerMultipleChoice4 = 0;
+    private int chosenAnswerMultipleChoice5 = 0;
+
     private String currentDeck = "";
+
+    //matching
+    private int[][] drawLinesHere = new int[4][5]; //used for drawing lines from term button to def button for matching
+    //beginning x
+    //beginning y
+    //ending x
+    //ending y
+    private int numberOfLinesDrawn = 0;
+    private boolean termClicked = false;
+    private int termButtonClicked = 0;
+    private boolean[] termButtonsClicked = new boolean[5];
+    //termButton1    termButton2
+    //[    11
+    private int[] userMatched = new int[5];
+    //def button [1, 2, 3, 4, 5]
+    //term button that has been matched with corresponding def button
+
+    //type your own answer
+    JTextField typeAnswer16 = new JTextField("Type Your Answer Here", 1000);
+    JTextField typeAnswer17 = new JTextField();
+    JTextField typeAnswer18 = new JTextField();
+    JTextField typeAnswer19 = new JTextField();
+    JTextField typeAnswer20 = new JTextField();
+
+    private String typedAnswer1;
+    private String typedAnswer2;
+    private String typedAnswer3;
+    private String typedAnswer4;
+    private String typedAnswer5;
 
     //screen modes
     private static final int HOMESCREEN = 0;
@@ -343,6 +432,65 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
         ImageIcon submitButton2 = new ImageIcon("resources/images/nextflashcard2.png");
         buttons[SUBMITTEST] = new Button(r26, "submitTest", submitButton1, submitButton2);
 
+        Shape r27 = new Rectangle(320, 350, 250, 65);
+        ImageIcon mcqAnswerButton1A = new ImageIcon("resources/images/testMcqButton1.png");
+        ImageIcon mcqAnswerButton2A = new ImageIcon("resources/images/testMcqButton2.png");
+        buttons[MCQATESTBUTTON] = new Button(r27, "testmcqA", mcqAnswerButton1A, mcqAnswerButton2A);
+
+        Shape r28 = new Rectangle(580, 350, 250, 65);
+        ImageIcon mcqAnswerButton1B = new ImageIcon("resources/images/testMcqButton1.png");
+        ImageIcon mcqAnswerButton2B = new ImageIcon("resources/images/testMcqButton2.png");
+        buttons[MCQBTESTBUTTON] = new Button(r28, "testmcqB", mcqAnswerButton1B, mcqAnswerButton2B);
+
+        Shape r29 = new Rectangle(320, 425, 250, 65);
+        ImageIcon mcqAnswerButton1C = new ImageIcon("resources/images/testMcqButton1.png");
+        ImageIcon mcqAnswerButton2C = new ImageIcon("resources/images/testMcqButton2.png");
+        buttons[MCQCTESTBUTTON] = new Button(r29, "testmcqC", mcqAnswerButton1C, mcqAnswerButton2C);
+
+        Shape r30 = new Rectangle(580, 425, 250, 65);
+        ImageIcon mcqAnswerButton1D = new ImageIcon("resources/images/testMcqButton1.png");
+        ImageIcon mcqAnswerButton2D = new ImageIcon("resources/images/testMcqButton2.png");
+        buttons[MCQDTESTBUTTON] = new Button(r30, "testmcqD", mcqAnswerButton1D, mcqAnswerButton2D);
+
+        Shape r31 = new Rectangle(300, 120, 250, 65);
+        ImageIcon matchingtestdef1 = new ImageIcon("resources/images/matchingTestQuestion1.png");
+        ImageIcon matchingtestdef2 = new ImageIcon("resources/images/matchingTestQuestion2.png");
+        buttons[MATCHINGTESTDEFINITION1] = new Button(r31, "matchingTestDef1", matchingtestdef1, matchingtestdef2);
+
+        Shape r32 = new Rectangle(300, 185, 250, 65);
+        buttons[MATCHINGTESTDEFINITION2] = new Button(r32, "matchingTestDef2", matchingtestdef1, matchingtestdef2);
+
+        Shape r33 = new Rectangle(300, 250, 250, 65);
+        buttons[MATCHINGTESTDEFINITION3] = new Button(r33, "matchingTestDef3", matchingtestdef1, matchingtestdef2);
+
+        Shape r34 = new Rectangle(300, 315, 250, 65);
+        buttons[MATCHINGTESTDEFINITION4] = new Button(r34, "matchingTestDef4", matchingtestdef1, matchingtestdef2);
+
+        Shape r35 = new Rectangle(300, 380, 250, 65);
+        buttons[MATCHINGTESTDEFINITION5] = new Button(r35, "matchingTestDef5", matchingtestdef1, matchingtestdef2);
+
+        Shape r36 = new Rectangle(610, 120, 250, 65);
+        ImageIcon matchingtestterm1 = new ImageIcon("resources/images/matchingTestQuestion1.png");
+        ImageIcon matchingtestterm2 = new ImageIcon("resources/images/matchingTestQuestion2.png");
+        buttons[MATCHINGTESTTERM1] = new Button(r36, "matchingTestTerm1", matchingtestterm1, matchingtestterm2);
+
+        Shape r37 = new Rectangle(610, 185, 250, 65);
+        buttons[MATCHINGTESTTERM2] = new Button(r37, "matchingTestTerm2", matchingtestterm1, matchingtestterm2);
+
+        Shape r38 = new Rectangle(610, 250, 250, 65);
+        buttons[MATCHINGTESTTERM3] = new Button(r38, "matchingTestTerm3", matchingtestterm1, matchingtestterm2);
+
+        Shape r39 = new Rectangle(610, 315, 250, 65);
+        buttons[MATCHINGTESTTERM4] = new Button(r39, "matchingTestTerm4", matchingtestterm1, matchingtestterm2);
+
+        Shape r40 = new Rectangle(610, 380, 250, 65);
+        buttons[MATCHINGTESTTERM5] = new Button(r40, "matchingTestTerm5", matchingtestterm1, matchingtestterm2);
+
+        Shape r41 = new Rectangle(523, 445, 112, 53);
+        ImageIcon resetMatching1 = new ImageIcon("resources/images/resetMatching1.png");
+        ImageIcon resetMatching2 = new ImageIcon("resources/images/resetMatching2.png");
+        buttons[RESETMATCHING] = new Button(r41, "resetMatching", resetMatching1, resetMatching2);
+
         //sets the screen mode
         screenMode = HOMESCREEN;
     }
@@ -501,8 +649,8 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                 buttons[TRYAGAIN].setVisible(false);
                 buttons[TRYAGAIN].setEnabled(false);
                 //activate test buttons
-               // buttons[NEXTTESTQUESTION].drawButton(g);
-               // buttons[NEXTTESTQUESTION].setEnabled(true);
+                //buttons[NEXTTESTQUESTION].drawButton(g);
+                //buttons[NEXTTESTQUESTION].setEnabled(true);
                 buttons[PREVIOUSTESTQUESTION].drawButton(g);
                 buttons[PREVIOUSTESTQUESTION].setEnabled(true);
 
@@ -512,8 +660,31 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                     g.setColor(Color.RED);
                     g.setFont(new Font("Helvetica", Font.PLAIN, 30));
                     g.drawString("Select a deck!", 490, 260);
+                    nullDeckDuringTest = true;
                 }
                 if(deck != null) {
+                    if(nullDeckDuringTest == true)
+                    {
+                        makeTestList();
+
+                        trueFalseWrongAnswer1 = (int)(Math.random()*testQuestions.size());
+                        while(trueFalseWrongAnswer1 == 0)
+                            trueFalseWrongAnswer1 = (int)(Math.random()*testQuestions.size());
+                        trueFalseWrongAnswer2 = (int)(Math.random()*testQuestions.size());
+                        while(trueFalseWrongAnswer2 == 0)
+                            trueFalseWrongAnswer2 = (int)(Math.random()*testQuestions.size());
+                        trueFalseWrongAnswer3 = (int)(Math.random()*testQuestions.size());
+                        while(trueFalseWrongAnswer3 == 0)
+                            trueFalseWrongAnswer3 = (int)(Math.random()*testQuestions.size());
+                        trueFalseWrongAnswer4 = (int)(Math.random()*testQuestions.size());
+                        while(trueFalseWrongAnswer4 == 0)
+                            trueFalseWrongAnswer4 = (int)(Math.random()*testQuestions.size());
+                        trueFalseWrongAnswer5 = (int)(Math.random()*testQuestions.size());
+                        while(trueFalseWrongAnswer5 == 0)
+                            trueFalseWrongAnswer5 = (int)(Math.random()*testQuestions.size());
+
+                        nullDeckDuringTest = false;
+                    }
                     g.setColor(Color.BLACK);
                     g.setFont(new Font("SansSerif", Font.BOLD, 20));
                     if (deck.size() < 20)
@@ -538,280 +709,13 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                     buttons[SUBMITTEST].setEnabled(true);
                 }
 
-                //NEED TO DRAW STRINGS FOR OTHER ANSWER BUTTONS, HAVE ONLY DONE IT FOR QUESTION 1
-                if(question1Answered == true && deck != null && deck.size()>= 1) {
-                    g.drawImage(answerBubble2.getImage(), leftBarSize + 10, topBarHeight + 35, 30, 30, null);
-                    g.setFont(new Font("Helvetica", Font.BOLD, 15));
-                    g.drawString("1", leftBarSize + 20, topBarHeight + 55);
-                }
-                else if(deck != null && deck.size()>= 1) {
-                    g.drawImage(answerBubble1.getImage(), leftBarSize + 10, topBarHeight + 35, 30, 30, null);
-                    g.setFont(new Font("Helvetica", Font.BOLD, 15));
-                    g.drawString("1", leftBarSize + 20, topBarHeight + 55);
-                }
-
-                if(question2Answered == true && deck != null && deck.size()>= 2) {
-                    g.drawImage(answerBubble2.getImage(), leftBarSize + 45, topBarHeight + 35, 30, 30, null);
-                    g.setFont(new Font("Helvetica", Font.BOLD, 15));
-                    g.drawString("2", leftBarSize + 56, topBarHeight + 55);
-                }
-                else if(deck != null && deck.size()>= 2) {
-                    g.drawImage(answerBubble1.getImage(), leftBarSize + 45, topBarHeight + 35, 30, 30, null);
-                    g.setFont(new Font("Helvetica", Font.BOLD, 15));
-                    g.drawString("2", leftBarSize + 56, topBarHeight + 55);
-                }
-
-                if(question3Answered == true && deck != null && deck.size()>= 3) {
-                    g.drawImage(answerBubble2.getImage(), leftBarSize + 80, topBarHeight + 35, 30, 30, null);
-                    g.setFont(new Font("Helvetica", Font.BOLD, 15));
-                    g.drawString("3", leftBarSize + 91, topBarHeight + 55);
-                }
-                else if(deck != null && deck.size()>= 3) {
-                    g.drawImage(answerBubble1.getImage(), leftBarSize + 80, topBarHeight + 35, 30, 30, null);
-                    g.setFont(new Font("Helvetica", Font.BOLD, 15));
-                    g.drawString("3", leftBarSize + 91, topBarHeight + 55);
-                }
-
-                if(question4Answered == true && deck != null && deck.size()>= 4) {
-                    g.drawImage(answerBubble2.getImage(), leftBarSize + 115, topBarHeight + 35, 30, 30, null);
-                    g.setFont(new Font("Helvetica", Font.BOLD, 15));
-                    g.drawString("4", leftBarSize + 126, topBarHeight + 55);
-                }
-                else if(deck != null && deck.size()>= 4) {
-                    g.drawImage(answerBubble1.getImage(), leftBarSize + 115, topBarHeight + 35, 30, 30, null);
-                    g.setFont(new Font("Helvetica", Font.BOLD, 15));
-                    g.drawString("4", leftBarSize + 126, topBarHeight + 55);
-                }
-
-                if(question5Answered == true && deck != null && deck.size()>= 5) {
-                    g.drawImage(answerBubble2.getImage(), leftBarSize + 150, topBarHeight + 35, 30, 30, null);
-                    g.setFont(new Font("Helvetica", Font.BOLD, 15));
-                    g.drawString("5", leftBarSize + 161, topBarHeight + 55);
-                }
-                else if(deck != null && deck.size()>= 5) {
-                    g.drawImage(answerBubble1.getImage(), leftBarSize + 150, topBarHeight + 35, 30, 30, null);
-                    g.setFont(new Font("Helvetica", Font.BOLD, 15));
-                    g.drawString("5", leftBarSize + 161, topBarHeight + 55);
-                }
-
-                if(question6Answered == true && deck != null && deck.size()>= 6) {
-                    g.drawImage(answerBubble2.getImage(), leftBarSize + 185, topBarHeight + 35, 30, 30, null);
-                    g.setFont(new Font("Helvetica", Font.BOLD, 15));
-                    g.drawString("6", leftBarSize + 196, topBarHeight + 55);
-                }
-                else if(deck != null && deck.size()>= 6) {
-                    g.drawImage(answerBubble1.getImage(), leftBarSize + 185, topBarHeight + 35, 30, 30, null);
-                    g.setFont(new Font("Helvetica", Font.BOLD, 15));
-                    g.drawString("6", leftBarSize + 196, topBarHeight + 55);
-                }
-
-                if(question7Answered == true && deck != null && deck.size()>= 7) {
-                    g.drawImage(answerBubble2.getImage(), leftBarSize + 220, topBarHeight + 35, 30, 30, null);
-                    g.setFont(new Font("Helvetica", Font.BOLD, 15));
-                    g.drawString("7", leftBarSize + 231, topBarHeight + 55);
-                }
-                else if(deck != null && deck.size()>= 7) {
-                    g.drawImage(answerBubble1.getImage(), leftBarSize + 220, topBarHeight + 35, 30, 30, null);
-                    g.setFont(new Font("Helvetica", Font.BOLD, 15));
-                    g.drawString("7", leftBarSize + 231, topBarHeight + 55);
-                }
-
-                if(question8Answered == true && deck != null && deck.size()>= 8) {
-                    g.drawImage(answerBubble2.getImage(), leftBarSize + 255, topBarHeight + 35, 30, 30, null);
-                    g.setFont(new Font("Helvetica", Font.BOLD, 15));
-                    g.drawString("8", leftBarSize + 266, topBarHeight + 55);
-                }
-                else if(deck != null && deck.size()>= 8) {
-                    g.drawImage(answerBubble1.getImage(), leftBarSize + 255, topBarHeight + 35, 30, 30, null);
-                    g.setFont(new Font("Helvetica", Font.BOLD, 15));
-                    g.drawString("8", leftBarSize + 266, topBarHeight + 55);
-                }
-
-                if(question9Answered == true && deck != null && deck.size()>= 9) {
-                    g.drawImage(answerBubble2.getImage(), leftBarSize + 290, topBarHeight + 35, 30, 30, null);
-                    g.setFont(new Font("Helvetica", Font.BOLD, 15));
-                    g.drawString("9", leftBarSize + 301, topBarHeight + 55);
-                }
-                else if(deck != null && deck.size()>= 9) {
-                    g.drawImage(answerBubble1.getImage(), leftBarSize + 290, topBarHeight + 35, 30, 30, null);
-                    g.setFont(new Font("Helvetica", Font.BOLD, 15));
-                    g.drawString("9", leftBarSize + 301, topBarHeight + 55);
-                }
-
-                if(question10Answered == true && deck != null && deck.size()>= 10) {
-                    g.drawImage(answerBubble2.getImage(), leftBarSize + 325, topBarHeight + 35, 30, 30, null);
-                    g.setFont(new Font("Helvetica", Font.BOLD, 15));
-                    g.drawString("10", leftBarSize + 332, topBarHeight + 55);
-                }
-                else if(deck != null && deck.size()>= 10) {
-                    g.drawImage(answerBubble1.getImage(), leftBarSize + 325, topBarHeight + 35, 30, 30, null);
-                    g.setFont(new Font("Helvetica", Font.BOLD, 15));
-                    g.drawString("10", leftBarSize + 332, topBarHeight + 55);
-                }
-
-                if(question11Answered == true && deck != null && deck.size()>= 11) {
-                    g.drawImage(answerBubble2.getImage(), leftBarSize + 360, topBarHeight + 35, 30, 30, null);
-                    g.setFont(new Font("Helvetica", Font.BOLD, 15));
-                    g.drawString("11", leftBarSize + 367, topBarHeight + 55);
-                }
-                else if(deck != null && deck.size()>= 11) {
-                    g.drawImage(answerBubble1.getImage(), leftBarSize + 360, topBarHeight + 35, 30, 30, null);
-                    g.setFont(new Font("Helvetica", Font.BOLD, 15));
-                    g.drawString("11", leftBarSize + 367, topBarHeight + 55);
-                }
-
-                if(question12Answered == true && deck != null && deck.size()>= 12) {
-                    g.drawImage(answerBubble2.getImage(), leftBarSize + 395, topBarHeight + 35, 30, 30, null);
-                    g.setFont(new Font("Helvetica", Font.BOLD, 15));
-                    g.drawString("12", leftBarSize + 402, topBarHeight + 55);
-                }
-                else if(deck != null && deck.size()>= 12) {
-                    g.drawImage(answerBubble1.getImage(), leftBarSize + 395, topBarHeight + 35, 30, 30, null);
-                    g.setFont(new Font("Helvetica", Font.BOLD, 15));
-                    g.drawString("12", leftBarSize + 402, topBarHeight + 55);
-                }
-
-                if(question13Answered == true && deck != null && deck.size()>= 13) {
-                    g.drawImage(answerBubble2.getImage(), leftBarSize + 430, topBarHeight + 35, 30, 30, null);
-                    g.setFont(new Font("Helvetica", Font.BOLD, 15));
-                    g.drawString("13", leftBarSize + 437, topBarHeight + 55);
-                }
-                else if(deck != null && deck.size()>= 13) {
-                    g.drawImage(answerBubble1.getImage(), leftBarSize + 430, topBarHeight + 35, 30, 30, null);
-                    g.setFont(new Font("Helvetica", Font.BOLD, 15));
-                    g.drawString("13", leftBarSize + 437, topBarHeight + 55);
-                }
-
-                if(question14Answered == true && deck != null && deck.size()>= 14) {
-                    g.drawImage(answerBubble2.getImage(), leftBarSize + 465, topBarHeight + 35, 30, 30, null);
-                    g.setFont(new Font("Helvetica", Font.BOLD, 15));
-                    g.drawString("14", leftBarSize + 472, topBarHeight + 55);
-                }
-                else if(deck != null && deck.size()>= 14) {
-                    g.drawImage(answerBubble1.getImage(), leftBarSize + 465, topBarHeight + 35, 30, 30, null);
-                    g.setFont(new Font("Helvetica", Font.BOLD, 15));
-                    g.drawString("14", leftBarSize + 472, topBarHeight + 55);
-                }
-
-                if(question15Answered == true && deck != null && deck.size()>= 15)
-                    g.drawImage(answerBubble2.getImage(), leftBarSize+500, topBarHeight+35, 30, 30, null);
-                else if(deck != null && deck.size()>= 15)
-                    g.drawImage(answerBubble1.getImage(), leftBarSize+500, topBarHeight+35, 30, 30, null);
-
-                if(question16Answered == true && deck != null && deck.size()>= 16)
-                    g.drawImage(answerBubble2.getImage(), leftBarSize+535, topBarHeight+35, 30, 30, null);
-                else if(deck != null && deck.size()>= 16)
-                    g.drawImage(answerBubble1.getImage(), leftBarSize+535, topBarHeight+35, 30, 30, null);
-
-                if(question17Answered == true && deck != null && deck.size()>= 17)
-                    g.drawImage(answerBubble2.getImage(), leftBarSize+570, topBarHeight+35, 30, 30, null);
-                else if(deck != null && deck.size()>= 17)
-                    g.drawImage(answerBubble1.getImage(), leftBarSize+570, topBarHeight+35, 30, 30, null);
-
-                if(question18Answered == true && deck != null && deck.size()>= 18)
-                    g.drawImage(answerBubble2.getImage(), leftBarSize+605, topBarHeight+35, 30, 30, null);
-                else if(deck != null && deck.size()>= 18)
-                    g.drawImage(answerBubble1.getImage(), leftBarSize+605, topBarHeight+35, 30, 30, null);
-
-                if(question19Answered == true && deck != null && deck.size()>= 19)
-                    g.drawImage(answerBubble2.getImage(), leftBarSize+640, topBarHeight+35, 30, 30, null);
-                else if(deck != null && deck.size()>= 19)
-                    g.drawImage(answerBubble1.getImage(), leftBarSize+640, topBarHeight+35, 30, 30, null);
-
-                if(question20Answered == true && deck != null && deck.size()>= 20)
-                    g.drawImage(answerBubble2.getImage(), leftBarSize+675, topBarHeight+35, 30, 30, null);
-                else if(deck != null && deck.size()>= 20)
-                    g.drawImage(answerBubble1.getImage(), leftBarSize+675, topBarHeight+35, 30, 30, null);
+                questionsAnsweredBubbles(g);
 
                 if(deck != null && deck.size()>0) { //&& deck.size() >= 20 NEED TO ADD THIS BACK WHEN DONE TESTING!!!!
                     //true/false questions
                     if (currentQuestion == 1 || currentQuestion == 2 || currentQuestion == 3 || currentQuestion == 4 || currentQuestion == 5)
                     {
-                        //display term
-                        g.setFont(new Font("Helvetica", Font.BOLD, 25));
-                        g.drawString("Term:", leftBarSize + 10, topBarHeight + 100);
-                        g.setFont(new Font("Helvetica", Font.PLAIN, 22));
-                        g.drawString(testQuestions.get(currentQuestion-1).getTerm(), leftBarSize + 10, topBarHeight+ 130);
-                        //display definition
-                        g.setFont(new Font("Helvetica", Font.BOLD, 25));
-                        g.drawString("Definition:", leftBarSize + 380, topBarHeight + 100);
-                        g.setFont(new Font("Helvetica", Font.PLAIN, 22));
-                        int yVal = topBarHeight + 130; //increase by 30 each time
-                        if(currentQuestion == 1 && trueOrFalse1 == 0) {
-                            ArrayList<String> linesforDefinition = addLinesToString(40, testQuestions.get(currentQuestion - 1).getDef());
-                            for (int i = 0; i < linesforDefinition.size(); i++) {
-                                g.drawString(linesforDefinition.get(i), leftBarSize + 380, yVal);
-                                yVal += 30;
-                            }
-                        }
-                        else if(currentQuestion == 1 && trueOrFalse1 == 1)
-                        {
-                            ArrayList<String> linesforDefinition = addLinesToString(40, testQuestions.get(trueFalseWrongAnswer1).getDef());
-                            for (int i = 0; i < linesforDefinition.size(); i++) {
-                                g.drawString(linesforDefinition.get(i), leftBarSize + 380, yVal);
-                                yVal += 30;
-                            }
-                        }
-                        if(currentQuestion == 2 && trueOrFalse2 == 0) {
-                            ArrayList<String> linesforDefinition = addLinesToString(40, testQuestions.get(currentQuestion - 1).getDef());
-                            for (int i = 0; i < linesforDefinition.size(); i++) {
-                                g.drawString(linesforDefinition.get(i), leftBarSize + 380, yVal);
-                                yVal += 30;
-                            }
-                        }
-                        else if(currentQuestion == 2 && trueOrFalse2 == 1)
-                        {
-                            ArrayList<String> linesforDefinition = addLinesToString(40, testQuestions.get(trueFalseWrongAnswer2).getDef());
-                            for (int i = 0; i < linesforDefinition.size(); i++) {
-                                g.drawString(linesforDefinition.get(i), leftBarSize + 380, yVal);
-                                yVal += 30;
-                            }
-                        }
-                        if(currentQuestion == 3 && trueOrFalse3 == 0) {
-                            ArrayList<String> linesforDefinition = addLinesToString(40, testQuestions.get(currentQuestion - 1).getDef());
-                            for (int i = 0; i < linesforDefinition.size(); i++) {
-                                g.drawString(linesforDefinition.get(i), leftBarSize + 380, yVal);
-                                yVal += 30;
-                            }
-                        }
-                        else if(currentQuestion == 3 && trueOrFalse3 == 1)
-                        {
-                            ArrayList<String> linesforDefinition = addLinesToString(40, testQuestions.get(trueFalseWrongAnswer3).getDef());
-                            for (int i = 0; i < linesforDefinition.size(); i++) {
-                                g.drawString(linesforDefinition.get(i), leftBarSize + 380, yVal);
-                                yVal += 30;
-                            }
-                        }
-                        if(currentQuestion == 4 && trueOrFalse4 == 0) {
-                            ArrayList<String> linesforDefinition = addLinesToString(40, testQuestions.get(currentQuestion - 1).getDef());
-                            for (int i = 0; i < linesforDefinition.size(); i++) {
-                                g.drawString(linesforDefinition.get(i), leftBarSize + 380, yVal);
-                                yVal += 30;
-                            }
-                        }
-                        else if(currentQuestion == 4 && trueOrFalse4 == 1)
-                        {
-                            ArrayList<String> linesforDefinition = addLinesToString(40, testQuestions.get(trueFalseWrongAnswer4).getDef());
-                            for (int i = 0; i < linesforDefinition.size(); i++) {
-                                g.drawString(linesforDefinition.get(i), leftBarSize + 380, yVal);
-                                yVal += 30;
-                            }
-                        }
-                        if(currentQuestion == 5 && trueOrFalse5 == 0) {
-                            ArrayList<String> linesforDefinition = addLinesToString(40, testQuestions.get(currentQuestion - 1).getDef());
-                            for (int i = 0; i < linesforDefinition.size(); i++) {
-                                g.drawString(linesforDefinition.get(i), leftBarSize + 380, yVal);
-                                yVal += 30;
-                            }
-                        }
-                        else if(currentQuestion == 5 && trueOrFalse5 == 1)
-                        {
-                            ArrayList<String> linesforDefinition = addLinesToString(40, testQuestions.get(trueFalseWrongAnswer5).getDef());
-                            for (int i = 0; i < linesforDefinition.size(); i++) {
-                                g.drawString(linesforDefinition.get(i), leftBarSize + 380, yVal);
-                                yVal += 30;
-                            }
-                        }
+                        showTermAndDefinition(g);
 
                         buttons[TRUEBUTTONFORTEST].drawButton(g);
                         buttons[FALSEBUTTONFORTEST].drawButton(g);
@@ -826,19 +730,311 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                     //multiple choice questions
                     else if(currentQuestion == 6 || currentQuestion == 7 || currentQuestion == 8 || currentQuestion == 9 || currentQuestion == 10)
                     {
+                        buttons[MCQATESTBUTTON].drawButton(g);
+                        buttons[MCQATESTBUTTON].setEnabled(true);
+                        buttons[MCQBTESTBUTTON].drawButton(g);
+                        buttons[MCQBTESTBUTTON].setEnabled(true);
+                        buttons[MCQCTESTBUTTON].drawButton(g);
+                        buttons[MCQCTESTBUTTON].setEnabled(true);
+                        buttons[MCQDTESTBUTTON].drawButton(g);
+                        buttons[MCQDTESTBUTTON].setEnabled(true);
 
+                        drawAnswersForMCQ(g);
                     }
                     //matching questions
                     else if(currentQuestion == 11 || currentQuestion == 12 || currentQuestion == 13 || currentQuestion == 14 || currentQuestion == 15)
                     {
+                        buttons[RESETMATCHING].drawButton(g);
+                        if(testQuestions.size() >= 11) {
+                            //need to add if size of testQuestions is equal to or greater than 13. else, this question will be type your own answer
+                            currentQuestion = 11;
+                            buttons[MATCHINGTESTDEFINITION1].drawButton(g);
+                            buttons[MATCHINGTESTTERM1].setEnabled(true);
+                            buttons[MATCHINGTESTTERM1].drawButton(g);
+                            g.setFont(new Font("Helvetica", Font.PLAIN, 12));
+                            int yValue1stDef = topBarHeight + 90; //increase by 23 each time
+                            ArrayList<String> lines1 = addLinesToString(32, testQuestions.get(10).getDef());
+                            if(lines1.size() > 4) {
+                                for (int i = 0; i < 4; i++) { // for (int i = 0; i < lines1.size(); i++) {
+                                    g.drawString(lines1.get(i), leftBarSize + 140, yValue1stDef);
+                                    yValue1stDef += 13;
+                                }
+                            }
+                            else {
+                                for (int i = 0; i < lines1.size(); i++) { // for (int i = 0; i < lines1.size(); i++) {
+                                    g.drawString(lines1.get(i), leftBarSize + 140, yValue1stDef);
+                                    yValue1stDef += 13;
+                                }
+                            }
+                            yValue1stDef = topBarHeight + 90; //increase by 23 each time
+                            ArrayList<String> linest1 = addLinesToString(32, testQuestions.get(correctMatching[0]-1).getTerm());
+                            if(linest1.size() > 4) {
+                                for (int i = 0; i < 4; i++) { // for (int i = 0; i < lines1.size(); i++) {
+                                    g.drawString(linest1.get(i), leftBarSize + 430, yValue1stDef);
+                                    yValue1stDef += 13;
+                                }
+                            }
+                            else {
+                                for (int i = 0; i < linest1.size(); i++) { // for (int i = 0; i < lines1.size(); i++) {
+                                    g.drawString(linest1.get(i), leftBarSize + 430, yValue1stDef);
+                                    yValue1stDef += 13;
+                                }
+                            }
+
+                            //g.drawString(testQuestions.get(10).getDef(), leftBarSize + 40, topBarHeight+ 100); //current question is 11
+                        }
+                        if(testQuestions.size() >= 12) {
+                            currentQuestion = 12;
+                            buttons[MATCHINGTESTDEFINITION2].drawButton(g);
+                            buttons[MATCHINGTESTTERM2].setEnabled(true);
+                            buttons[MATCHINGTESTTERM2].drawButton(g);
+                            int yValue2ndDef = topBarHeight + 153; //increase by 23 each time
+                            ArrayList<String> lines2 = addLinesToString(32, testQuestions.get(11).getDef());
+                            if(lines2.size() > 4) {
+                                for (int i = 0; i < 4; i++) { //for (int i = 0; i < lines2.size(); i++) {
+                                    g.drawString(lines2.get(i), leftBarSize + 140, yValue2ndDef);
+                                    yValue2ndDef += 13;
+                                }
+                            }
+                            else {
+                                for (int i = 0; i < lines2.size(); i++) { //for (int i = 0; i < lines2.size(); i++) {
+                                    g.drawString(lines2.get(i), leftBarSize + 140, yValue2ndDef);
+                                    yValue2ndDef += 13;
+                                }
+                            }
+                            //g.drawString(testQuestions.get(11).getDef(), leftBarSize + 40, topBarHeight+ 100); //current question is 12
+                            yValue2ndDef = topBarHeight + 153; //increase by 23 each time
+                            ArrayList<String> linest2 = addLinesToString(32, testQuestions.get(correctMatching[1]-1).getTerm());
+                            if(linest2.size() > 4) {
+                                for (int i = 0; i < 4; i++) { // for (int i = 0; i < lines1.size(); i++) {
+                                    g.drawString(linest2.get(i), leftBarSize + 430, yValue2ndDef);
+                                    yValue2ndDef += 13;
+                                }
+                            }
+                            else {
+                                for (int i = 0; i < linest2.size(); i++) { // for (int i = 0; i < lines1.size(); i++) {
+                                    g.drawString(linest2.get(i), leftBarSize + 430, yValue2ndDef);
+                                    yValue2ndDef += 13;
+                                }
+                            }
+                        }
+                        if(testQuestions.size() >= 13) {
+                            currentQuestion = 13;
+                            buttons[MATCHINGTESTDEFINITION3].drawButton(g);
+                            buttons[MATCHINGTESTTERM3].setEnabled(true);
+                            buttons[MATCHINGTESTTERM3].drawButton(g);
+                            int yValue3rdDef = topBarHeight + 219; //increase by 23 each time
+                            ArrayList<String> lines3 = addLinesToString(32, testQuestions.get(12).getDef());
+                            if(lines3.size() > 4) {
+                                for (int i = 0; i < 4; i++) { // for (int i = 0; i < lines3.size(); i++) {
+                                    g.drawString(lines3.get(i), leftBarSize + 140, yValue3rdDef);
+                                    yValue3rdDef += 13;
+                                }
+                            }
+                            else {
+                                for (int i = 0; i < lines3.size(); i++) { // for (int i = 0; i < lines3.size(); i++) {
+                                    g.drawString(lines3.get(i), leftBarSize + 140, yValue3rdDef);
+                                    yValue3rdDef += 13;
+                                }
+                            }
+                            //g.drawString(testQuestions.get(12).getDef(), leftBarSize + 40, topBarHeight+ 100); //current question is 13
+                            yValue3rdDef = topBarHeight + 219; //increase by 23 each time
+                            ArrayList<String> linest3 = addLinesToString(32, testQuestions.get(correctMatching[2]-1).getTerm());
+                            if(linest3.size() > 4) {
+                                for (int i = 0; i < 4; i++) { // for (int i = 0; i < lines1.size(); i++) {
+                                    g.drawString(linest3.get(i), leftBarSize + 430, yValue3rdDef);
+                                    yValue3rdDef += 13;
+                                }
+                            }
+                            else {
+                                for (int i = 0; i < linest3.size(); i++) { // for (int i = 0; i < lines1.size(); i++) {
+                                    g.drawString(linest3.get(i), leftBarSize + 430, yValue3rdDef);
+                                    yValue3rdDef += 13;
+                                }
+                            }
+                        }
+                        if(testQuestions.size() >= 14) {
+                            currentQuestion = 14;
+                            buttons[MATCHINGTESTDEFINITION4].drawButton(g);
+                            buttons[MATCHINGTESTTERM4].setEnabled(true);
+                            buttons[MATCHINGTESTTERM4].drawButton(g);
+                            int yValue4thDef = topBarHeight + 286; //increase by 23 each time
+                            ArrayList<String> lines4 = addLinesToString(32, testQuestions.get(13).getDef());
+                            if(lines4.size() > 4) {
+                                for (int i = 0; i < 4; i++) { //for (int i = 0; i < lines4.size(); i++) {
+                                    g.drawString(lines4.get(i), leftBarSize + 140, yValue4thDef);
+                                    yValue4thDef += 13;
+                                }
+                            }
+                            else {
+                                for (int i = 0; i < lines4.size(); i++) { //for (int i = 0; i < lines4.size(); i++) {
+                                    g.drawString(lines4.get(i), leftBarSize + 140, yValue4thDef);
+                                    yValue4thDef += 13;
+                                }
+                            }
+                            //g.drawString(testQuestions.get(13).getDef(), leftBarSize + 40, topBarHeight+ 100); //current question is 14
+                            yValue4thDef = topBarHeight + 286; //increase by 23 each time
+                            ArrayList<String> linest4 = addLinesToString(32, testQuestions.get(correctMatching[3]-1).getTerm());
+                            if(linest4.size() > 4) {
+                                for (int i = 0; i < 4; i++) { // for (int i = 0; i < lines1.size(); i++) {
+                                    g.drawString(linest4.get(i), leftBarSize + 430, yValue4thDef);
+                                    yValue4thDef += 13;
+                                }
+                            }
+                            else {
+                                for (int i = 0; i < linest4.size(); i++) { // for (int i = 0; i < lines1.size(); i++) {
+                                    g.drawString(linest4.get(i), leftBarSize + 430, yValue4thDef);
+                                    yValue4thDef += 13;
+                                }
+                            }
+                        }
+                        if(testQuestions.size() >= 15) {
+                            currentQuestion = 15;
+                            buttons[MATCHINGTESTDEFINITION5].drawButton(g);
+                            buttons[MATCHINGTESTTERM5].setEnabled(true);
+                            buttons[MATCHINGTESTTERM5].drawButton(g);
+                            int yValue5thDef = topBarHeight + 350; //increase by 23 each time
+                            ArrayList<String> lines5 = addLinesToString(32, testQuestions.get(14).getDef());
+                            if(lines5.size() > 4) {
+                                for (int i = 0; i < 4; i++) { //for (int i = 0; i < lines5.size(); i++) {
+                                    g.drawString(lines5.get(i), leftBarSize + 140, yValue5thDef);
+                                    yValue5thDef += 13;
+                                }
+                            }
+                            else
+                            {
+                                for (int i = 0; i < lines5.size(); i++) { //for (int i = 0; i < lines5.size(); i++) {
+                                    g.drawString(lines5.get(i), leftBarSize + 140, yValue5thDef);
+                                    yValue5thDef += 13;
+                                }
+                            }
+                            //g.drawString(testQuestions.get(14).getDef(), leftBarSize + 40, topBarHeight+ 100); //current question is 15
+                            yValue5thDef = topBarHeight + 350; //increase by 23 each time
+                            ArrayList<String> linest5 = addLinesToString(32, testQuestions.get(correctMatching[4]-1).getTerm());
+                            if(linest5.size() > 4) {
+                                for (int i = 0; i < 4; i++) { // for (int i = 0; i < lines1.size(); i++) {
+                                    g.drawString(linest5.get(i), leftBarSize + 430, yValue5thDef);
+                                    yValue5thDef += 13;
+                                }
+                            }
+                            else {
+                                for (int i = 0; i < linest5.size(); i++) { // for (int i = 0; i < lines1.size(); i++) {
+                                    g.drawString(linest5.get(i), leftBarSize + 430, yValue5thDef);
+                                    yValue5thDef += 13;
+                                }
+                            }
+                        }
+
+                        if(termClicked == true && termMouseX != -1 && termMouseY != -1)
+                        g.drawLine(termMouseX, termMouseY, mouseX, mouseY);
+
+                        if(termClicked == true)
+                        {
+                            buttons[MATCHINGTESTTERM1].setEnabled(false);
+                            buttons[MATCHINGTESTTERM2].setEnabled(false);
+                            buttons[MATCHINGTESTTERM3].setEnabled(false);
+                            buttons[MATCHINGTESTTERM4].setEnabled(false);
+                            buttons[MATCHINGTESTTERM5].setEnabled(false);
+                            buttons[MATCHINGTESTDEFINITION1].setEnabled(true);
+                            buttons[MATCHINGTESTDEFINITION2].setEnabled(true);
+                            buttons[MATCHINGTESTDEFINITION3].setEnabled(true);
+                            buttons[MATCHINGTESTDEFINITION4].setEnabled(true);
+                            buttons[MATCHINGTESTDEFINITION5].setEnabled(true);
+                        }
+                        else
+                        {
+                            buttons[MATCHINGTESTTERM1].setEnabled(true);
+                            buttons[MATCHINGTESTTERM2].setEnabled(true);
+                            buttons[MATCHINGTESTTERM3].setEnabled(true);
+                            buttons[MATCHINGTESTTERM4].setEnabled(true);
+                            buttons[MATCHINGTESTTERM5].setEnabled(true);
+                            buttons[MATCHINGTESTDEFINITION1].setEnabled(false);
+                            buttons[MATCHINGTESTDEFINITION2].setEnabled(false);
+                            buttons[MATCHINGTESTDEFINITION3].setEnabled(false);
+                            buttons[MATCHINGTESTDEFINITION4].setEnabled(false);
+                            buttons[MATCHINGTESTDEFINITION5].setEnabled(false);
+                        }
+
+                        for(int i = 0; i<userMatched.length; i++) //we have already used this term or definition. We should not be able to use it again
+                        {
+                            if(termButtonsClicked[0] == true)
+                                buttons[MATCHINGTESTTERM1].setEnabled(false);
+                            if(termButtonsClicked[1] == true)
+                                buttons[MATCHINGTESTTERM2].setEnabled(false);
+                            if(termButtonsClicked[2] == true)
+                                buttons[MATCHINGTESTTERM3].setEnabled(false);
+                            if(termButtonsClicked[3] == true)
+                                buttons[MATCHINGTESTTERM4].setEnabled(false);
+                            if(termButtonsClicked[4] == true)
+                                buttons[MATCHINGTESTTERM5].setEnabled(false);
+                            if(i == 0 && userMatched[i] > 0) //def button 1
+                                buttons[MATCHINGTESTDEFINITION1].setEnabled(false);
+                            if(i == 1 && userMatched[i] > 0) //def button 2
+                                buttons[MATCHINGTESTDEFINITION2].setEnabled(false);
+                            if(i == 2 && userMatched[i] > 0) //def button 3
+                                buttons[MATCHINGTESTDEFINITION3].setEnabled(false);
+                            if(i == 3 && userMatched[i] > 0) //def button 4
+                                buttons[MATCHINGTESTDEFINITION4].setEnabled(false);
+                            if(i == 4 && userMatched[i] > 0) //def button 5
+                                buttons[MATCHINGTESTDEFINITION5].setEnabled(false);
+                        }
+
+                        for(int j = 0; j<drawLinesHere[0].length; j++) {
+                            if (drawLinesHere[3][j] != -1) {
+                                g.drawLine(drawLinesHere[0][j], drawLinesHere[1][j], drawLinesHere[2][j], drawLinesHere[3][j]);
+                            }
+                        }
+
+                        if(numberOfLinesDrawn >= 1)
+                        {
+                          question11Answered = true;
+                        }
+                        if(numberOfLinesDrawn >=2)
+                        {
+                            question12Answered = true;
+                        }
+                        if(numberOfLinesDrawn >=3)
+                        {
+                            question13Answered = true;
+                        }
+                        if(numberOfLinesDrawn >=4)
+                        {
+                            question14Answered = true;
+                        }
+                        if(numberOfLinesDrawn == 5)
+                        {
+                            question15Answered = true;
+                        }
+
 
                     }
                     //type your answer questions
                     else if(currentQuestion == 16 || currentQuestion == 17 || currentQuestion == 18 || currentQuestion == 19 || currentQuestion == 20)
                     {
-
+                        drawAnswersForTypeYourAnswerQuestions(g);
                     }
                 }
+            }
+
+            if(testSubmittedDisplay == true)
+            {
+                g.setColor(Color.BLACK);
+                g.setFont(new Font("Helvetica", Font.BOLD, 22));
+                g.drawString("Score:", 410, 220);
+                g.setFont(new Font("Helvetica", Font.PLAIN, 22));
+                g.drawString("" + getTestScore() + "/" + testQuestions.size(), 410, 245);
+                //testing purposes
+                g.drawString("" + correctMatching[0], 410, 300);
+                g.drawString("" + correctMatching[1], 440, 300);
+                g.drawString("" + correctMatching[2], 470, 300);
+                g.drawString("" + correctMatching[3], 500, 300);
+                g.drawString("" + correctMatching[4], 530, 300);
+
+                g.drawString("" + userMatched[0], 410, 320);
+                g.drawString("" + userMatched[1], 440, 320);
+                g.drawString("" + userMatched[2], 470, 320);
+                g.drawString("" + userMatched[3], 500, 320);
+                g.drawString("" + userMatched[4], 530, 320);
             }
 
             if(learnDisplay == true)
@@ -1403,19 +1599,560 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
         b.setVisible(false);
     }
 
+    public void randomizeMatchingTerms(int numberOfMatchingQuestions)
+    {
+        int firstIndex = 0;
+        int secondIndex = 0;
+
+        int current;
+
+        for(int j = 0; j<50; j++) //mix up the flashcards of copyOfDeck for randomness!
+        {
+            firstIndex = (int)(Math.random()*(numberOfMatchingQuestions));
+            secondIndex = (int)(Math.random()*(numberOfMatchingQuestions));
+            current = correctMatching[firstIndex];
+            correctMatching[firstIndex] = correctMatching[secondIndex];
+            correctMatching[secondIndex] = current;
+        }
+
+//        for(int h = 0; h)
+//        {
+//            termButtonWithQuestionIndex = correctMatching;
+//        }
+    }
+
+    /** changes bubbles to show the user which questions they have answered
+     *
+     */
+    public void questionsAnsweredBubbles(Graphics g)
+    {
+        //shows whether the user has answered question 1 or not
+        if(question1Answered == true && deck != null && deck.size()>= 1) {
+            g.drawImage(answerBubble2.getImage(), leftBarSize + 10, topBarHeight + 35, 30, 30, null);
+            g.setFont(new Font("Helvetica", Font.BOLD, 15));
+            g.drawString("1", leftBarSize + 20, topBarHeight + 55);
+        }
+        else if(deck != null && deck.size()>= 1) {
+            g.drawImage(answerBubble1.getImage(), leftBarSize + 10, topBarHeight + 35, 30, 30, null);
+            g.setFont(new Font("Helvetica", Font.BOLD, 15));
+            g.drawString("1", leftBarSize + 20, topBarHeight + 55);
+        }
+
+        //shows whether the user has answered question 2 or not
+        if(question2Answered == true && deck != null && deck.size()>= 2) {
+            g.drawImage(answerBubble2.getImage(), leftBarSize + 45, topBarHeight + 35, 30, 30, null);
+            g.setFont(new Font("Helvetica", Font.BOLD, 15));
+            g.drawString("2", leftBarSize + 56, topBarHeight + 55);
+        }
+        else if(deck != null && deck.size()>= 2) {
+            g.drawImage(answerBubble1.getImage(), leftBarSize + 45, topBarHeight + 35, 30, 30, null);
+            g.setFont(new Font("Helvetica", Font.BOLD, 15));
+            g.drawString("2", leftBarSize + 56, topBarHeight + 55);
+        }
+
+        if(question3Answered == true && deck != null && deck.size()>= 3) {
+            g.drawImage(answerBubble2.getImage(), leftBarSize + 80, topBarHeight + 35, 30, 30, null);
+            g.setFont(new Font("Helvetica", Font.BOLD, 15));
+            g.drawString("3", leftBarSize + 91, topBarHeight + 55);
+        }
+        else if(deck != null && deck.size()>= 3) {
+            g.drawImage(answerBubble1.getImage(), leftBarSize + 80, topBarHeight + 35, 30, 30, null);
+            g.setFont(new Font("Helvetica", Font.BOLD, 15));
+            g.drawString("3", leftBarSize + 91, topBarHeight + 55);
+        }
+
+        if(question4Answered == true && deck != null && deck.size()>= 4) {
+            g.drawImage(answerBubble2.getImage(), leftBarSize + 115, topBarHeight + 35, 30, 30, null);
+            g.setFont(new Font("Helvetica", Font.BOLD, 15));
+            g.drawString("4", leftBarSize + 126, topBarHeight + 55);
+        }
+        else if(deck != null && deck.size()>= 4) {
+            g.drawImage(answerBubble1.getImage(), leftBarSize + 115, topBarHeight + 35, 30, 30, null);
+            g.setFont(new Font("Helvetica", Font.BOLD, 15));
+            g.drawString("4", leftBarSize + 126, topBarHeight + 55);
+        }
+
+        if(question5Answered == true && deck != null && deck.size()>= 5) {
+            g.drawImage(answerBubble2.getImage(), leftBarSize + 150, topBarHeight + 35, 30, 30, null);
+            g.setFont(new Font("Helvetica", Font.BOLD, 15));
+            g.drawString("5", leftBarSize + 161, topBarHeight + 55);
+        }
+        else if(deck != null && deck.size()>= 5) {
+            g.drawImage(answerBubble1.getImage(), leftBarSize + 150, topBarHeight + 35, 30, 30, null);
+            g.setFont(new Font("Helvetica", Font.BOLD, 15));
+            g.drawString("5", leftBarSize + 161, topBarHeight + 55);
+        }
+
+        if(question6Answered == true && deck != null && deck.size()>= 6) {
+            g.drawImage(answerBubble2.getImage(), leftBarSize + 185, topBarHeight + 35, 30, 30, null);
+            g.setFont(new Font("Helvetica", Font.BOLD, 15));
+            g.drawString("6", leftBarSize + 196, topBarHeight + 55);
+        }
+        else if(deck != null && deck.size()>= 6) {
+            g.drawImage(answerBubble1.getImage(), leftBarSize + 185, topBarHeight + 35, 30, 30, null);
+            g.setFont(new Font("Helvetica", Font.BOLD, 15));
+            g.drawString("6", leftBarSize + 196, topBarHeight + 55);
+        }
+
+        if(question7Answered == true && deck != null && deck.size()>= 7) {
+            g.drawImage(answerBubble2.getImage(), leftBarSize + 220, topBarHeight + 35, 30, 30, null);
+            g.setFont(new Font("Helvetica", Font.BOLD, 15));
+            g.drawString("7", leftBarSize + 232, topBarHeight + 55);
+        }
+        else if(deck != null && deck.size()>= 7) {
+            g.drawImage(answerBubble1.getImage(), leftBarSize + 220, topBarHeight + 35, 30, 30, null);
+            g.setFont(new Font("Helvetica", Font.BOLD, 15));
+            g.drawString("7", leftBarSize + 232, topBarHeight + 55);
+        }
+
+        if(question8Answered == true && deck != null && deck.size()>= 8) {
+            g.drawImage(answerBubble2.getImage(), leftBarSize + 255, topBarHeight + 35, 30, 30, null);
+            g.setFont(new Font("Helvetica", Font.BOLD, 15));
+            g.drawString("8", leftBarSize + 266, topBarHeight + 55);
+        }
+        else if(deck != null && deck.size()>= 8) {
+            g.drawImage(answerBubble1.getImage(), leftBarSize + 255, topBarHeight + 35, 30, 30, null);
+            g.setFont(new Font("Helvetica", Font.BOLD, 15));
+            g.drawString("8", leftBarSize + 266, topBarHeight + 55);
+        }
+
+        if(question9Answered == true && deck != null && deck.size()>= 9) {
+            g.drawImage(answerBubble2.getImage(), leftBarSize + 290, topBarHeight + 35, 30, 30, null);
+            g.setFont(new Font("Helvetica", Font.BOLD, 15));
+            g.drawString("9", leftBarSize + 301, topBarHeight + 55);
+        }
+        else if(deck != null && deck.size()>= 9) {
+            g.drawImage(answerBubble1.getImage(), leftBarSize + 290, topBarHeight + 35, 30, 30, null);
+            g.setFont(new Font("Helvetica", Font.BOLD, 15));
+            g.drawString("9", leftBarSize + 301, topBarHeight + 55);
+        }
+
+        if(question10Answered == true && deck != null && deck.size()>= 10) {
+            g.drawImage(answerBubble2.getImage(), leftBarSize + 325, topBarHeight + 35, 30, 30, null);
+            g.setFont(new Font("Helvetica", Font.BOLD, 15));
+            g.drawString("10", leftBarSize + 332, topBarHeight + 55);
+        }
+        else if(deck != null && deck.size()>= 10) {
+            g.drawImage(answerBubble1.getImage(), leftBarSize + 325, topBarHeight + 35, 30, 30, null);
+            g.setFont(new Font("Helvetica", Font.BOLD, 15));
+            g.drawString("10", leftBarSize + 332, topBarHeight + 55);
+        }
+
+        if(question11Answered == true && deck != null && deck.size()>= 11) {
+            g.drawImage(answerBubble2.getImage(), leftBarSize + 360, topBarHeight + 35, 30, 30, null);
+            g.setFont(new Font("Helvetica", Font.BOLD, 15));
+            g.drawString("11", leftBarSize + 367, topBarHeight + 55);
+        }
+        else if(deck != null && deck.size()>= 11) {
+            g.drawImage(answerBubble1.getImage(), leftBarSize + 360, topBarHeight + 35, 30, 30, null);
+            g.setFont(new Font("Helvetica", Font.BOLD, 15));
+            g.drawString("11", leftBarSize + 367, topBarHeight + 55);
+        }
+
+        if(question12Answered == true && deck != null && deck.size()>= 12) {
+            g.drawImage(answerBubble2.getImage(), leftBarSize + 395, topBarHeight + 35, 30, 30, null);
+            g.setFont(new Font("Helvetica", Font.BOLD, 15));
+            g.drawString("12", leftBarSize + 402, topBarHeight + 55);
+        }
+        else if(deck != null && deck.size()>= 12) {
+            g.drawImage(answerBubble1.getImage(), leftBarSize + 395, topBarHeight + 35, 30, 30, null);
+            g.setFont(new Font("Helvetica", Font.BOLD, 15));
+            g.drawString("12", leftBarSize + 402, topBarHeight + 55);
+        }
+
+        if(question13Answered == true && deck != null && deck.size()>= 13) {
+            g.drawImage(answerBubble2.getImage(), leftBarSize + 430, topBarHeight + 35, 30, 30, null);
+            g.setFont(new Font("Helvetica", Font.BOLD, 15));
+            g.drawString("13", leftBarSize + 437, topBarHeight + 55);
+        }
+        else if(deck != null && deck.size()>= 13) {
+            g.drawImage(answerBubble1.getImage(), leftBarSize + 430, topBarHeight + 35, 30, 30, null);
+            g.setFont(new Font("Helvetica", Font.BOLD, 15));
+            g.drawString("13", leftBarSize + 437, topBarHeight + 55);
+        }
+
+        if(question14Answered == true && deck != null && deck.size()>= 14) {
+            g.drawImage(answerBubble2.getImage(), leftBarSize + 465, topBarHeight + 35, 30, 30, null);
+            g.setFont(new Font("Helvetica", Font.BOLD, 15));
+            g.drawString("14", leftBarSize + 472, topBarHeight + 55);
+        }
+        else if(deck != null && deck.size()>= 14) {
+            g.drawImage(answerBubble1.getImage(), leftBarSize + 465, topBarHeight + 35, 30, 30, null);
+            g.setFont(new Font("Helvetica", Font.BOLD, 15));
+            g.drawString("14", leftBarSize + 472, topBarHeight + 55);
+        }
+
+        if(question15Answered == true && deck != null && deck.size()>= 15) {
+            g.drawImage(answerBubble2.getImage(), leftBarSize + 500, topBarHeight + 35, 30, 30, null);
+            g.setFont(new Font("Helvetica", Font.BOLD, 15));
+            g.drawString("15", leftBarSize + 507, topBarHeight + 55);
+        }
+        else if(deck != null && deck.size()>= 15) {
+            g.drawImage(answerBubble1.getImage(), leftBarSize + 500, topBarHeight + 35, 30, 30, null);
+            g.setFont(new Font("Helvetica", Font.BOLD, 15));
+            g.drawString("15", leftBarSize + 507, topBarHeight + 55);
+        }
+
+        if(question16Answered == true && deck != null && deck.size()>= 16) {
+            g.drawImage(answerBubble2.getImage(), leftBarSize + 535, topBarHeight + 35, 30, 30, null);
+            g.setFont(new Font("Helvetica", Font.BOLD, 15));
+            g.drawString("16", leftBarSize + 541, topBarHeight + 55);
+        }
+        else if(deck != null && deck.size()>= 16) {
+            g.drawImage(answerBubble1.getImage(), leftBarSize + 535, topBarHeight + 35, 30, 30, null);
+            g.setFont(new Font("Helvetica", Font.BOLD, 15));
+            g.drawString("16", leftBarSize + 541, topBarHeight + 55);
+        }
+
+        if(question17Answered == true && deck != null && deck.size()>= 17) {
+            g.drawImage(answerBubble2.getImage(), leftBarSize + 570, topBarHeight + 35, 30, 30, null);
+            g.setFont(new Font("Helvetica", Font.BOLD, 15));
+            g.drawString("17", leftBarSize + 577, topBarHeight + 55);
+        }
+        else if(deck != null && deck.size()>= 17) {
+            g.drawImage(answerBubble1.getImage(), leftBarSize + 570, topBarHeight + 35, 30, 30, null);
+            g.setFont(new Font("Helvetica", Font.BOLD, 15));
+            g.drawString("17", leftBarSize + 577, topBarHeight + 55);
+        }
+
+        if(question18Answered == true && deck != null && deck.size()>= 18) {
+            g.drawImage(answerBubble2.getImage(), leftBarSize + 605, topBarHeight + 35, 30, 30, null);
+            g.setFont(new Font("Helvetica", Font.BOLD, 15));
+            g.drawString("18", leftBarSize + 612, topBarHeight + 55);
+        }
+        else if(deck != null && deck.size()>= 18) {
+            g.drawImage(answerBubble1.getImage(), leftBarSize + 605, topBarHeight + 35, 30, 30, null);
+            g.setFont(new Font("Helvetica", Font.BOLD, 15));
+            g.drawString("18", leftBarSize + 612, topBarHeight + 55);
+        }
+
+        if(question19Answered == true && deck != null && deck.size()>= 19) {
+            g.drawImage(answerBubble2.getImage(), leftBarSize + 640, topBarHeight + 35, 30, 30, null);
+            g.setFont(new Font("Helvetica", Font.BOLD, 15));
+            g.drawString("19", leftBarSize + 647, topBarHeight + 55);
+        }
+        else if(deck != null && deck.size()>= 19) {
+            g.drawImage(answerBubble1.getImage(), leftBarSize + 640, topBarHeight + 35, 30, 30, null);
+            g.setFont(new Font("Helvetica", Font.BOLD, 15));
+            g.drawString("19", leftBarSize + 647, topBarHeight + 55);
+        }
+
+        if(question20Answered == true && deck != null && deck.size()>= 20) {
+            g.drawImage(answerBubble2.getImage(), leftBarSize + 675, topBarHeight + 35, 30, 30, null);
+            g.setFont(new Font("Helvetica", Font.BOLD, 15));
+            g.drawString("20", leftBarSize + 682, topBarHeight + 55);
+        }
+        else if(deck != null && deck.size()>= 20) {
+            g.drawImage(answerBubble1.getImage(), leftBarSize + 675, topBarHeight + 35, 30, 30, null);
+            g.setFont(new Font("Helvetica", Font.BOLD, 15));
+            g.drawString("20", leftBarSize + 682, topBarHeight + 55);
+        }
+    }
+
+    public void showTermAndDefinition(Graphics g)
+    {
+        //display term
+        g.setFont(new Font("Helvetica", Font.BOLD, 25));
+        g.drawString("Term:", leftBarSize + 10, topBarHeight + 100);
+        g.setFont(new Font("Helvetica", Font.PLAIN, 22));
+        g.drawString(testQuestions.get(currentQuestion-1).getTerm(), leftBarSize + 10, topBarHeight+ 130);
+        //display definition
+        g.setFont(new Font("Helvetica", Font.BOLD, 25));
+        g.drawString("Definition:", leftBarSize + 380, topBarHeight + 100);
+        g.setFont(new Font("Helvetica", Font.PLAIN, 22));
+        int yVal = topBarHeight + 130; //increase by 30 each time
+
+        if(currentQuestion == 1 && trueOrFalse1 == 0) { //show true definition
+            ArrayList<String> linesforDefinition = addLinesToString(40, testQuestions.get(currentQuestion - 1).getDef());
+            for (int i = 0; i < linesforDefinition.size(); i++) {
+                g.drawString(linesforDefinition.get(i), leftBarSize + 380, yVal);
+                yVal += 30;
+            }
+        }
+        else if(currentQuestion == 1 && trueOrFalse1 == 1) { //show false definition
+            ArrayList<String> linesforDefinition = addLinesToString(40, testQuestions.get(trueFalseWrongAnswer1).getDef());
+            for (int i = 0; i < linesforDefinition.size(); i++) {
+                g.drawString(linesforDefinition.get(i), leftBarSize + 380, yVal);
+                yVal += 30;
+            }
+        }
+        if(currentQuestion == 2 && trueOrFalse2 == 0) { //show true definition
+            ArrayList<String> linesforDefinition = addLinesToString(40, testQuestions.get(currentQuestion - 1).getDef());
+            for (int i = 0; i < linesforDefinition.size(); i++) {
+                g.drawString(linesforDefinition.get(i), leftBarSize + 380, yVal);
+                yVal += 30;
+            }
+        }
+        else if(currentQuestion == 2 && trueOrFalse2 == 1) { //show false definition
+            ArrayList<String> linesforDefinition = addLinesToString(40, testQuestions.get(trueFalseWrongAnswer2).getDef());
+            for (int i = 0; i < linesforDefinition.size(); i++) {
+                g.drawString(linesforDefinition.get(i), leftBarSize + 380, yVal);
+                yVal += 30;
+            }
+        }
+        if(currentQuestion == 3 && trueOrFalse3 == 0) { //show true definition
+            ArrayList<String> linesforDefinition = addLinesToString(40, testQuestions.get(currentQuestion - 1).getDef());
+            for (int i = 0; i < linesforDefinition.size(); i++) {
+                g.drawString(linesforDefinition.get(i), leftBarSize + 380, yVal);
+                yVal += 30;
+            }
+        }
+        else if(currentQuestion == 3 && trueOrFalse3 == 1) { //show false definition
+            ArrayList<String> linesforDefinition = addLinesToString(40, testQuestions.get(trueFalseWrongAnswer3).getDef());
+            for (int i = 0; i < linesforDefinition.size(); i++) {
+                g.drawString(linesforDefinition.get(i), leftBarSize + 380, yVal);
+                yVal += 30;
+            }
+        }
+        if(currentQuestion == 4 && trueOrFalse4 == 0) { //show true definition
+            ArrayList<String> linesforDefinition = addLinesToString(40, testQuestions.get(currentQuestion - 1).getDef());
+            for (int i = 0; i < linesforDefinition.size(); i++) {
+                g.drawString(linesforDefinition.get(i), leftBarSize + 380, yVal);
+                yVal += 30;
+            }
+        }
+        else if(currentQuestion == 4 && trueOrFalse4 == 1){ //show false definition
+            ArrayList<String> linesforDefinition = addLinesToString(40, testQuestions.get(trueFalseWrongAnswer4).getDef());
+            for (int i = 0; i < linesforDefinition.size(); i++) {
+                g.drawString(linesforDefinition.get(i), leftBarSize + 380, yVal);
+                yVal += 30;
+            }
+        }
+        if(currentQuestion == 5 && trueOrFalse5 == 0) { //show true definition
+            ArrayList<String> linesforDefinition = addLinesToString(40, testQuestions.get(currentQuestion - 1).getDef());
+            for (int i = 0; i < linesforDefinition.size(); i++) {
+                g.drawString(linesforDefinition.get(i), leftBarSize + 380, yVal);
+                yVal += 30;
+            }
+        }
+        else if(currentQuestion == 5 && trueOrFalse5 == 1) { //show false definition
+            ArrayList<String> linesforDefinition = addLinesToString(40, testQuestions.get(trueFalseWrongAnswer5).getDef());
+            for (int i = 0; i < linesforDefinition.size(); i++) {
+                g.drawString(linesforDefinition.get(i), leftBarSize + 380, yVal);
+                yVal += 30;
+            }
+        }
+    }
+
+    public void drawAnswersForMCQ(Graphics g)
+    {
+        int yVal = topBarHeight + 130; //increase by 30 each time
+
+            g.setFont(new Font("Helvetica", Font.BOLD, 25));
+            g.drawString("Definition:", leftBarSize + 10, topBarHeight + 100);
+            g.setFont(new Font("Helvetica", Font.PLAIN, 22));
+            //g.drawString(testQuestions.get(currentQuestion-1).getTerm(), leftBarSize + 10, topBarHeight+ 130);
+            ArrayList<String> linesforDefinition = addLinesToString(75, testQuestions.get(currentQuestion - 1).getDef());
+            for (int i = 0; i < linesforDefinition.size(); i++) {
+                g.drawString(linesforDefinition.get(i), leftBarSize + 10, yVal);
+                yVal += 30;
+                g.setFont(new Font("Helvetica", Font.PLAIN, 22));
+
+                g.setFont(new Font("Helvetica", Font.BOLD, 25));
+                g.drawString("Term:", leftBarSize + 125, topBarHeight + 285);
+                g.setFont(new Font("Helvetica", Font.PLAIN, 22));
+            }
+
+                if(currentQuestion == 6) {
+                    if (correctMultipleChoice1 == 1) {
+                        g.drawString(testQuestions.get(currentQuestion - 1).getTerm(), 330, 390); //A is correct
+                        g.drawString(deck.get(randomAnswersMCQ1[1]).getTerm(), 590, 390); //B
+                        g.drawString(deck.get(randomAnswersMCQ1[2]).getTerm(), 330, 465); //C
+                        g.drawString(deck.get(randomAnswersMCQ1[3]).getTerm(), 590, 465); //D
+                    } else if (correctMultipleChoice1 == 2) {
+                        g.drawString(deck.get(randomAnswersMCQ1[0]).getTerm(), 330, 390); //A
+                        g.drawString(testQuestions.get(currentQuestion - 1).getTerm(), 590, 390); //B is correct
+                        g.drawString(deck.get(randomAnswersMCQ1[2]).getTerm(), 330, 465); //C
+                        g.drawString(deck.get(randomAnswersMCQ1[3]).getTerm(), 590, 465); //D
+                    } else if (correctMultipleChoice1 == 3) {
+                        g.drawString(deck.get(randomAnswersMCQ1[0]).getTerm(), 330, 390); //A
+                        g.drawString(deck.get(randomAnswersMCQ1[1]).getTerm(), 590, 390); //B
+                        g.drawString(testQuestions.get(currentQuestion - 1).getTerm(), 330, 465); //C is correct
+                        g.drawString(deck.get(randomAnswersMCQ1[3]).getTerm(), 590, 465);
+                    } else //if(correctMultipleChoice1 == 4)
+                    {
+                        g.drawString(deck.get(randomAnswersMCQ1[0]).getTerm(), 330, 390); //A
+                        g.drawString(deck.get(randomAnswersMCQ1[1]).getTerm(), 590, 390); //B
+                        g.drawString(deck.get(randomAnswersMCQ1[2]).getTerm(), 330, 465); //C
+                        g.drawString(testQuestions.get(currentQuestion - 1).getTerm(), 590, 465); //D is correct
+                    }
+                }
+
+                if(currentQuestion == 7) {
+                    if (correctMultipleChoice2 == 1) {
+                        g.drawString(testQuestions.get(currentQuestion - 1).getTerm(), 330, 390); //A is correct
+                        g.drawString(deck.get(randomAnswersMCQ2[1]).getTerm(), 590, 390); //B
+                        g.drawString(deck.get(randomAnswersMCQ2[2]).getTerm(), 330, 465); //C
+                        g.drawString(deck.get(randomAnswersMCQ2[3]).getTerm(), 590, 465); //D
+                    } else if (correctMultipleChoice2 == 2) {
+                        g.drawString(deck.get(randomAnswersMCQ2[0]).getTerm(), 330, 390); //A
+                        g.drawString(testQuestions.get(currentQuestion - 1).getTerm(), 590, 390); //B is correct
+                        g.drawString(deck.get(randomAnswersMCQ2[2]).getTerm(), 330, 465); //C
+                        g.drawString(deck.get(randomAnswersMCQ2[3]).getTerm(), 590, 465); //D
+                    } else if (correctMultipleChoice2 == 3) {
+                        g.drawString(deck.get(randomAnswersMCQ2[0]).getTerm(), 330, 390); //A
+                        g.drawString(deck.get(randomAnswersMCQ2[1]).getTerm(), 590, 390); //B
+                        g.drawString(testQuestions.get(currentQuestion - 1).getTerm(), 330, 465); //C is correct
+                        g.drawString(deck.get(randomAnswersMCQ2[3]).getTerm(), 590, 465); //D
+                    } else //if(correctMultipleChoice2 == 4)
+                    {
+                        g.drawString(deck.get(randomAnswersMCQ2[0]).getTerm(), 330, 390); //A
+                        g.drawString(deck.get(randomAnswersMCQ2[1]).getTerm(), 590, 390); //B
+                        g.drawString(deck.get(randomAnswersMCQ2[2]).getTerm(), 330, 465); //C
+                        g.drawString(testQuestions.get(currentQuestion - 1).getTerm(), 590, 465); //D is correct
+                    }
+                }
+
+                if(currentQuestion == 8) {
+                    if (correctMultipleChoice3 == 1) {
+                        g.drawString(testQuestions.get(currentQuestion - 1).getTerm(), 330, 390); //A is correct
+                        g.drawString(deck.get(randomAnswersMCQ3[1]).getTerm(), 590, 390); //B
+                        g.drawString(deck.get(randomAnswersMCQ3[2]).getTerm(), 330, 465); //C
+                        g.drawString(deck.get(randomAnswersMCQ3[3]).getTerm(), 590, 465); //D
+                    } else if (correctMultipleChoice3 == 2) {
+                        g.drawString(deck.get(randomAnswersMCQ3[0]).getTerm(), 330, 390);
+                        g.drawString(testQuestions.get(currentQuestion - 1).getTerm(), 590, 390); //B is correct
+                        g.drawString(deck.get(randomAnswersMCQ3[2]).getTerm(), 330, 465);
+                        g.drawString(deck.get(randomAnswersMCQ3[3]).getTerm(), 590, 465);
+                    } else if (correctMultipleChoice3 == 3) {
+                        g.drawString(deck.get(randomAnswersMCQ3[0]).getTerm(), 330, 390);
+                        g.drawString(deck.get(randomAnswersMCQ3[1]).getTerm(), 590, 390);
+                        g.drawString(testQuestions.get(currentQuestion - 1).getTerm(), 330, 465); //C is correct
+                        g.drawString(deck.get(randomAnswersMCQ3[3]).getTerm(), 590, 465);
+                    } else //if(correctMultipleChoice3 == 4)
+                    {
+                        g.drawString(deck.get(randomAnswersMCQ3[0]).getTerm(), 330, 390);
+                        g.drawString(deck.get(randomAnswersMCQ3[1]).getTerm(), 590, 390);
+                        g.drawString(deck.get(randomAnswersMCQ3[2]).getTerm(), 330, 465);
+                        g.drawString(testQuestions.get(currentQuestion - 1).getTerm(), 590, 465); //D is correct
+                    }
+                }
+
+                if(currentQuestion == 9) {
+                    if (correctMultipleChoice4 == 1) {
+                        g.drawString(testQuestions.get(currentQuestion - 1).getTerm(), 330, 390); //A is correct
+                        g.drawString(deck.get(randomAnswersMCQ4[1]).getTerm(), 590, 390); //B
+                        g.drawString(deck.get(randomAnswersMCQ4[2]).getTerm(), 330, 465); //C
+                        g.drawString(deck.get(randomAnswersMCQ4[3]).getTerm(), 590, 465); //D
+                    } else if (correctMultipleChoice4 == 2) {
+                        g.drawString(deck.get(randomAnswersMCQ4[0]).getTerm(), 330, 390);
+                        g.drawString(testQuestions.get(currentQuestion - 1).getTerm(), 590, 390); //B is correct
+                        g.drawString(deck.get(randomAnswersMCQ4[2]).getTerm(), 330, 465);
+                        g.drawString(deck.get(randomAnswersMCQ4[3]).getTerm(), 590, 465);
+                    } else if (correctMultipleChoice4 == 3) {
+                        g.drawString(deck.get(randomAnswersMCQ4[0]).getTerm(), 330, 390);
+                        g.drawString(deck.get(randomAnswersMCQ4[1]).getTerm(), 590, 390);
+                        g.drawString(testQuestions.get(currentQuestion - 1).getTerm(), 330, 465); //C is correct
+                        g.drawString(deck.get(randomAnswersMCQ4[3]).getTerm(), 590, 465);
+                    } else //if(correctMultipleChoice4 == 4)
+                    {
+                        g.drawString(deck.get(randomAnswersMCQ4[0]).getTerm(), 330, 390);
+                        g.drawString(deck.get(randomAnswersMCQ4[1]).getTerm(), 590, 390);
+                        g.drawString(deck.get(randomAnswersMCQ4[2]).getTerm(), 330, 465);
+                        g.drawString(testQuestions.get(currentQuestion - 1).getTerm(), 590, 465); //D is correct
+                    }
+                }
+
+                if(currentQuestion == 10) {
+                    if (correctMultipleChoice5 == 1) {
+                        g.drawString(testQuestions.get(currentQuestion - 1).getTerm(), 330, 390); //A is correct
+                        g.drawString(deck.get(randomAnswersMCQ5[1]).getTerm(), 590, 390);
+                        g.drawString(deck.get(randomAnswersMCQ5[2]).getTerm(), 330, 465);
+                        g.drawString(deck.get(randomAnswersMCQ5[3]).getTerm(), 590, 465);
+                    } else if (correctMultipleChoice5 == 2) {
+                        g.drawString(deck.get(randomAnswersMCQ5[0]).getTerm(), 330, 390);
+                        g.drawString(testQuestions.get(currentQuestion - 1).getTerm(), 590, 390); //B is correct
+                        g.drawString(deck.get(randomAnswersMCQ5[2]).getTerm(), 330, 465);
+                        g.drawString(deck.get(randomAnswersMCQ5[3]).getTerm(), 590, 465);
+                    } else if (correctMultipleChoice5 == 3) {
+                        g.drawString(deck.get(randomAnswersMCQ5[0]).getTerm(), 330, 390);
+                        g.drawString(deck.get(randomAnswersMCQ5[1]).getTerm(), 590, 390);
+                        g.drawString(testQuestions.get(currentQuestion - 1).getTerm(), 330, 465); //C is correct
+                        g.drawString(deck.get(randomAnswersMCQ5[3]).getTerm(), 590, 465);
+                    } else //if(correctMultipleChoice5 == 4)
+                    {
+                        g.drawString(deck.get(randomAnswersMCQ5[0]).getTerm(), 330, 390);
+                        g.drawString(deck.get(randomAnswersMCQ5[1]).getTerm(), 590, 390);
+                        g.drawString(deck.get(randomAnswersMCQ5[2]).getTerm(), 330, 465);
+                        g.drawString(testQuestions.get(currentQuestion - 1).getTerm(), 590, 465); //D is correct
+                    }
+                }
+    }
+
+    public void drawAnswersForTypeYourAnswerQuestions(Graphics g) {
+        int yVal = topBarHeight + 130; //increase by 30 each time
+
+        g.setFont(new Font("Helvetica", Font.BOLD, 25));
+        g.drawString("Definition:", leftBarSize + 10, topBarHeight + 100);
+        g.setFont(new Font("Helvetica", Font.PLAIN, 22));
+        //g.drawString(testQuestions.get(currentQuestion-1).getTerm(), leftBarSize + 10, topBarHeight+ 130);
+        ArrayList<String> linesforDefinition = addLinesToString(75, testQuestions.get(currentQuestion - 1).getDef());
+        for (int i = 0; i < linesforDefinition.size(); i++) {
+            g.drawString(linesforDefinition.get(i), leftBarSize + 10, yVal);
+            yVal += 30;
+            g.setFont(new Font("Helvetica", Font.PLAIN, 22));
+
+            g.setFont(new Font("Helvetica", Font.BOLD, 25));
+            g.drawString("Term:", leftBarSize + 125, topBarHeight + 285);
+            g.setFont(new Font("Helvetica", Font.PLAIN, 22));
+        }
+       // typeAnswer16.setLocation(400,400);
+        //long, int x, int y, int width, int height
+
+      //  typeAnswer16.setFont();
+    }
+
     public int getTestScore()
     {
         int score = 0;
      if(question1Answered && trueOrFalse1 == 0 && trueFalse1 == true)
          score++;
+        if(question1Answered && trueOrFalse1 == 1 && trueFalse1 == false)
+            score++;
         if(question2Answered && trueOrFalse2 == 0 && trueFalse2 == true)
+            score++;
+        if(question2Answered && trueOrFalse2 == 1 && trueFalse2 == false)
             score++;
         if(question3Answered && trueOrFalse3 == 0 && trueFalse3 == true)
             score++;
+        if(question3Answered && trueOrFalse3 == 1 && trueFalse3 == false)
+            score++;
         if(question4Answered && trueOrFalse4 == 0 && trueFalse4 == true)
+            score++;
+        if(question4Answered && trueOrFalse4 == 1 && trueFalse4 == false)
             score++;
         if(question5Answered && trueOrFalse5 == 0 && trueFalse5 == true)
             score++;
+        if(question5Answered && trueOrFalse5 == 1 && trueFalse5 == false)
+            score++;
+
+        if(question6Answered && correctMultipleChoice1 == chosenAnswerMultipleChoice1)
+            score++;
+        if(question7Answered && correctMultipleChoice2 == chosenAnswerMultipleChoice2)
+            score++;
+        if(question8Answered && correctMultipleChoice3 == chosenAnswerMultipleChoice3)
+            score++;
+        if(question9Answered && correctMultipleChoice4 == chosenAnswerMultipleChoice4)
+            score++;
+        if(question10Answered && correctMultipleChoice5 == chosenAnswerMultipleChoice5)
+            score++;
+
+//        for(int i = 0; i<userMatched.length; i++) //does not work
+//        {
+//            if(userMatched[i] == (correctMatching[i]))
+//                score++;
+//        }
+        if(userMatched[0] == 11)
+            score++;
+        if(userMatched[1] == 12)
+            score++;
+        if(userMatched[2] == 13)
+            score++;
+        if(userMatched[3] == 14)
+            score++;
+        if(userMatched[4] == 15)
+            score++;
+
      return score;
     }
 
@@ -1522,25 +2259,26 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
         boolean equalsAnotherNumber = false;
         Deck copyOfDeck = new Deck();
 
-        if(deck.size()>20)
+        if(deck.size()>20) //chooses random flashcards to use for test and adds them to copyOfDeck
         {
-           for(int i = 0; i<20; i++) {
-               newnumber = (int) (Math.random() * deck.size());
-               for (int k = 0; k < 20; k++) {
-                   if (numbers[k] == newnumber)
-                       equalsAnotherNumber = true;
-               }
-               while (equalsAnotherNumber == true) {
-                   newnumber = (int) (Math.random() * deck.size()); //newnumber gets a new random number
-                   equalsAnotherNumber = false;
-                   for (int j = 0; j < 20; j++) {
-                       if (numbers[j] == newnumber)
-                           equalsAnotherNumber = true;
-                   }
-               }
-           }
+            for(int i = 0; i<numbers.length; i++)
+            {
+                newnumber = (int)(Math.random()*(deck.size()));
+                for(int j = 0; j<numbers.length; j++)
+                {
+                    while(newnumber == numbers[j]) { //we do not want repeats, assign newnumber a new value
+                        newnumber = (int) (Math.random() * (deck.size()));
+                    }
+                }
+                numbers[i] = newnumber;
+            }
+
+            for(int k = 0; k<numbers.length; k++)
+            {
+                copyOfDeck.add(deck.get(numbers[k]));
+            }
         }
-        else
+        else //takes all available flashcards to use for test and adds them to copyOfDeck
         {
             for (int i = 0; i < deck.size(); i++) {
                 copyOfDeck.add(deck.get(i));
@@ -1551,7 +2289,7 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
         int secondIndex = 0;
         Flashcard temp;
 
-        for(int j = 0; j<250; j++)
+        for(int j = 0; j<250; j++) //mix up the flashcards of copyOfDeck for randomness!
         {
             firstIndex = (int)(Math.random()*(copyOfDeck.size()));
             secondIndex = (int)(Math.random()*(copyOfDeck.size()));
@@ -1560,7 +2298,7 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
             copyOfDeck.set(secondIndex, temp);
         }
 
-        for(int k = 0; k<copyOfDeck.size(); k++)
+        for(int k = 0; k<copyOfDeck.size(); k++) //testQuestions gets the mixed up flashcards from copyOfDeck
             testQuestions.add(copyOfDeck.get(k));
     }
 
@@ -1598,6 +2336,92 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
      */
     public void mouseClicked(MouseEvent e)
     {
+        mouseX = e.getX();
+        mouseY = e.getY();
+
+        if(termClicked == true && termButtonClicked > 0 && buttons[MATCHINGTESTDEFINITION1].getShape().contains(mouseX, mouseY) && buttons[MATCHINGTESTDEFINITION1].isEnabled() && numberOfLinesDrawn <5)
+        {
+            drawLinesHere[0][numberOfLinesDrawn] = termMouseX;
+            drawLinesHere[1][numberOfLinesDrawn] = termMouseY;
+            drawLinesHere[2][numberOfLinesDrawn] = mouseX;
+            drawLinesHere[3][numberOfLinesDrawn] = mouseY;
+            numberOfLinesDrawn++;
+            termClicked = false;
+            termMouseX = -1;
+            termMouseY = -1;
+            userMatched[0] = correctMatching[termButtonClicked-1];
+            termButtonsClicked[termButtonClicked - 1] = true;
+            termButtonClicked = 0;
+        }
+        if(termClicked == true && termButtonClicked > 0 && buttons[MATCHINGTESTDEFINITION2].getShape().contains(mouseX, mouseY) && buttons[MATCHINGTESTDEFINITION2].isEnabled() && numberOfLinesDrawn <5)
+        {
+            drawLinesHere[0][numberOfLinesDrawn] = termMouseX;
+            drawLinesHere[1][numberOfLinesDrawn] = termMouseY;
+            drawLinesHere[2][numberOfLinesDrawn] = mouseX;
+            drawLinesHere[3][numberOfLinesDrawn] = mouseY;
+            numberOfLinesDrawn++;
+            termClicked = false;
+            termMouseX = -1;
+            termMouseY = -1;
+            userMatched[1] = correctMatching[termButtonClicked-1];
+            termButtonsClicked[termButtonClicked - 1] = true;
+            termButtonClicked = 0;
+        }
+        if(termClicked == true && termButtonClicked > 0 && buttons[MATCHINGTESTDEFINITION3].getShape().contains(mouseX, mouseY) && buttons[MATCHINGTESTDEFINITION3].isEnabled() && numberOfLinesDrawn <5)
+        {
+            drawLinesHere[0][numberOfLinesDrawn] = termMouseX;
+            drawLinesHere[1][numberOfLinesDrawn] = termMouseY;
+            drawLinesHere[2][numberOfLinesDrawn] = mouseX;
+            drawLinesHere[3][numberOfLinesDrawn] = mouseY;
+            numberOfLinesDrawn++;
+            termClicked = false;
+            termMouseX = -1;
+            termMouseY = -1;
+            userMatched[2] = correctMatching[termButtonClicked-1];
+            termButtonsClicked[termButtonClicked - 1] = true;
+            termButtonClicked = 0;
+        }
+        if(termClicked == true && termButtonClicked > 0 && buttons[MATCHINGTESTDEFINITION4].getShape().contains(mouseX, mouseY) && buttons[MATCHINGTESTDEFINITION4].isEnabled() && numberOfLinesDrawn <5)
+        {
+            drawLinesHere[0][numberOfLinesDrawn] = termMouseX;
+            drawLinesHere[1][numberOfLinesDrawn] = termMouseY;
+            drawLinesHere[2][numberOfLinesDrawn] = mouseX;
+            drawLinesHere[3][numberOfLinesDrawn] = mouseY;
+            numberOfLinesDrawn++;
+            termClicked = false;
+            termMouseX = -1;
+            termMouseY = -1;
+            userMatched[3] = correctMatching[termButtonClicked-1];
+            termButtonsClicked[termButtonClicked - 1] = true;
+            termButtonClicked = 0;
+        }
+        if(termClicked == true && termButtonClicked > 0 && buttons[MATCHINGTESTDEFINITION5].getShape().contains(mouseX, mouseY) && buttons[MATCHINGTESTDEFINITION5].isEnabled() && numberOfLinesDrawn <5)
+        {
+            drawLinesHere[0][numberOfLinesDrawn] = termMouseX;
+            drawLinesHere[1][numberOfLinesDrawn] = termMouseY;
+            drawLinesHere[2][numberOfLinesDrawn] = mouseX;
+            drawLinesHere[3][numberOfLinesDrawn] = mouseY;
+            numberOfLinesDrawn++;
+            termClicked = false;
+            termMouseX = -1;
+            termMouseY = -1;
+            userMatched[4] = correctMatching[termButtonClicked-1];
+            termButtonsClicked[termButtonClicked - 1] = true;
+            termButtonClicked = 0;
+        }
+        if(termClicked == true && !buttons[MATCHINGTESTDEFINITION1].getShape().contains(mouseX, mouseY) && !buttons[MATCHINGTESTDEFINITION2].getShape().contains(mouseX, mouseY) && !buttons[MATCHINGTESTDEFINITION3].getShape().contains(mouseX, mouseY) && !buttons[MATCHINGTESTDEFINITION4].getShape().contains(mouseX, mouseY) && !buttons[MATCHINGTESTDEFINITION5].getShape().contains(mouseX, mouseY))
+        {
+            termClicked = false;
+            termMouseX = -1;
+            termMouseY = -1;
+            termButtonClicked = 0;
+        }
+
+        if(!buttons[MATCHINGTESTTERM1].getShape().contains(mouseX, mouseY) && !buttons[MATCHINGTESTTERM2].getShape().contains(mouseX, mouseY) && !buttons[MATCHINGTESTTERM3].getShape().contains(mouseX, mouseY) && !buttons[MATCHINGTESTTERM4].getShape().contains(mouseX, mouseY) && !buttons[MATCHINGTESTTERM5].getShape().contains(mouseX, mouseY)) {
+            termClicked = false;
+            termButtonClicked = 0;
+        }
+
        // int button = e.getButton();
       /*  if (button == MouseEvent.BUTTON1) {
             if (gameMode == TUTORIALSCREEN) {
@@ -1621,6 +2445,79 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                   else if(b.getTitle().equals("sound"))
                      Sound.click();*/
 
+                   if(b.getTitle().equals("matchingTestTerm1") && b.isEnabled())
+                   {
+//                       buttons[MATCHINGTESTTERM1].setEnabled(false);
+//                       buttons[MATCHINGTESTTERM2].setEnabled(false);
+//                       buttons[MATCHINGTESTTERM3].setEnabled(false);
+//                       buttons[MATCHINGTESTTERM4].setEnabled(false);
+//                       buttons[MATCHINGTESTTERM5].setEnabled(false);
+
+                       termMouseX = mouseX; //use this only for clicking on term buttons
+                       termMouseY = mouseY;
+                       if(termClicked == true)
+                           termClicked = false;
+                       else
+                           termClicked = true;
+
+//                       termClicked = true;
+//                       termMouseX = mouseX; //use this only for clicking on term buttons
+//                       termMouseY = mouseY;
+                       termButtonClicked = 1;
+                   }
+                   if(b.getTitle().equals("matchingTestTerm2") && b.isEnabled())
+                   {
+//                       buttons[MATCHINGTESTTERM1].setEnabled(false);
+//                       buttons[MATCHINGTESTTERM2].setEnabled(false);
+//                       buttons[MATCHINGTESTTERM3].setEnabled(false);
+//                       buttons[MATCHINGTESTTERM4].setEnabled(false);
+//                       buttons[MATCHINGTESTTERM5].setEnabled(false);
+
+                       termMouseX = mouseX; //use this only for clicking on term buttons
+                       termMouseY = mouseY;
+                       if(termClicked == true)
+                           termClicked = false;
+                       else
+                           termClicked = true;
+
+//                       termClicked = true;
+//                       termMouseX = mouseX; //use this only for clicking on term buttons
+//                       termMouseY = mouseY;
+                       termButtonClicked = 2;
+                   }
+                   if(b.getTitle().equals("matchingTestTerm3") && b.isEnabled())
+                   {
+                       termMouseX = mouseX; //use this only for clicking on term buttons
+                       termMouseY = mouseY;
+                       if(termClicked == true)
+                           termClicked = false;
+                       else
+                           termClicked = true;
+
+                       termButtonClicked = 3;
+                   }
+                   if(b.getTitle().equals("matchingTestTerm4") && b.isEnabled())
+                   {
+                       termMouseX = mouseX; //use this only for clicking on term buttons
+                       termMouseY = mouseY;
+                       if(termClicked == true)
+                           termClicked = false;
+                       else
+                           termClicked = true;
+
+                       termButtonClicked = 4;
+                   }
+                   if(b.getTitle().equals("matchingTestTerm5") && b.isEnabled())
+                   {
+                       termMouseX = mouseX; //use this only for clicking on term buttons
+                       termMouseY = mouseY;
+                       if(termClicked == true)
+                           termClicked = false;
+                       else
+                           termClicked = true;
+
+                       termButtonClicked = 5;
+                   }
                    if (b.getTitle().equals("home"))  //when the home button is clicked, take the user back to the home screen
                    {
                        screenMode = HOMESCREEN;
@@ -1702,6 +2599,21 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                        gravityStartDisplay = false;
                        flashcardsDisplay = false;
                        matchingDisplay = false;
+                       testSubmittedDisplay = false;
+
+                       buttons[MATCHINGTESTDEFINITION1].setEnabled(false);
+                       buttons[MATCHINGTESTDEFINITION2].setEnabled(false);
+                       buttons[MATCHINGTESTDEFINITION3].setEnabled(false);
+                       buttons[MATCHINGTESTDEFINITION4].setEnabled(false);
+                       buttons[MATCHINGTESTDEFINITION5].setEnabled(false);
+
+                       for(int i = 0; i<drawLinesHere.length; i++)
+                       {
+                           for(int j = 0; j<drawLinesHere[0].length; j++)
+                           {
+                               drawLinesHere[i][j] = -1;
+                           }
+                       }
 
                        if(deck!= null) {
                            makeTestList();
@@ -1721,6 +2633,15 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                            trueFalseWrongAnswer5 = (int)(Math.random()*testQuestions.size());
                            while(trueFalseWrongAnswer5 == 0)
                                trueFalseWrongAnswer5 = (int)(Math.random()*testQuestions.size());
+                       }
+
+                       if(testQuestions.size() >= 13) {
+                           if(testQuestions.size() == 13)
+                                randomizeMatchingTerms(3);
+                           else if(testQuestions.size() == 14)
+                               randomizeMatchingTerms(4);
+                           else //if(testQuestions.size() >= 15)
+                               randomizeMatchingTerms(5);
                        }
                    }
                    if (b.getTitle().equals("gravity"))
@@ -1753,6 +2674,38 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                        gravityStartDisplay = false;
                        gravityDisplay = false;
                        matchingDisplay = true;
+                   }
+                   if(b.getTitle().equals("resetMatching"))
+                   {
+                       numberOfLinesDrawn = 0;
+                       termClicked = false;
+                       termButtonClicked = 0;
+                       for(int i = 0; i<userMatched.length; i++)
+                       {
+                           userMatched[i] = 0;
+                       }
+                       for(int j = 0; j<drawLinesHere.length; j++)
+                       {
+                           for(int k = 0; k<drawLinesHere[0].length; k++)
+                           {
+                               drawLinesHere[j][k] = 0;
+                           }
+                       }
+                       question11Answered = false;
+                       question12Answered = false;
+                       question13Answered = false;
+                       question14Answered = false;
+                       question15Answered = false;
+                       termButtonsClicked[0] = false;
+                       termButtonsClicked[1] = false;
+                       termButtonsClicked[2] = false;
+                       termButtonsClicked[3] = false;
+                       termButtonsClicked[4] = false;
+                       buttons[MATCHINGTESTTERM1].setEnabled(true);
+                       buttons[MATCHINGTESTTERM2].setEnabled(true);
+                       buttons[MATCHINGTESTTERM3].setEnabled(true);
+                       buttons[MATCHINGTESTTERM4].setEnabled(true);
+                       buttons[MATCHINGTESTTERM5].setEnabled(true);
                    }
                    if(b.getTitle().equals("flashCardFlip"))
                    {
@@ -1815,16 +2768,564 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                            trueFalse5 = false;
                        }
                    }
+                   if(b.getTitle().equals("testmcqA"))
+                   {
+                       if(currentQuestion == 6) {
+                           question6Answered = true;
+                           chosenAnswerMultipleChoice1 = 1;
+                       }
+                       if(currentQuestion == 7){
+                           question7Answered = true;
+                           chosenAnswerMultipleChoice2 = 1;
+                       }
+                       if(currentQuestion == 8){
+                           question8Answered = true;
+                           chosenAnswerMultipleChoice3 = 1;
+                       }
+                       if(currentQuestion == 9){
+                           question9Answered = true;
+                           chosenAnswerMultipleChoice4 = 1;
+                       }
+                       if(currentQuestion == 10){
+                           question10Answered = true;
+                           chosenAnswerMultipleChoice5 = 1;
+                       }
+                   }
+                   if(b.getTitle().equals("testmcqB"))
+                   {
+                       if(currentQuestion == 6) {
+                           question6Answered = true;
+                           chosenAnswerMultipleChoice1 = 2;
+                       }
+                       if(currentQuestion == 7){
+                           question7Answered = true;
+                           chosenAnswerMultipleChoice2 = 2;
+                       }
+                       if(currentQuestion == 8){
+                           question8Answered = true;
+                           chosenAnswerMultipleChoice3 = 2;
+                       }
+                       if(currentQuestion == 9){
+                           question9Answered = true;
+                           chosenAnswerMultipleChoice4 = 2;
+                       }
+                       if(currentQuestion == 10){
+                           question10Answered = true;
+                           chosenAnswerMultipleChoice5 = 2;
+                       }
+                   }
+                   if(b.getTitle().equals("testmcqC"))
+                   {
+                       if(currentQuestion == 6) {
+                           question6Answered = true;
+                           chosenAnswerMultipleChoice1 = 3;
+                       }
+                       if(currentQuestion == 7){
+                           question7Answered = true;
+                           chosenAnswerMultipleChoice2 = 3;
+                       }
+                       if(currentQuestion == 8){
+                           question8Answered = true;
+                           chosenAnswerMultipleChoice3 = 3;
+                       }
+                       if(currentQuestion == 9){
+                           question9Answered = true;
+                           chosenAnswerMultipleChoice4 = 3;
+                       }
+                       if(currentQuestion == 10){
+                           question10Answered = true;
+                           chosenAnswerMultipleChoice5 = 3;
+                       }
+                   }
+                   if(b.getTitle().equals("testmcqD"))
+                   {
+                       if(currentQuestion == 6) {
+                           question6Answered = true;
+                           chosenAnswerMultipleChoice1 = 4;
+                       }
+                       if(currentQuestion == 7){
+                           question7Answered = true;
+                           chosenAnswerMultipleChoice2 = 4;
+                       }
+                       if(currentQuestion == 8){
+                           question8Answered = true;
+                           chosenAnswerMultipleChoice3 = 4;
+                       }
+                       if(currentQuestion == 9){
+                           question9Answered = true;
+                           chosenAnswerMultipleChoice4 = 4;
+                       }
+                       if(currentQuestion == 10){
+                           question10Answered = true;
+                           chosenAnswerMultipleChoice5 = 4;
+                       }
+                   }
                    if(b.getTitle().equals("nextTestQuestion"))
                    {
                        if((deck.size()<= 20 && currentQuestion + 1 <= deck.size()) || (deck.size()> 20 && currentQuestion + 1 <= 20))
                     currentQuestion++;
+
+                       if(currentQuestion == 6 && randomAnswersSelectedMCQ1 == false) {
+                           if (correctMultipleChoice1 == 1) //A is correct
+                           {
+                               randomAnswerB = (int) (Math.random() * (deck.size())); //move this from here to button code so it does not repeat over and over again
+                               while ((deck.get(randomAnswerB).getTerm()).equals(testQuestions.get(currentQuestion - 1).getTerm())) {
+                                   randomAnswerB = (int) (Math.random() * (deck.size()));
+                               }
+
+                               randomAnswerC = (int) (Math.random() * (deck.size()));
+                               while (randomAnswerB == randomAnswerC || (deck.get(randomAnswerC).getTerm()).equals(testQuestions.get(currentQuestion - 1).getTerm())) {
+                                   randomAnswerC = (int) (Math.random() * (deck.size()));
+                               }
+
+                               randomAnswerD = (int) (Math.random() * (deck.size()));
+                               while (randomAnswerD == randomAnswerC || randomAnswerD == randomAnswerB || (deck.get(randomAnswerD).getTerm()).equals(testQuestions.get(currentQuestion - 1).getTerm())) {
+                                   randomAnswerD = (int) (Math.random() * (deck.size()));
+                               }
+                           }
+                           else if(correctMultipleChoice1 == 2) //B is correct
+                           {
+                               randomAnswerA = (int) (Math.random() * (deck.size())); //move this from here to button code so it does not repeat over and over again
+                               while ((deck.get(randomAnswerA).getTerm()).equals(testQuestions.get(currentQuestion - 1).getTerm())) {
+                                   randomAnswerA = (int) (Math.random() * (deck.size()));
+                               }
+
+                               randomAnswerC = (int) (Math.random() * (deck.size()));
+                               while (randomAnswerA == randomAnswerC || (deck.get(randomAnswerC).getTerm()).equals(testQuestions.get(currentQuestion - 1).getTerm())) {
+                                   randomAnswerC = (int) (Math.random() * (deck.size()));
+                               }
+
+                               randomAnswerD = (int) (Math.random() * (deck.size()));
+                               while (randomAnswerD == randomAnswerA || randomAnswerD == randomAnswerC || (deck.get(randomAnswerD).getTerm()).equals(testQuestions.get(currentQuestion - 1).getTerm())) {
+                                   randomAnswerD = (int) (Math.random() * (deck.size()));
+                               }
+                           }
+                           else if(correctMultipleChoice1 == 3) //C is correct
+                           {
+                               randomAnswerA = (int) (Math.random() * (deck.size())); //move this from here to button code so it does not repeat over and over again
+                               while ((deck.get(randomAnswerA).getTerm()).equals(testQuestions.get(currentQuestion - 1).getTerm())) {
+                                   randomAnswerA = (int) (Math.random() * (deck.size()));
+                               }
+
+                               randomAnswerB = (int) (Math.random() * (deck.size()));
+                               while (randomAnswerB == randomAnswerA || (deck.get(randomAnswerB).getTerm()).equals(testQuestions.get(currentQuestion - 1).getTerm())) {
+                                   randomAnswerB = (int) (Math.random() * (deck.size()));
+                               }
+
+                               randomAnswerD = (int) (Math.random() * (deck.size()));
+                               while (randomAnswerD == randomAnswerB || randomAnswerD == randomAnswerA || (deck.get(randomAnswerD).getTerm()).equals(testQuestions.get(currentQuestion - 1).getTerm())) {
+                                   randomAnswerD = (int) (Math.random() * (deck.size()));
+                               }
+                           }
+                           if (correctMultipleChoice1 == 4) //D is correct
+                           {
+                               randomAnswerB = (int) (Math.random() * (deck.size())); //move this from here to button code so it does not repeat over and over again
+                               while ((deck.get(randomAnswerB).getTerm()).equals(testQuestions.get(currentQuestion - 1).getTerm())) {
+                                   randomAnswerB = (int) (Math.random() * (deck.size()));
+                               }
+
+                               randomAnswerC = (int) (Math.random() * (deck.size()));
+                               while (randomAnswerB == randomAnswerC || (deck.get(randomAnswerC).getTerm()).equals(testQuestions.get(currentQuestion - 1).getTerm())) {
+                                   randomAnswerC = (int) (Math.random() * (deck.size()));
+                               }
+
+                               randomAnswerA = (int) (Math.random() * (deck.size()));
+                               while (randomAnswerA == randomAnswerC || randomAnswerA == randomAnswerB || (deck.get(randomAnswerA).getTerm()).equals(testQuestions.get(currentQuestion - 1).getTerm())) {
+                                   randomAnswerA = (int) (Math.random() * (deck.size()));
+                               }
+                           }
+                           randomAnswersMCQ1[0] = randomAnswerA;
+                           randomAnswersMCQ1[1] = randomAnswerB;
+                           randomAnswersMCQ1[2] = randomAnswerC;
+                           randomAnswersMCQ1[3] = randomAnswerD;
+                           randomAnswersSelectedMCQ1 = true;
+                       }
+                       if(currentQuestion == 7 && randomAnswersSelectedMCQ2 == false) {
+
+                           if (correctMultipleChoice2 == 1) //A is correct
+                           {
+                               randomAnswerB = (int) (Math.random() * (deck.size())); //move this from here to button code so it does not repeat over and over again
+                               while ((deck.get(randomAnswerB).getTerm()).equals(testQuestions.get(currentQuestion - 1).getTerm())) {
+                                   randomAnswerB = (int) (Math.random() * (deck.size()));
+                               }
+
+                               randomAnswerC = (int) (Math.random() * (deck.size()));
+                               while (randomAnswerB == randomAnswerC || (deck.get(randomAnswerC).getTerm()).equals(testQuestions.get(currentQuestion - 1).getTerm())) {
+                                   randomAnswerC = (int) (Math.random() * (deck.size()));
+                               }
+
+                               randomAnswerD = (int) (Math.random() * (deck.size()));
+                               while (randomAnswerD == randomAnswerC || randomAnswerD == randomAnswerB || (deck.get(randomAnswerD).getTerm()).equals(testQuestions.get(currentQuestion - 1).getTerm())) {
+                                   randomAnswerD = (int) (Math.random() * (deck.size()));
+                               }
+                           }
+                           else if(correctMultipleChoice2 == 2) //B is correct
+                           {
+                               randomAnswerA = (int) (Math.random() * (deck.size())); //move this from here to button code so it does not repeat over and over again
+                               while ((deck.get(randomAnswerA).getTerm()).equals(testQuestions.get(currentQuestion - 1).getTerm())) {
+                                   randomAnswerA = (int) (Math.random() * (deck.size()));
+                               }
+
+                               randomAnswerC = (int) (Math.random() * (deck.size()));
+                               while (randomAnswerA == randomAnswerC || (deck.get(randomAnswerC).getTerm()).equals(testQuestions.get(currentQuestion - 1).getTerm())) {
+                                   randomAnswerC = (int) (Math.random() * (deck.size()));
+                               }
+
+                               randomAnswerD = (int) (Math.random() * (deck.size()));
+                               while (randomAnswerD == randomAnswerA || randomAnswerD == randomAnswerC || (deck.get(randomAnswerD).getTerm()).equals(testQuestions.get(currentQuestion - 1).getTerm())) {
+                                   randomAnswerD = (int) (Math.random() * (deck.size()));
+                               }
+                           }
+                           else if(correctMultipleChoice2 == 3) //C is correct
+                           {
+                               randomAnswerA = (int) (Math.random() * (deck.size())); //move this from here to button code so it does not repeat over and over again
+                               while ((deck.get(randomAnswerA).getTerm()).equals(testQuestions.get(currentQuestion - 1).getTerm())) {
+                                   randomAnswerA = (int) (Math.random() * (deck.size()));
+                               }
+
+                               randomAnswerB = (int) (Math.random() * (deck.size()));
+                               while (randomAnswerB == randomAnswerA || (deck.get(randomAnswerB).getTerm()).equals(testQuestions.get(currentQuestion - 1).getTerm())) {
+                                   randomAnswerB = (int) (Math.random() * (deck.size()));
+                               }
+
+                               randomAnswerD = (int) (Math.random() * (deck.size()));
+                               while (randomAnswerD == randomAnswerB || randomAnswerD == randomAnswerA || (deck.get(randomAnswerD).getTerm()).equals(testQuestions.get(currentQuestion - 1).getTerm())) {
+                                   randomAnswerD = (int) (Math.random() * (deck.size()));
+                               }
+                           }
+                           if (correctMultipleChoice2 == 4) //D is correct
+                           {
+                               randomAnswerB = (int) (Math.random() * (deck.size())); //move this from here to button code so it does not repeat over and over again
+                               while ((deck.get(randomAnswerB).getTerm()).equals(testQuestions.get(currentQuestion - 1).getTerm())) {
+                                   randomAnswerB = (int) (Math.random() * (deck.size()));
+                               }
+
+                               randomAnswerC = (int) (Math.random() * (deck.size()));
+                               while (randomAnswerB == randomAnswerC || (deck.get(randomAnswerC).getTerm()).equals(testQuestions.get(currentQuestion - 1).getTerm())) {
+                                   randomAnswerC = (int) (Math.random() * (deck.size()));
+                               }
+
+                               randomAnswerA = (int) (Math.random() * (deck.size()));
+                               while (randomAnswerA == randomAnswerC || randomAnswerA == randomAnswerB || (deck.get(randomAnswerA).getTerm()).equals(testQuestions.get(currentQuestion - 1).getTerm())) {
+                                   randomAnswerA = (int) (Math.random() * (deck.size()));
+                               }
+                           }
+                           randomAnswersMCQ2[0] = randomAnswerA;
+                           randomAnswersMCQ2[1] = randomAnswerB;
+                           randomAnswersMCQ2[2] = randomAnswerC;
+                           randomAnswersMCQ2[3] = randomAnswerD;
+                           randomAnswersSelectedMCQ2 = true;
+                       }
+                       if(currentQuestion == 8 && randomAnswersSelectedMCQ3 == false) {
+                           if (correctMultipleChoice3 == 1) //A is correct
+                           {
+                               randomAnswerB = (int) (Math.random() * (deck.size())); //move this from here to button code so it does not repeat over and over again
+                               while ((deck.get(randomAnswerB).getTerm()).equals(testQuestions.get(currentQuestion - 1).getTerm())) {
+                                   randomAnswerB = (int) (Math.random() * (deck.size()));
+                               }
+
+                               randomAnswerC = (int) (Math.random() * (deck.size()));
+                               while (randomAnswerB == randomAnswerC || (deck.get(randomAnswerC).getTerm()).equals(testQuestions.get(currentQuestion - 1).getTerm())) {
+                                   randomAnswerC = (int) (Math.random() * (deck.size()));
+                               }
+
+                               randomAnswerD = (int) (Math.random() * (deck.size()));
+                               while (randomAnswerD == randomAnswerC || randomAnswerD == randomAnswerB || (deck.get(randomAnswerD).getTerm()).equals(testQuestions.get(currentQuestion - 1).getTerm())) {
+                                   randomAnswerD = (int) (Math.random() * (deck.size()));
+                               }
+                           }
+                           else if(correctMultipleChoice3 == 2) //B is correct
+                           {
+                               randomAnswerA = (int) (Math.random() * (deck.size())); //move this from here to button code so it does not repeat over and over again
+                               while ((deck.get(randomAnswerA).getTerm()).equals(testQuestions.get(currentQuestion - 1).getTerm())) {
+                                   randomAnswerA = (int) (Math.random() * (deck.size()));
+                               }
+
+                               randomAnswerC = (int) (Math.random() * (deck.size()));
+                               while (randomAnswerA == randomAnswerC || (deck.get(randomAnswerC).getTerm()).equals(testQuestions.get(currentQuestion - 1).getTerm())) {
+                                   randomAnswerC = (int) (Math.random() * (deck.size()));
+                               }
+
+                               randomAnswerD = (int) (Math.random() * (deck.size()));
+                               while (randomAnswerD == randomAnswerA || randomAnswerD == randomAnswerC || (deck.get(randomAnswerD).getTerm()).equals(testQuestions.get(currentQuestion - 1).getTerm())) {
+                                   randomAnswerD = (int) (Math.random() * (deck.size()));
+                               }
+                           }
+                           else if(correctMultipleChoice3 == 3) //C is correct
+                           {
+                               randomAnswerA = (int) (Math.random() * (deck.size())); //move this from here to button code so it does not repeat over and over again
+                               while ((deck.get(randomAnswerA).getTerm()).equals(testQuestions.get(currentQuestion - 1).getTerm())) {
+                                   randomAnswerA = (int) (Math.random() * (deck.size()));
+                               }
+
+                               randomAnswerB = (int) (Math.random() * (deck.size()));
+                               while (randomAnswerB == randomAnswerA || (deck.get(randomAnswerB).getTerm()).equals(testQuestions.get(currentQuestion - 1).getTerm())) {
+                                   randomAnswerB = (int) (Math.random() * (deck.size()));
+                               }
+
+                               randomAnswerD = (int) (Math.random() * (deck.size()));
+                               while (randomAnswerD == randomAnswerB || randomAnswerD == randomAnswerA || (deck.get(randomAnswerD).getTerm()).equals(testQuestions.get(currentQuestion - 1).getTerm())) {
+                                   randomAnswerD = (int) (Math.random() * (deck.size()));
+                               }
+                           }
+                           if (correctMultipleChoice3 == 4) //D is correct
+                           {
+                               randomAnswerB = (int) (Math.random() * (deck.size())); //move this from here to button code so it does not repeat over and over again
+                               while ((deck.get(randomAnswerB).getTerm()).equals(testQuestions.get(currentQuestion - 1).getTerm())) {
+                                   randomAnswerB = (int) (Math.random() * (deck.size()));
+                               }
+
+                               randomAnswerC = (int) (Math.random() * (deck.size()));
+                               while (randomAnswerB == randomAnswerC || (deck.get(randomAnswerC).getTerm()).equals(testQuestions.get(currentQuestion - 1).getTerm())) {
+                                   randomAnswerC = (int) (Math.random() * (deck.size()));
+                               }
+
+                               randomAnswerA = (int) (Math.random() * (deck.size()));
+                               while (randomAnswerA == randomAnswerC || randomAnswerA == randomAnswerB || (deck.get(randomAnswerA).getTerm()).equals(testQuestions.get(currentQuestion - 1).getTerm())) {
+                                   randomAnswerA = (int) (Math.random() * (deck.size()));
+                               }
+                           }
+                           randomAnswersMCQ3[0] = randomAnswerA;
+                           randomAnswersMCQ3[1] = randomAnswerB;
+                           randomAnswersMCQ3[2] = randomAnswerC;
+                           randomAnswersMCQ3[3] = randomAnswerD;
+                           randomAnswersSelectedMCQ3 = true;
+                       }
+                       if(currentQuestion == 9 && randomAnswersSelectedMCQ4 == false) {
+                           if (correctMultipleChoice4 == 1) //A is correct
+                           {
+                               randomAnswerB = (int) (Math.random() * (deck.size())); //move this from here to button code so it does not repeat over and over again
+                               while ((deck.get(randomAnswerB).getTerm()).equals(testQuestions.get(currentQuestion - 1).getTerm())) {
+                                   randomAnswerB = (int) (Math.random() * (deck.size()));
+                               }
+
+                               randomAnswerC = (int) (Math.random() * (deck.size()));
+                               while (randomAnswerB == randomAnswerC || (deck.get(randomAnswerC).getTerm()).equals(testQuestions.get(currentQuestion - 1).getTerm())) {
+                                   randomAnswerC = (int) (Math.random() * (deck.size()));
+                               }
+
+                               randomAnswerD = (int) (Math.random() * (deck.size()));
+                               while (randomAnswerD == randomAnswerC || randomAnswerD == randomAnswerB || (deck.get(randomAnswerD).getTerm()).equals(testQuestions.get(currentQuestion - 1).getTerm())) {
+                                   randomAnswerD = (int) (Math.random() * (deck.size()));
+                               }
+                           }
+                           else if(correctMultipleChoice4 == 2) //B is correct
+                           {
+                               randomAnswerA = (int) (Math.random() * (deck.size())); //move this from here to button code so it does not repeat over and over again
+                               while ((deck.get(randomAnswerA).getTerm()).equals(testQuestions.get(currentQuestion - 1).getTerm())) {
+                                   randomAnswerA = (int) (Math.random() * (deck.size()));
+                               }
+
+                               randomAnswerC = (int) (Math.random() * (deck.size()));
+                               while (randomAnswerA == randomAnswerC || (deck.get(randomAnswerC).getTerm()).equals(testQuestions.get(currentQuestion - 1).getTerm())) {
+                                   randomAnswerC = (int) (Math.random() * (deck.size()));
+                               }
+
+                               randomAnswerD = (int) (Math.random() * (deck.size()));
+                               while (randomAnswerD == randomAnswerA || randomAnswerD == randomAnswerC || (deck.get(randomAnswerD).getTerm()).equals(testQuestions.get(currentQuestion - 1).getTerm())) {
+                                   randomAnswerD = (int) (Math.random() * (deck.size()));
+                               }
+                           }
+                           else if(correctMultipleChoice4 == 3) //C is correct
+                           {
+                               randomAnswerA = (int) (Math.random() * (deck.size())); //move this from here to button code so it does not repeat over and over again
+                               while ((deck.get(randomAnswerA).getTerm()).equals(testQuestions.get(currentQuestion - 1).getTerm())) {
+                                   randomAnswerA = (int) (Math.random() * (deck.size()));
+                               }
+
+                               randomAnswerB = (int) (Math.random() * (deck.size()));
+                               while (randomAnswerB == randomAnswerA || (deck.get(randomAnswerB).getTerm()).equals(testQuestions.get(currentQuestion - 1).getTerm())) {
+                                   randomAnswerB = (int) (Math.random() * (deck.size()));
+                               }
+
+                               randomAnswerD = (int) (Math.random() * (deck.size()));
+                               while (randomAnswerD == randomAnswerB || randomAnswerD == randomAnswerA || (deck.get(randomAnswerD).getTerm()).equals(testQuestions.get(currentQuestion - 1).getTerm())) {
+                                   randomAnswerD = (int) (Math.random() * (deck.size()));
+                               }
+                           }
+                           if (correctMultipleChoice4 == 4) //D is correct
+                           {
+                               randomAnswerB = (int) (Math.random() * (deck.size())); //move this from here to button code so it does not repeat over and over again
+                               while ((deck.get(randomAnswerB).getTerm()).equals(testQuestions.get(currentQuestion - 1).getTerm())) {
+                                   randomAnswerB = (int) (Math.random() * (deck.size()));
+                               }
+
+                               randomAnswerC = (int) (Math.random() * (deck.size()));
+                               while (randomAnswerB == randomAnswerC || (deck.get(randomAnswerC).getTerm()).equals(testQuestions.get(currentQuestion - 1).getTerm())) {
+                                   randomAnswerC = (int) (Math.random() * (deck.size()));
+                               }
+
+                               randomAnswerA = (int) (Math.random() * (deck.size()));
+                               while (randomAnswerA == randomAnswerC || randomAnswerA == randomAnswerB || (deck.get(randomAnswerA).getTerm()).equals(testQuestions.get(currentQuestion - 1).getTerm())) {
+                                   randomAnswerA = (int) (Math.random() * (deck.size()));
+                               }
+                           }
+                           randomAnswersMCQ4[0] = randomAnswerA;
+                           randomAnswersMCQ4[1] = randomAnswerB;
+                           randomAnswersMCQ4[2] = randomAnswerC;
+                           randomAnswersMCQ4[3] = randomAnswerD;
+                           randomAnswersSelectedMCQ4 = true;
+                       }
+                       if(currentQuestion == 10 && randomAnswersSelectedMCQ5 == false) {
+                           if (correctMultipleChoice1 == 5) //A is correct
+                           {
+                               randomAnswerB = (int) (Math.random() * (deck.size())); //move this from here to button code so it does not repeat over and over again
+                               while ((deck.get(randomAnswerB).getTerm()).equals(testQuestions.get(currentQuestion - 1).getTerm())) {
+                                   randomAnswerB = (int) (Math.random() * (deck.size()));
+                               }
+
+                               randomAnswerC = (int) (Math.random() * (deck.size()));
+                               while (randomAnswerB == randomAnswerC || (deck.get(randomAnswerC).getTerm()).equals(testQuestions.get(currentQuestion - 1).getTerm())) {
+                                   randomAnswerC = (int) (Math.random() * (deck.size()));
+                               }
+
+                               randomAnswerD = (int) (Math.random() * (deck.size()));
+                               while (randomAnswerD == randomAnswerC || randomAnswerD == randomAnswerB || (deck.get(randomAnswerD).getTerm()).equals(testQuestions.get(currentQuestion - 1).getTerm())) {
+                                   randomAnswerD = (int) (Math.random() * (deck.size()));
+                               }
+                           }
+                           else if(correctMultipleChoice5 == 2) //B is correct
+                           {
+                               randomAnswerA = (int) (Math.random() * (deck.size())); //move this from here to button code so it does not repeat over and over again
+                               while ((deck.get(randomAnswerA).getTerm()).equals(testQuestions.get(currentQuestion - 1).getTerm())) {
+                                   randomAnswerA = (int) (Math.random() * (deck.size()));
+                               }
+
+                               randomAnswerC = (int) (Math.random() * (deck.size()));
+                               while (randomAnswerA == randomAnswerC || (deck.get(randomAnswerC).getTerm()).equals(testQuestions.get(currentQuestion - 1).getTerm())) {
+                                   randomAnswerC = (int) (Math.random() * (deck.size()));
+                               }
+
+                               randomAnswerD = (int) (Math.random() * (deck.size()));
+                               while (randomAnswerD == randomAnswerA || randomAnswerD == randomAnswerC || (deck.get(randomAnswerD).getTerm()).equals(testQuestions.get(currentQuestion - 1).getTerm())) {
+                                   randomAnswerD = (int) (Math.random() * (deck.size()));
+                               }
+                           }
+                           else if(correctMultipleChoice5 == 3) //C is correct
+                           {
+                               randomAnswerA = (int) (Math.random() * (deck.size())); //move this from here to button code so it does not repeat over and over again
+                               while ((deck.get(randomAnswerA).getTerm()).equals(testQuestions.get(currentQuestion - 1).getTerm())) {
+                                   randomAnswerA = (int) (Math.random() * (deck.size()));
+                               }
+
+                               randomAnswerB = (int) (Math.random() * (deck.size()));
+                               while (randomAnswerB == randomAnswerA || (deck.get(randomAnswerB).getTerm()).equals(testQuestions.get(currentQuestion - 1).getTerm())) {
+                                   randomAnswerB = (int) (Math.random() * (deck.size()));
+                               }
+
+                               randomAnswerD = (int) (Math.random() * (deck.size()));
+                               while (randomAnswerD == randomAnswerB || randomAnswerD == randomAnswerA || (deck.get(randomAnswerD).getTerm()).equals(testQuestions.get(currentQuestion - 1).getTerm())) {
+                                   randomAnswerD = (int) (Math.random() * (deck.size()));
+                               }
+                           }
+                           if (correctMultipleChoice5 == 4) //D is correct
+                           {
+                               randomAnswerB = (int) (Math.random() * (deck.size())); //move this from here to button code so it does not repeat over and over again
+                               while ((deck.get(randomAnswerB).getTerm()).equals(testQuestions.get(currentQuestion - 1).getTerm())) {
+                                   randomAnswerB = (int) (Math.random() * (deck.size()));
+                               }
+
+                               randomAnswerC = (int) (Math.random() * (deck.size()));
+                               while (randomAnswerB == randomAnswerC || (deck.get(randomAnswerC).getTerm()).equals(testQuestions.get(currentQuestion - 1).getTerm())) {
+                                   randomAnswerC = (int) (Math.random() * (deck.size()));
+                               }
+
+                               randomAnswerA = (int) (Math.random() * (deck.size()));
+                               while (randomAnswerA == randomAnswerC || randomAnswerA == randomAnswerB || (deck.get(randomAnswerA).getTerm()).equals(testQuestions.get(currentQuestion - 1).getTerm())) {
+                                   randomAnswerA = (int) (Math.random() * (deck.size()));
+                               }
+                           }
+                           randomAnswersMCQ5[0] = randomAnswerA;
+                           randomAnswersMCQ5[1] = randomAnswerB;
+                           randomAnswersMCQ5[2] = randomAnswerC;
+                           randomAnswersMCQ5[3] = randomAnswerD;
+                           randomAnswersSelectedMCQ5 = true;
+
+                       }
+                       if(currentQuestion == 16)
+                       {
+                           typeAnswer16.setBounds(400, 313, 300, 30);
+                           typeAnswer16.setFont(new Font("Helvetica", Font.PLAIN, 22));
+                           this.add(typeAnswer16);
+                           typeAnswer16.setFocusable(true);
+                           typeAnswer16.requestFocus();
+                           if(typedAnswer1 != null)
+                               typeAnswer16.setText(typedAnswer1);
+                       }
+                       if(currentQuestion == 17)
+                       {
+                           typedAnswer1 = typeAnswer16.getText(); //need to create a string to store this
+                           this.remove(typeAnswer16);
+                           typeAnswer17.setBounds(400, 313, 300, 30);
+                           typeAnswer17.setFont(new Font("Helvetica", Font.PLAIN, 22));
+                           this.add(typeAnswer17);
+                           typeAnswer17.setFocusable(true);
+                           typeAnswer17.requestFocus();
+                           if(typedAnswer2 != null)
+                               typeAnswer17.setText(typedAnswer1);
+                       }
+                       if(currentQuestion == 18)
+                       {
+                           typedAnswer2 = typeAnswer17.getText();
+                           typeAnswer18.setBounds(400, 313, 300, 30);
+                           typeAnswer18.setFont(new Font("Helvetica", Font.PLAIN, 22));
+                           this.add(typeAnswer18);
+                           typeAnswer18.setFocusable(true);
+                           typeAnswer18.requestFocus();
+                           if(typedAnswer3 != null)
+                               typeAnswer18.setText(typedAnswer3);
+                       }
+                       if(currentQuestion == 19)
+                       {
+                           typedAnswer3 = typeAnswer18.getText();
+                           typeAnswer19.setBounds(400, 313, 300, 30);
+                           typeAnswer19.setFont(new Font("Helvetica", Font.PLAIN, 22));
+                           this.add(typeAnswer19);
+                           typeAnswer19.setFocusable(true);
+                           typeAnswer19.requestFocus();
+                           if(typedAnswer4 != null)
+                               typeAnswer19.setText(typedAnswer4);
+                       }
+                       if(currentQuestion == 20)
+                       {
+                           typedAnswer4 = typeAnswer19.getText();
+                           typeAnswer20.setBounds(400, 313, 300, 30);
+                           typeAnswer20.setFont(new Font("Helvetica", Font.PLAIN, 22));
+                           this.add(typeAnswer20);
+                           typeAnswer20.setFocusable(true);
+                           typeAnswer20.requestFocus();
+                           if(typedAnswer5 != null)
+                               typeAnswer20.setText(typedAnswer5);
+                       }
+                   }
+                   if(b.getTitle().equals("submitTest")) //NEEDS MORE CODE HERE
+                   {
+                       typedAnswer5 = typeAnswer20.getText();
+                       homeScreenDisplay = false;
+                       gravityDisplay = false;
+                       learnDisplay = false;
+                       testDisplay = false;
+                       gravityStartDisplay = false;
+                       flashcardsDisplay = false;
+                       matchingDisplay = false;
+                       testSubmittedDisplay = true;
 
                    }
                    if(b.getTitle().equals("previousTestQuestion"))
                    {
                      if(currentQuestion - 1 > 0)
                          currentQuestion--;
+
+                     if(currentQuestion == 11 || currentQuestion == 12 || currentQuestion == 13 || currentQuestion == 14 || currentQuestion == 15)
+                         currentQuestion = 10;
+
+//                     if(currentQuestion == 11 || currentQuestion == 12 || currentQuestion == 13 || currentQuestion == 14 || currentQuestion == 15)
+//                     this.remove(typeAnswer16);
+//
+//                     if(currentQuestion == 16)
+//                         if(typedAnswer1 != null)
+//                             typeAnswer16.setText(typedAnswer1);
+
                    }
                    if(b.getTitle().equals("learnA"))
                    {
@@ -2002,10 +3503,27 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
     } //end of mouseClicked
 
     public void mousePressed( MouseEvent e )
-    {}
+    {
+
+
+    }
 
     public void mouseReleased( MouseEvent e )
-    {}
+    {
+        mouseX = e.getX();
+        mouseY = e.getY();
+
+       /* for (Button b : buttons) {
+            if (b.getShape().contains(mouseX, mouseY) && b.isEnabled())
+            {
+                defMouseX = mouseX;
+                defMouseY = mouseY;
+                termMouseX = -1;
+                termMouseY = -1;
+            }
+                b.unHighlight();
+        }*/
+    }
 
     public void mouseEntered( MouseEvent e )
     {}
@@ -2092,6 +3610,146 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
         if (trueFalse5 == false && currentQuestion == 5 && question5Answered == true) {
             buttons[FALSEBUTTONFORTEST].highlight();
             buttons[TRUEBUTTONFORTEST].unHighlight();
+        }
+        //multiple choice question 1. User selected A
+        if(correctMultipleChoice1 == 1 && currentQuestion == 6 && question6Answered == true){
+            buttons[MCQATESTBUTTON].highlight();
+            buttons[MCQBTESTBUTTON].unHighlight();
+            buttons[MCQCTESTBUTTON].unHighlight();
+            buttons[MCQDTESTBUTTON].unHighlight();
+        }
+        //multiple choice question 1. User selected B
+        if(correctMultipleChoice1 == 2 && currentQuestion == 6 && question6Answered == true){
+            buttons[MCQATESTBUTTON].unHighlight();
+            buttons[MCQBTESTBUTTON].highlight();
+            buttons[MCQCTESTBUTTON].unHighlight();
+            buttons[MCQDTESTBUTTON].unHighlight();
+        }
+        //multiple choice question 1. User selected C
+        if(correctMultipleChoice1 == 3 && currentQuestion == 6 && question6Answered == true){
+            buttons[MCQATESTBUTTON].unHighlight();
+            buttons[MCQBTESTBUTTON].unHighlight();
+            buttons[MCQCTESTBUTTON].highlight();
+            buttons[MCQDTESTBUTTON].unHighlight();
+        }
+        //multiple choice question 1. User selected D
+        if(correctMultipleChoice1 == 4 && currentQuestion == 6 && question6Answered == true){
+            buttons[MCQATESTBUTTON].unHighlight();
+            buttons[MCQBTESTBUTTON].unHighlight();
+            buttons[MCQCTESTBUTTON].unHighlight();
+            buttons[MCQDTESTBUTTON].highlight();
+        }
+        //multiple choice question 2. User selected A
+        if(correctMultipleChoice2 == 1 && currentQuestion == 7 && question7Answered == true){
+            buttons[MCQATESTBUTTON].highlight();
+            buttons[MCQBTESTBUTTON].unHighlight();
+            buttons[MCQCTESTBUTTON].unHighlight();
+            buttons[MCQDTESTBUTTON].unHighlight();
+        }
+        //multiple choice question 2. User selected B
+        if(correctMultipleChoice2 == 2 && currentQuestion == 7 && question7Answered == true){
+            buttons[MCQATESTBUTTON].unHighlight();
+            buttons[MCQBTESTBUTTON].highlight();
+            buttons[MCQCTESTBUTTON].unHighlight();
+            buttons[MCQDTESTBUTTON].unHighlight();
+        }
+        //multiple choice question 2. User selected C
+        if(correctMultipleChoice2 == 3 && currentQuestion == 7 && question7Answered == true){
+            buttons[MCQATESTBUTTON].unHighlight();
+            buttons[MCQBTESTBUTTON].unHighlight();
+            buttons[MCQCTESTBUTTON].highlight();
+            buttons[MCQDTESTBUTTON].unHighlight();
+        }
+        //multiple choice question 2. User selected D
+        if(correctMultipleChoice2 == 4 && currentQuestion == 7 && question7Answered == true){
+            buttons[MCQATESTBUTTON].unHighlight();
+            buttons[MCQBTESTBUTTON].unHighlight();
+            buttons[MCQCTESTBUTTON].unHighlight();
+            buttons[MCQDTESTBUTTON].highlight();
+        }
+        //multiple choice question 3. User selected A
+        if(correctMultipleChoice3 == 1 && currentQuestion == 8 && question8Answered == true){
+            buttons[MCQATESTBUTTON].highlight();
+            buttons[MCQBTESTBUTTON].unHighlight();
+            buttons[MCQCTESTBUTTON].unHighlight();
+            buttons[MCQDTESTBUTTON].unHighlight();
+        }
+        //multiple choice question 3. User selected B
+        if(correctMultipleChoice3 == 2 && currentQuestion == 8 && question8Answered == true){
+            buttons[MCQATESTBUTTON].unHighlight();
+            buttons[MCQBTESTBUTTON].highlight();
+            buttons[MCQCTESTBUTTON].unHighlight();
+            buttons[MCQDTESTBUTTON].unHighlight();
+        }
+        //multiple choice question 3. User selected C
+        if(correctMultipleChoice3 == 3 && currentQuestion == 8 && question8Answered == true){
+            buttons[MCQATESTBUTTON].unHighlight();
+            buttons[MCQBTESTBUTTON].unHighlight();
+            buttons[MCQCTESTBUTTON].highlight();
+            buttons[MCQDTESTBUTTON].unHighlight();
+        }
+        //multiple choice question 3. User selected D
+        if(correctMultipleChoice3 == 4 && currentQuestion == 8 && question8Answered == true){
+            buttons[MCQATESTBUTTON].unHighlight();
+            buttons[MCQBTESTBUTTON].unHighlight();
+            buttons[MCQCTESTBUTTON].unHighlight();
+            buttons[MCQDTESTBUTTON].highlight();
+        }
+        //multiple choice question 4. User selected A
+        if(correctMultipleChoice4 == 1 && currentQuestion == 9 && question9Answered == true){
+            buttons[MCQATESTBUTTON].highlight();
+            buttons[MCQBTESTBUTTON].unHighlight();
+            buttons[MCQCTESTBUTTON].unHighlight();
+            buttons[MCQDTESTBUTTON].unHighlight();
+        }
+        //multiple choice question 4. User selected B
+        if(correctMultipleChoice4 == 2 && currentQuestion == 9 && question9Answered == true){
+            buttons[MCQATESTBUTTON].unHighlight();
+            buttons[MCQBTESTBUTTON].highlight();
+            buttons[MCQCTESTBUTTON].unHighlight();
+            buttons[MCQDTESTBUTTON].unHighlight();
+        }
+        //multiple choice question 4. User selected C
+        if(correctMultipleChoice4 == 3 && currentQuestion == 9 && question9Answered == true){
+            buttons[MCQATESTBUTTON].unHighlight();
+            buttons[MCQBTESTBUTTON].unHighlight();
+            buttons[MCQCTESTBUTTON].highlight();
+            buttons[MCQDTESTBUTTON].unHighlight();
+        }
+        //multiple choice question 4. User selected D
+        if(correctMultipleChoice4 == 4 && currentQuestion == 9 && question9Answered == true){
+            buttons[MCQATESTBUTTON].unHighlight();
+            buttons[MCQBTESTBUTTON].unHighlight();
+            buttons[MCQCTESTBUTTON].unHighlight();
+            buttons[MCQDTESTBUTTON].highlight();
+        }
+        //multiple choice question 5. User selected A
+        if(correctMultipleChoice5 == 1 && currentQuestion == 10 && question10Answered == true){
+            buttons[MCQATESTBUTTON].highlight();
+            buttons[MCQBTESTBUTTON].unHighlight();
+            buttons[MCQCTESTBUTTON].unHighlight();
+            buttons[MCQDTESTBUTTON].unHighlight();
+        }
+        //multiple choice question 5. User selected B
+        if(correctMultipleChoice5 == 2 && currentQuestion == 10 && question10Answered == true){
+            buttons[MCQATESTBUTTON].unHighlight();
+            buttons[MCQBTESTBUTTON].highlight();
+            buttons[MCQCTESTBUTTON].unHighlight();
+            buttons[MCQDTESTBUTTON].unHighlight();
+        }
+        //multiple choice question 5. User selected C
+        if(correctMultipleChoice5 == 3 && currentQuestion == 10 && question10Answered == true){
+            buttons[MCQATESTBUTTON].unHighlight();
+            buttons[MCQBTESTBUTTON].unHighlight();
+            buttons[MCQCTESTBUTTON].highlight();
+            buttons[MCQDTESTBUTTON].unHighlight();
+        }
+        //multiple choice question 5. User selected D
+        if(correctMultipleChoice5 == 4 && currentQuestion == 10 && question10Answered == true){
+            buttons[MCQATESTBUTTON].unHighlight();
+            buttons[MCQBTESTBUTTON].unHighlight();
+            buttons[MCQCTESTBUTTON].unHighlight();
+            buttons[MCQDTESTBUTTON].highlight();
         }
     }
 
