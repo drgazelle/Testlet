@@ -248,11 +248,11 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
     //term button that has been matched with corresponding def button
 
     //type your own answer
-    JTextField typeAnswer16 = new JTextField("Type Your Answer Here", 1000);
-    JTextField typeAnswer17 = new JTextField();
-    JTextField typeAnswer18 = new JTextField();
-    JTextField typeAnswer19 = new JTextField();
-    JTextField typeAnswer20 = new JTextField();
+    JTextField typeAnswer16 = new JTextField(1000);
+    JTextField typeAnswer17 = new JTextField(1000);
+    JTextField typeAnswer18 = new JTextField(1000);
+    JTextField typeAnswer19 = new JTextField(1000);
+    JTextField typeAnswer20 = new JTextField(1000);
 
     private String typedAnswer1;
     private String typedAnswer2;
@@ -1012,6 +1012,36 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                     else if(currentQuestion == 16 || currentQuestion == 17 || currentQuestion == 18 || currentQuestion == 19 || currentQuestion == 20)
                     {
                         drawAnswersForTypeYourAnswerQuestions(g);
+
+                        typedAnswer1 = typeAnswer16.getText();
+                        if(typedAnswer1 == null || typedAnswer1.trim().equals("") || typedAnswer1.equals(" "))
+                            question16Answered = false;
+                        else
+                            question16Answered = true;
+
+                        typedAnswer2 = typeAnswer17.getText();
+                        if(typedAnswer2 == null || typedAnswer2.trim().equals("") || typedAnswer2.equals(" "))
+                            question17Answered = false;
+                        else
+                            question17Answered = true;
+
+                        typedAnswer3 = typeAnswer18.getText();
+                        if(typedAnswer3 == null || typedAnswer3.trim().equals("") || typedAnswer3.equals(" "))
+                            question18Answered = false;
+                        else
+                            question18Answered = true;
+
+                        typedAnswer4 = typeAnswer19.getText();
+                        if(typedAnswer4 == null || typedAnswer4.trim().equals("") || typedAnswer4.equals(" "))
+                            question19Answered = false;
+                        else
+                            question19Answered = true;
+
+                        typedAnswer5 = typeAnswer20.getText();
+                        if(typedAnswer5 == null || typedAnswer5.trim().equals("") || typedAnswer5.equals(" "))
+                            question20Answered = false;
+                        else
+                            question20Answered = true;
                     }
                 }
             }
@@ -2153,6 +2183,17 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
         if(userMatched[4] == 15)
             score++;
 
+        if(((typedAnswer1.trim()).toUpperCase()).equals(testQuestions.get(15).getTerm().trim().toUpperCase()))
+            score++;
+        if(((typedAnswer2.trim()).toUpperCase()).equals(testQuestions.get(16).getTerm().trim().toUpperCase()))
+            score++;
+        if(((typedAnswer3.trim()).toUpperCase()).equals(testQuestions.get(17).getTerm().trim().toUpperCase()))
+            score++;
+        if(((typedAnswer4.trim()).toUpperCase()).equals(testQuestions.get(18).getTerm().trim().toUpperCase()))
+            score++;
+        if(((typedAnswer5.trim()).toUpperCase()).equals(testQuestions.get(19).getTerm().trim().toUpperCase()))
+            score++;
+
      return score;
     }
 
@@ -3245,6 +3286,10 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                        if(currentQuestion == 16)
                        {
                            typeAnswer16.setBounds(400, 313, 300, 30);
+                           this.remove(typeAnswer17);
+                           this.remove(typeAnswer18);
+                           this.remove(typeAnswer19);
+                           this.remove(typeAnswer20);
                            typeAnswer16.setFont(new Font("Helvetica", Font.PLAIN, 22));
                            this.add(typeAnswer16);
                            typeAnswer16.setFocusable(true);
@@ -3256,17 +3301,24 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                        {
                            typedAnswer1 = typeAnswer16.getText(); //need to create a string to store this
                            this.remove(typeAnswer16);
+                           this.remove(typeAnswer18);
+                           this.remove(typeAnswer19);
+                           this.remove(typeAnswer20);
                            typeAnswer17.setBounds(400, 313, 300, 30);
                            typeAnswer17.setFont(new Font("Helvetica", Font.PLAIN, 22));
                            this.add(typeAnswer17);
                            typeAnswer17.setFocusable(true);
                            typeAnswer17.requestFocus();
                            if(typedAnswer2 != null)
-                               typeAnswer17.setText(typedAnswer1);
+                               typeAnswer17.setText(typedAnswer2);
                        }
                        if(currentQuestion == 18)
                        {
                            typedAnswer2 = typeAnswer17.getText();
+                           this.remove(typeAnswer16);
+                           this.remove(typeAnswer17);
+                           this.remove(typeAnswer19);
+                           this.remove(typeAnswer20);
                            typeAnswer18.setBounds(400, 313, 300, 30);
                            typeAnswer18.setFont(new Font("Helvetica", Font.PLAIN, 22));
                            this.add(typeAnswer18);
@@ -3278,6 +3330,10 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                        if(currentQuestion == 19)
                        {
                            typedAnswer3 = typeAnswer18.getText();
+                           this.remove(typeAnswer16);
+                           this.remove(typeAnswer17);
+                           this.remove(typeAnswer18);
+                           this.remove(typeAnswer20);
                            typeAnswer19.setBounds(400, 313, 300, 30);
                            typeAnswer19.setFont(new Font("Helvetica", Font.PLAIN, 22));
                            this.add(typeAnswer19);
@@ -3289,6 +3345,10 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                        if(currentQuestion == 20)
                        {
                            typedAnswer4 = typeAnswer19.getText();
+                           this.remove(typeAnswer16);
+                           this.remove(typeAnswer17);
+                           this.remove(typeAnswer18);
+                           this.remove(typeAnswer19);
                            typeAnswer20.setBounds(400, 313, 300, 30);
                            typeAnswer20.setFont(new Font("Helvetica", Font.PLAIN, 22));
                            this.add(typeAnswer20);
@@ -3313,18 +3373,49 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                    }
                    if(b.getTitle().equals("previousTestQuestion"))
                    {
-                     if(currentQuestion - 1 > 0)
-                         currentQuestion--;
+                         this.remove(typeAnswer16);
+                         this.remove(typeAnswer17);
+                         this.remove(typeAnswer18);
+                         this.remove(typeAnswer19);
+                         this.remove(typeAnswer20);
 
-                     if(currentQuestion == 11 || currentQuestion == 12 || currentQuestion == 13 || currentQuestion == 14 || currentQuestion == 15)
-                         currentQuestion = 10;
+                       if(currentQuestion == 16) //currentQuestion will be 16
+                       {
+                           typedAnswer1 = typeAnswer16.getText();
+                       }
+                     if(currentQuestion == 17) //currentQuestion will be 16
+                     {
+                         typedAnswer2 = typeAnswer17.getText();
+                         this.add(typeAnswer16);
+                         if(typedAnswer1 != null)
+                         typeAnswer16.setText(typedAnswer1);
+                     }
+                       if(currentQuestion == 18) //currentQuestion will be 17
+                       {
+                           typedAnswer3 = typeAnswer18.getText();
+                           this.add(typeAnswer17);
+                           if(typedAnswer2 != null)
+                               typeAnswer17.setText(typedAnswer2);
+                       }
+                       if(currentQuestion == 19) //currentQuestion will be 18
+                       {
+                           typedAnswer4 = typeAnswer19.getText();
+                           this.add(typeAnswer18);
+                           if(typedAnswer3 != null)
+                               typeAnswer18.setText(typedAnswer3);
+                       }
+                       if(currentQuestion == 20) //currentQuestion will be 19
+                       {
+                           typedAnswer5 = typeAnswer20.getText();
+                           this.add(typeAnswer19);
+                           if (typedAnswer4 != null)
+                               typeAnswer19.setText(typedAnswer4);
+                       }
 
-//                     if(currentQuestion == 11 || currentQuestion == 12 || currentQuestion == 13 || currentQuestion == 14 || currentQuestion == 15)
-//                     this.remove(typeAnswer16);
-//
-//                     if(currentQuestion == 16)
-//                         if(typedAnswer1 != null)
-//                             typeAnswer16.setText(typedAnswer1);
+                       if(currentQuestion == 11 || currentQuestion == 12 || currentQuestion == 13 || currentQuestion == 14 || currentQuestion == 15)
+                           currentQuestion = 10;
+                       else if(currentQuestion - 1 > 0)
+                           currentQuestion--;
 
                    }
                    if(b.getTitle().equals("learnA"))
