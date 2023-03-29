@@ -129,12 +129,15 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
     private int defMouseX = -1;
     private int defMouseY = -1;
 
+    //for matching
+    private boolean movingTerm1 = false;
+    private boolean movingDef1 = false;
 
     //images
     //private ImageIcon startScreen  = new ImageIcon("images/backgrounds/startScreen.png");
 
     //array of buttons
-    private Button[] buttons = new Button[38];
+    private Button[] buttons = new Button[40];
 
     //each int represents a different button.
     private static final int HOMEBUTTON = 0;
@@ -176,6 +179,9 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
     private static final int MATCHINGTESTTERM4 = 35;
     private static final int MATCHINGTESTTERM5 = 36;
     private static final int RESETMATCHING = 37;
+    private static final int MATCHINGTERM1 = 38;
+    private static final int MATCHINGDEF1 = 39;
+
 
     private boolean deckIsComplete = false;
     private boolean changeAnswers = false;
@@ -490,6 +496,14 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
         ImageIcon resetMatching1 = new ImageIcon("resources/images/resetMatching1.png");
         ImageIcon resetMatching2 = new ImageIcon("resources/images/resetMatching2.png");
         buttons[RESETMATCHING] = new Button(r41, "resetMatching", resetMatching1, resetMatching2);
+
+        Shape r42 = new Rectangle(523, 445, 112, 53); //fix the width and height!
+        ImageIcon matchingTerm1 = new ImageIcon("resources/images/matchingTerm1.png");
+        ImageIcon matchingTerm2 = new ImageIcon("resources/images/matchingTerm2.png");
+        buttons[MATCHINGTERM1] = new Button(r42, "matchingTerm1", matchingTerm1, matchingTerm2);
+
+        Shape r43 = new Rectangle(433, 245, 112, 53); //fix the width and height!
+        buttons[MATCHINGDEF1] = new Button(r43, "matchingDef1", matchingTerm1, matchingTerm2);
 
         //sets the screen mode
         screenMode = HOMESCREEN;
@@ -1053,18 +1067,10 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                 g.drawString("Score:", 410, 220);
                 g.setFont(new Font("Helvetica", Font.PLAIN, 22));
                 g.drawString("" + getTestScore() + "/" + testQuestions.size(), 410, 245);
-                //testing purposes
-                g.drawString("" + correctMatching[0], 410, 300);
-                g.drawString("" + correctMatching[1], 440, 300);
-                g.drawString("" + correctMatching[2], 470, 300);
-                g.drawString("" + correctMatching[3], 500, 300);
-                g.drawString("" + correctMatching[4], 530, 300);
 
-                g.drawString("" + userMatched[0], 410, 320);
-                g.drawString("" + userMatched[1], 440, 320);
-                g.drawString("" + userMatched[2], 470, 320);
-                g.drawString("" + userMatched[3], 500, 320);
-                g.drawString("" + userMatched[4], 530, 320);
+                //testing purposes
+                g.drawString("User answer:" + typedAnswer1 + " Correct Answer:" + testQuestions.get(16-1).getTerm(), 410, 300);
+
             }
 
             if(learnDisplay == true)
@@ -1517,6 +1523,14 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                         //draw green colored button
                     }
                 }
+            }
+
+            if(matchingDisplay == true)
+            {
+                buttons[MATCHINGTERM1].drawButton(g);
+                buttons[MATCHINGTERM1].setEnabled(true);
+                buttons[MATCHINGDEF1].drawButton(g);
+                buttons[MATCHINGDEF1].setEnabled(true);
             }
 
             //top bar with settings buttons
@@ -2594,6 +2608,12 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                        flashcardsDisplay = true;
                        termOddDefEven = 1;
                        matchingDisplay = false;
+
+                       this.remove(typeAnswer16);
+                       this.remove(typeAnswer17);
+                       this.remove(typeAnswer18);
+                       this.remove(typeAnswer19);
+                       this.remove(typeAnswer20);
                    }
                    if (b.getTitle().equals("learn"))
                    {
@@ -2605,6 +2625,12 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                        flashcardsDisplay = false;
                        matchingDisplay = false;
                        learnCardNumber = 1;
+
+                       this.remove(typeAnswer16);
+                       this.remove(typeAnswer17);
+                       this.remove(typeAnswer18);
+                       this.remove(typeAnswer19);
+                       this.remove(typeAnswer20);
 
                        if(deck != null)
                        makeLearnQueue();
@@ -2633,6 +2659,12 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                    }
                    if (b.getTitle().equals("test"))
                    {
+                       this.remove(typeAnswer16);
+                       this.remove(typeAnswer17);
+                       this.remove(typeAnswer18);
+                       this.remove(typeAnswer19);
+                       this.remove(typeAnswer20);
+
                        homeScreenDisplay = false;
                        gravityDisplay = false;
                        learnDisplay = false;
@@ -2641,6 +2673,8 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                        flashcardsDisplay = false;
                        matchingDisplay = false;
                        testSubmittedDisplay = false;
+
+                       currentQuestion = 1;
 
                        buttons[MATCHINGTESTDEFINITION1].setEnabled(false);
                        buttons[MATCHINGTESTDEFINITION2].setEnabled(false);
@@ -2694,6 +2728,12 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                        gravityDisplay = false;
                        gravityStartDisplay = true;
                        matchingDisplay = false;
+
+                       this.remove(typeAnswer16);
+                       this.remove(typeAnswer17);
+                       this.remove(typeAnswer18);
+                       this.remove(typeAnswer19);
+                       this.remove(typeAnswer20);
                    }
                    if(b.getTitle().equals("gravityStartGame"))
                    {
@@ -2715,6 +2755,14 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                        gravityStartDisplay = false;
                        gravityDisplay = false;
                        matchingDisplay = true;
+
+                       this.remove(typeAnswer16);
+                       this.remove(typeAnswer17);
+                       this.remove(typeAnswer18);
+                       this.remove(typeAnswer19);
+                       this.remove(typeAnswer20);
+
+
                    }
                    if(b.getTitle().equals("resetMatching"))
                    {
@@ -3361,6 +3409,11 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                    if(b.getTitle().equals("submitTest")) //NEEDS MORE CODE HERE
                    {
                        typedAnswer5 = typeAnswer20.getText();
+                       this.remove(typeAnswer16);
+                       this.remove(typeAnswer17);
+                       this.remove(typeAnswer18);
+                       this.remove(typeAnswer19);
+                       this.remove(typeAnswer20);
                        homeScreenDisplay = false;
                        gravityDisplay = false;
                        learnDisplay = false;
@@ -3369,7 +3422,6 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                        flashcardsDisplay = false;
                        matchingDisplay = false;
                        testSubmittedDisplay = true;
-
                    }
                    if(b.getTitle().equals("previousTestQuestion"))
                    {
@@ -3595,7 +3647,14 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
 
     public void mousePressed( MouseEvent e )
     {
-
+//        mouseX = e.getX();
+//        mouseY = e.getY();
+//
+//        if(buttons[MATCHINGTERM1].getShape().contains(mouseX, mouseY) && buttons[MATCHINGTERM1].isEnabled())
+//        {
+//            buttons[MATCHINGTERM1].setShape(new Rectangle(mouseX-30, mouseY-30, (int)(buttons[MATCHINGTERM1].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGTERM1].getShape().getBounds().getHeight())));
+//
+//        }
 
     }
 
@@ -3603,6 +3662,9 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
     {
         mouseX = e.getX();
         mouseY = e.getY();
+
+        movingTerm1 = false;
+        movingDef1 = false;
 
        /* for (Button b : buttons) {
             if (b.getShape().contains(mouseX, mouseY) && b.isEnabled())
@@ -3626,6 +3688,7 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
     public void mouseMoved( MouseEvent e) {
         mouseX = e.getX();
         mouseY = e.getY();
+
         //***BUTTON CODE***highlight button if mouse is on it
         for (Button b : buttons) {
             if (b.getShape().contains(mouseX, mouseY) && b.isEnabled())
@@ -3845,7 +3908,28 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
     }
 
     public void mouseDragged( MouseEvent e)
-    {}
+    {
+        mouseX = e.getX();
+        mouseY = e.getY();
+
+        //the new x and y code could be fixed to be more accurate!!
+        if(buttons[MATCHINGDEF1].getShape().contains(mouseX, mouseY) && buttons[MATCHINGDEF1].isEnabled() && movingTerm1 == false)
+        {
+            buttons[MATCHINGDEF1].setShape(new Rectangle(mouseX-30, mouseY-30, (int)(buttons[MATCHINGDEF1].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGDEF1].getShape().getBounds().getHeight())));
+            buttons[MATCHINGTERM1].unHighlight();
+            movingDef1 = true;
+        }
+        if(buttons[MATCHINGTERM1].getShape().contains(mouseX, mouseY) && buttons[MATCHINGTERM1].isEnabled() && movingDef1 == false)
+        {
+            buttons[MATCHINGTERM1].setShape(new Rectangle(mouseX-30, mouseY-30, (int)(buttons[MATCHINGTERM1].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGTERM1].getShape().getBounds().getHeight())));
+            buttons[MATCHINGDEF1].unHighlight();
+            movingTerm1 = true;
+        }
+        if(!buttons[MATCHINGTERM1].getShape().contains(mouseX, mouseY))
+            buttons[MATCHINGTERM1].unHighlight();
+
+
+    }
 
     public void mouseExited( MouseEvent e )
     {}
