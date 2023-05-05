@@ -132,12 +132,31 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
     //for matching
     private boolean movingTerm1 = false;
     private boolean movingDef1 = false;
+    private boolean movingTerm2 = false;
+    private boolean movingDef2 = false;
+    private boolean movingTerm3 = false;
+    private boolean movingDef3 = false;
+    private boolean movingTerm4 = false;
+    private boolean movingDef4 = false;
+    private boolean movingTerm5 = false;
+    private boolean movingDef5 = false;
+
+    private boolean showMatchingDef1 = true;
+    private boolean showMatchingTerm1 = true;
+    private boolean showMatchingDef2 = true;
+    private boolean showMatchingTerm2 = true;
+    private boolean showMatchingDef3 = true;
+    private boolean showMatchingTerm3 = true;
+    private boolean showMatchingDef4 = true;
+    private boolean showMatchingTerm4 = true;
+    private boolean showMatchingDef5 = true;
+    private boolean showMatchingTerm5 = true;
 
     //images
     //private ImageIcon startScreen  = new ImageIcon("images/backgrounds/startScreen.png");
 
     //array of buttons
-    private Button[] buttons = new Button[40];
+    private Button[] buttons = new Button[48];
 
     //each int represents a different button.
     private static final int HOMEBUTTON = 0;
@@ -181,6 +200,14 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
     private static final int RESETMATCHING = 37;
     private static final int MATCHINGTERM1 = 38;
     private static final int MATCHINGDEF1 = 39;
+    private static final int MATCHINGTERM2 = 40;
+    private static final int MATCHINGDEF2 = 41;
+    private static final int MATCHINGTERM3 = 42;
+    private static final int MATCHINGDEF3 = 43;
+    private static final int MATCHINGTERM4 = 44;
+    private static final int MATCHINGDEF4 = 45;
+    private static final int MATCHINGTERM5 = 46;
+    private static final int MATCHINGDEF5 = 47;
 
 
     private boolean deckIsComplete = false;
@@ -497,13 +524,37 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
         ImageIcon resetMatching2 = new ImageIcon("resources/images/resetMatching2.png");
         buttons[RESETMATCHING] = new Button(r41, "resetMatching", resetMatching1, resetMatching2);
 
-        Shape r42 = new Rectangle(523, 445, 112, 53); //fix the width and height!
+        Shape r42 = new Rectangle(210, 60, 112, 53); //fix the width and height!
         ImageIcon matchingTerm1 = new ImageIcon("resources/images/matchingTerm1.png");
         ImageIcon matchingTerm2 = new ImageIcon("resources/images/matchingTerm2.png");
         buttons[MATCHINGTERM1] = new Button(r42, "matchingTerm1", matchingTerm1, matchingTerm2);
 
-        Shape r43 = new Rectangle(433, 245, 112, 53); //fix the width and height!
+        Shape r43 = new Rectangle(210, 120, 112, 53); //fix the width and height!
         buttons[MATCHINGDEF1] = new Button(r43, "matchingDef1", matchingTerm1, matchingTerm2);
+
+        Shape r44 = new Rectangle(210, 180, 112, 53); //fix the width and height!
+        buttons[MATCHINGTERM2] = new Button(r44, "matchingTerm2", matchingTerm1, matchingTerm2);
+
+        Shape r45 = new Rectangle(210, 240, 112, 53); //fix the width and height!
+        buttons[MATCHINGDEF2] = new Button(r45, "matchingDef2", matchingTerm1, matchingTerm2);
+
+        Shape r46 = new Rectangle(210, 300, 112, 53); //fix the width and height!
+        buttons[MATCHINGTERM3] = new Button(r46, "matchingTerm3", matchingTerm1, matchingTerm2);
+
+        Shape r47 = new Rectangle(210, 360, 112, 53); //fix the width and height!
+        buttons[MATCHINGDEF3] = new Button(r47, "matchingDef3", matchingTerm1, matchingTerm2);
+
+        Shape r48 = new Rectangle(330, 60, 112, 53); //fix the width and height!
+        buttons[MATCHINGTERM4] = new Button(r48, "matchingTerm4", matchingTerm1, matchingTerm2);
+
+        Shape r49 = new Rectangle(330, 120, 112, 53); //fix the width and height!
+        buttons[MATCHINGDEF4] = new Button(r49, "matchingDef4", matchingTerm1, matchingTerm2);
+
+        Shape r50 = new Rectangle(330, 180, 112, 53); //fix the width and height!
+        buttons[MATCHINGTERM5] = new Button(r50, "matchingTerm5", matchingTerm1, matchingTerm2);
+
+        Shape r51 = new Rectangle(330, 240, 112, 53); //fix the width and height!
+        buttons[MATCHINGDEF5] = new Button(r51, "matchingDef5", matchingTerm1, matchingTerm2);
 
         //sets the screen mode
         screenMode = HOMESCREEN;
@@ -1527,10 +1578,55 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
 
             if(matchingDisplay == true)
             {
-                buttons[MATCHINGTERM1].drawButton(g);
-                buttons[MATCHINGTERM1].setEnabled(true);
-                buttons[MATCHINGDEF1].drawButton(g);
-                buttons[MATCHINGDEF1].setEnabled(true);
+                if(buttons[MATCHINGTERM1].getShape().getBounds().getX() < 200)
+                {
+                    buttons[MATCHINGTERM1].getShape().getBounds().setBounds(200, (int)buttons[MATCHINGTERM1].getShape().getBounds().getY(), (int)buttons[MATCHINGTERM1].getShape().getBounds().getWidth(), (int)buttons[MATCHINGTERM1].getShape().getBounds().getHeight());
+                }
+                if(showMatchingTerm1) {
+                    buttons[MATCHINGTERM1].drawButton(g);
+                    buttons[MATCHINGTERM1].setEnabled(true);
+                }
+                if(showMatchingDef1) {
+                    buttons[MATCHINGDEF1].drawButton(g);
+                    buttons[MATCHINGDEF1].setEnabled(true);
+                }
+                if(showMatchingTerm2) {
+                    buttons[MATCHINGTERM2].drawButton(g);
+                    buttons[MATCHINGTERM2].setEnabled(true);
+                }
+                if(showMatchingDef2) {
+                    buttons[MATCHINGDEF2].drawButton(g);
+                    buttons[MATCHINGDEF2].setEnabled(true);
+                }
+                if(showMatchingTerm3) {
+                    buttons[MATCHINGTERM3].drawButton(g);
+                    buttons[MATCHINGTERM3].setEnabled(true);
+                }
+                if(showMatchingDef3) {
+                    buttons[MATCHINGDEF3].drawButton(g);
+                    buttons[MATCHINGDEF3].setEnabled(true);
+                }
+                if(showMatchingTerm4) {
+                    buttons[MATCHINGTERM4].drawButton(g);
+                    buttons[MATCHINGTERM4].setEnabled(true);
+                }
+                if(showMatchingDef4) {
+                    buttons[MATCHINGDEF4].drawButton(g);
+                    buttons[MATCHINGDEF4].setEnabled(true);
+                }
+                if(showMatchingTerm5) {
+                    buttons[MATCHINGTERM5].drawButton(g);
+                    buttons[MATCHINGTERM5].setEnabled(true);
+                }
+                if(showMatchingDef5) {
+                    buttons[MATCHINGDEF5].drawButton(g);
+                    buttons[MATCHINGDEF5].setEnabled(true);
+                }
+
+
+             //   if(buttons[MATCHINGTERM1].getShape().getBounds().getX()<200)
+              //      buttons[MATCHINGTERM1].getShape().getBounds().setLocation(200, (int)buttons[MATCHINGTERM1].getShape().getBounds().getY());
+
             }
 
             //top bar with settings buttons
@@ -2362,27 +2458,27 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
         while(!learnQueue.isEmpty()) //getting rid of old deck
             learnQueue.remove();
 
-        Deck copyOfDeck = new Deck();
-        for(int i = 0; i<deck.size(); i++)
-        {
-            copyOfDeck.add(deck.get(i));
+        if(deck != null) {
+            Deck copyOfDeck = new Deck();
+            for (int i = 0; i < deck.size(); i++) {
+                copyOfDeck.add(deck.get(i));
+            }
+
+            int firstIndex = 0;
+            int secondIndex = 0;
+            Flashcard temp;
+
+            for (int j = 0; j < 250; j++) {
+                firstIndex = (int) (Math.random() * (copyOfDeck.size()));
+                secondIndex = (int) (Math.random() * (copyOfDeck.size()));
+                temp = copyOfDeck.get(firstIndex);
+                copyOfDeck.set(firstIndex, copyOfDeck.get(secondIndex));
+                copyOfDeck.set(secondIndex, temp);
+            }
+
+            for (int k = 0; k < copyOfDeck.size(); k++)
+                learnQueue.add(copyOfDeck.get(k));
         }
-
-        int firstIndex = 0;
-        int secondIndex = 0;
-        Flashcard temp;
-
-       for(int j = 0; j<250; j++)
-       {
-           firstIndex = (int)(Math.random()*(copyOfDeck.size()));
-           secondIndex = (int)(Math.random()*(copyOfDeck.size()));
-           temp = copyOfDeck.get(firstIndex);
-           copyOfDeck.set(firstIndex, copyOfDeck.get(secondIndex));
-           copyOfDeck.set(secondIndex, temp);
-       }
-
-       for(int k = 0; k<copyOfDeck.size(); k++)
-        learnQueue.add(copyOfDeck.get(k));
     }
 
     /**
@@ -3489,24 +3585,6 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                                showCorrect3 = true;
                            if (D.equals(learnQueue.peek().getTerm()))
                                showCorrect4 = true;
-
-//                       if(!learnQueue.isEmpty()) {
-//                           randomWrongAnswer1 = (int) (Math.random() * (deck.size()));
-//                           while (deck.get(randomWrongAnswer1).getTerm().trim().equals(learnQueue.peek().getTerm().trim()))
-//                               randomWrongAnswer1 = (int) (Math.random() * (deck.size()));
-//
-//                           randomWrongAnswer2 = (int) (Math.random() * (deck.size()));
-//                           while (deck.get(randomWrongAnswer2).getTerm().trim().equals(deck.get(randomWrongAnswer1).getTerm().trim()) || deck.get(randomWrongAnswer2).getTerm().trim().equals(learnQueue.peek().getTerm().trim()))
-//                               randomWrongAnswer2 = (int) (Math.random() * (deck.size()));
-//
-//                           randomWrongAnswer3 = (int) (Math.random() * (deck.size()));
-//                           while (deck.get(randomWrongAnswer3).getTerm().trim().equals(deck.get(randomWrongAnswer1).getTerm().trim()) || deck.get(randomWrongAnswer3).getTerm().trim().equals(deck.get(randomWrongAnswer2).getTerm().trim()) || deck.get(randomWrongAnswer3).getTerm().trim().equals(learnQueue.peek().getTerm().trim()))
-//                               randomWrongAnswer3 = (int) (Math.random() * (deck.size()));
-//
-//                           randomWrongAnswer4 = (int) (Math.random() * (deck.size()));
-//                           while (deck.get(randomWrongAnswer4).getTerm().trim().equals(deck.get(randomWrongAnswer1).getTerm().trim()) || deck.get(randomWrongAnswer4).getTerm().trim().equals(deck.get(randomWrongAnswer2).getTerm().trim()) || deck.get(randomWrongAnswer4).getTerm().trim().equals(deck.get(randomWrongAnswer3).getTerm().trim()) || deck.get(randomWrongAnswer4).getTerm().trim().equals(learnQueue.peek().getTerm().trim()))
-//                               randomWrongAnswer4 = (int) (Math.random() * (deck.size()));
-//                       }
                        }
                    }
                    if(b.getTitle().equals("learnB"))
@@ -3529,26 +3607,6 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                                showCorrect3 = true;
                            if (D.equals(learnQueue.peek().getTerm()))
                                showCorrect4 = true;
-
-//                       if(!learnQueue.isEmpty()) {
-//                           randomAnswers = (int) (Math.random() * (4)) + 1;
-//
-//                           randomWrongAnswer1 = (int) (Math.random() * (deck.size()));
-//                           while (deck.get(randomWrongAnswer1).getTerm().trim().equals(learnQueue.peek().getTerm().trim()))
-//                               randomWrongAnswer1 = (int) (Math.random() * (deck.size()));
-//
-//                           randomWrongAnswer2 = (int) (Math.random() * (deck.size()));
-//                           while (deck.get(randomWrongAnswer2).getTerm().trim().equals(deck.get(randomWrongAnswer1).getTerm().trim()) || deck.get(randomWrongAnswer2).getTerm().trim().equals(learnQueue.peek().getTerm().trim()))
-//                               randomWrongAnswer2 = (int) (Math.random() * (deck.size()));
-//
-//                           randomWrongAnswer3 = (int) (Math.random() * (deck.size()));
-//                           while (deck.get(randomWrongAnswer3).getTerm().trim().equals(deck.get(randomWrongAnswer1).getTerm().trim()) || deck.get(randomWrongAnswer3).getTerm().trim().equals(deck.get(randomWrongAnswer2).getTerm().trim()) || deck.get(randomWrongAnswer3).getTerm().trim().equals(learnQueue.peek().getTerm().trim()))
-//                               randomWrongAnswer3 = (int) (Math.random() * (deck.size()));
-//
-//                           randomWrongAnswer4 = (int) (Math.random() * (deck.size()));
-//                           while (deck.get(randomWrongAnswer4).getTerm().trim().equals(deck.get(randomWrongAnswer1).getTerm().trim()) || deck.get(randomWrongAnswer4).getTerm().trim().equals(deck.get(randomWrongAnswer2).getTerm().trim()) || deck.get(randomWrongAnswer4).getTerm().trim().equals(deck.get(randomWrongAnswer3).getTerm().trim()) || deck.get(randomWrongAnswer4).getTerm().trim().equals(learnQueue.peek().getTerm().trim()))
-//                               randomWrongAnswer4 = (int) (Math.random() * (deck.size()));
-//                       }
                        }
                    }
                    if(b.getTitle().equals("learnC"))
@@ -3571,26 +3629,6 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                                showCorrect2 = true;
                            if (D.equals(learnQueue.peek().getTerm()))
                                showCorrect4 = true;
-
-//                       if(!learnQueue.isEmpty()) {
-//                           randomAnswers = (int) (Math.random() * (4)) + 1;
-//
-//                           randomWrongAnswer1 = (int) (Math.random() * (deck.size()));
-//                           while (deck.get(randomWrongAnswer1).getTerm().trim().equals(learnQueue.peek().getTerm().trim()))
-//                               randomWrongAnswer1 = (int) (Math.random() * (deck.size()));
-//
-//                           randomWrongAnswer2 = (int) (Math.random() * (deck.size()));
-//                           while (deck.get(randomWrongAnswer2).getTerm().trim().equals(deck.get(randomWrongAnswer1).getTerm().trim()) || deck.get(randomWrongAnswer2).getTerm().trim().equals(learnQueue.peek().getTerm().trim()))
-//                               randomWrongAnswer2 = (int) (Math.random() * (deck.size()));
-//
-//                           randomWrongAnswer3 = (int) (Math.random() * (deck.size()));
-//                           while (deck.get(randomWrongAnswer3).getTerm().trim().equals(deck.get(randomWrongAnswer1).getTerm().trim()) || deck.get(randomWrongAnswer3).getTerm().trim().equals(deck.get(randomWrongAnswer2).getTerm().trim()) || deck.get(randomWrongAnswer3).getTerm().trim().equals(learnQueue.peek().getTerm().trim()))
-//                               randomWrongAnswer3 = (int) (Math.random() * (deck.size()));
-//
-//                           randomWrongAnswer4 = (int) (Math.random() * (deck.size()));
-//                           while (deck.get(randomWrongAnswer4).getTerm().trim().equals(deck.get(randomWrongAnswer1).getTerm().trim()) || deck.get(randomWrongAnswer4).getTerm().trim().equals(deck.get(randomWrongAnswer2).getTerm().trim()) || deck.get(randomWrongAnswer4).getTerm().trim().equals(deck.get(randomWrongAnswer3).getTerm().trim()) || deck.get(randomWrongAnswer4).getTerm().trim().equals(learnQueue.peek().getTerm().trim()))
-//                               randomWrongAnswer4 = (int) (Math.random() * (deck.size()));
-//                       }
                        }
                    }
                    if(b.getTitle().equals("learnD"))
@@ -3613,26 +3651,6 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                                showCorrect2 = true;
                            if (C.equals(learnQueue.peek().getTerm()))
                                showCorrect3 = true;
-
-//                       if(!learnQueue.isEmpty()) {
-//                           randomAnswers = (int) (Math.random() * (4)) + 1;
-//
-//                           randomWrongAnswer1 = (int) (Math.random() * (deck.size()));
-//                           while (deck.get(randomWrongAnswer1).getTerm().trim().equals(learnQueue.peek().getTerm().trim()))
-//                               randomWrongAnswer1 = (int) (Math.random() * (deck.size()));
-//
-//                           randomWrongAnswer2 = (int) (Math.random() * (deck.size()));
-//                           while (deck.get(randomWrongAnswer2).getTerm().trim().equals(deck.get(randomWrongAnswer1).getTerm().trim()) || deck.get(randomWrongAnswer2).getTerm().trim().equals(learnQueue.peek().getTerm().trim()))
-//                               randomWrongAnswer2 = (int) (Math.random() * (deck.size()));
-//
-//                           randomWrongAnswer3 = (int) (Math.random() * (deck.size()));
-//                           while (deck.get(randomWrongAnswer3).getTerm().trim().equals(deck.get(randomWrongAnswer1).getTerm().trim()) || deck.get(randomWrongAnswer3).getTerm().trim().equals(deck.get(randomWrongAnswer2).getTerm().trim()) || deck.get(randomWrongAnswer3).getTerm().trim().equals(learnQueue.peek().getTerm().trim()))
-//                               randomWrongAnswer3 = (int) (Math.random() * (deck.size()));
-//
-//                           randomWrongAnswer4 = (int) (Math.random() * (deck.size()));
-//                           while (deck.get(randomWrongAnswer4).getTerm().trim().equals(deck.get(randomWrongAnswer1).getTerm().trim()) || deck.get(randomWrongAnswer4).getTerm().trim().equals(deck.get(randomWrongAnswer2).getTerm().trim()) || deck.get(randomWrongAnswer4).getTerm().trim().equals(deck.get(randomWrongAnswer3).getTerm().trim()) || deck.get(randomWrongAnswer4).getTerm().trim().equals(learnQueue.peek().getTerm().trim()))
-//                               randomWrongAnswer4 = (int) (Math.random() * (deck.size()));
-//                       }
                        }
                    }
                    if(b.getTitle().equals("tryAgain"))
@@ -3647,15 +3665,6 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
 
     public void mousePressed( MouseEvent e )
     {
-//        mouseX = e.getX();
-//        mouseY = e.getY();
-//
-//        if(buttons[MATCHINGTERM1].getShape().contains(mouseX, mouseY) && buttons[MATCHINGTERM1].isEnabled())
-//        {
-//            buttons[MATCHINGTERM1].setShape(new Rectangle(mouseX-30, mouseY-30, (int)(buttons[MATCHINGTERM1].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGTERM1].getShape().getBounds().getHeight())));
-//
-//        }
-
     }
 
     public void mouseReleased( MouseEvent e )
@@ -3663,8 +3672,69 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
         mouseX = e.getX();
         mouseY = e.getY();
 
+        //yay! the correct cards were matched together
+        //we no longer want these buttons on the screen
+        if(buttons[MATCHINGDEF1].getShape().contains(mouseX, mouseY) && buttons[MATCHINGDEF1].isEnabled() && movingTerm1 == true)
+        {
+            showMatchingTerm1 = false;
+            showMatchingDef1 = false;
+        }
+        if(buttons[MATCHINGTERM1].getShape().contains(mouseX, mouseY) && buttons[MATCHINGTERM1].isEnabled() && movingDef1 == true)
+        {
+            showMatchingTerm1 = false;
+            showMatchingDef1 = false;
+        }
+        if(buttons[MATCHINGDEF2].getShape().contains(mouseX, mouseY) && buttons[MATCHINGDEF2].isEnabled() && movingTerm2 == true)
+        {
+            showMatchingTerm2 = false;
+            showMatchingDef2 = false;
+        }
+        if(buttons[MATCHINGTERM2].getShape().contains(mouseX, mouseY) && buttons[MATCHINGTERM2].isEnabled() && movingDef2 == true)
+        {
+            showMatchingTerm2 = false;
+            showMatchingDef2 = false;
+        }
+        if(buttons[MATCHINGDEF3].getShape().contains(mouseX, mouseY) && buttons[MATCHINGDEF3].isEnabled() && movingTerm3 == true)
+        {
+            showMatchingTerm3 = false;
+            showMatchingDef3 = false;
+        }
+        if(buttons[MATCHINGTERM3].getShape().contains(mouseX, mouseY) && buttons[MATCHINGTERM3].isEnabled() && movingDef3 == true)
+        {
+            showMatchingTerm3 = false;
+            showMatchingDef3 = false;
+        }
+        if(buttons[MATCHINGDEF4].getShape().contains(mouseX, mouseY) && buttons[MATCHINGDEF4].isEnabled() && movingTerm4 == true)
+        {
+            showMatchingTerm4 = false;
+            showMatchingDef4 = false;
+        }
+        if(buttons[MATCHINGTERM4].getShape().contains(mouseX, mouseY) && buttons[MATCHINGTERM4].isEnabled() && movingDef4 == true)
+        {
+            showMatchingTerm4 = false;
+            showMatchingDef4 = false;
+        }
+        if(buttons[MATCHINGDEF5].getShape().contains(mouseX, mouseY) && buttons[MATCHINGDEF5].isEnabled() && movingTerm5 == true)
+        {
+            showMatchingTerm5 = false;
+            showMatchingDef5 = false;
+        }
+        if(buttons[MATCHINGTERM5].getShape().contains(mouseX, mouseY) && buttons[MATCHINGTERM5].isEnabled() && movingDef5 == true)
+        {
+            showMatchingTerm5 = false;
+            showMatchingDef5 = false;
+        }
+
         movingTerm1 = false;
         movingDef1 = false;
+        movingTerm2 = false;
+        movingDef2 = false;
+        movingTerm3 = false;
+        movingDef3 = false;
+        movingTerm4 = false;
+        movingDef4 = false;
+        movingTerm5 = false;
+        movingDef5 = false;
 
        /* for (Button b : buttons) {
             if (b.getShape().contains(mouseX, mouseY) && b.isEnabled())
@@ -3766,112 +3836,112 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
             buttons[TRUEBUTTONFORTEST].unHighlight();
         }
         //multiple choice question 1. User selected A
-        if(correctMultipleChoice1 == 1 && currentQuestion == 6 && question6Answered == true){
+        if(chosenAnswerMultipleChoice1 == 1 && currentQuestion == 6 && question6Answered == true){
             buttons[MCQATESTBUTTON].highlight();
             buttons[MCQBTESTBUTTON].unHighlight();
             buttons[MCQCTESTBUTTON].unHighlight();
             buttons[MCQDTESTBUTTON].unHighlight();
         }
         //multiple choice question 1. User selected B
-        if(correctMultipleChoice1 == 2 && currentQuestion == 6 && question6Answered == true){
+        if(chosenAnswerMultipleChoice1 == 2 && currentQuestion == 6 && question6Answered == true){
             buttons[MCQATESTBUTTON].unHighlight();
             buttons[MCQBTESTBUTTON].highlight();
             buttons[MCQCTESTBUTTON].unHighlight();
             buttons[MCQDTESTBUTTON].unHighlight();
         }
         //multiple choice question 1. User selected C
-        if(correctMultipleChoice1 == 3 && currentQuestion == 6 && question6Answered == true){
+        if(chosenAnswerMultipleChoice1 == 3 && currentQuestion == 6 && question6Answered == true){
             buttons[MCQATESTBUTTON].unHighlight();
             buttons[MCQBTESTBUTTON].unHighlight();
             buttons[MCQCTESTBUTTON].highlight();
             buttons[MCQDTESTBUTTON].unHighlight();
         }
         //multiple choice question 1. User selected D
-        if(correctMultipleChoice1 == 4 && currentQuestion == 6 && question6Answered == true){
+        if(chosenAnswerMultipleChoice1 == 4 && currentQuestion == 6 && question6Answered == true){
             buttons[MCQATESTBUTTON].unHighlight();
             buttons[MCQBTESTBUTTON].unHighlight();
             buttons[MCQCTESTBUTTON].unHighlight();
             buttons[MCQDTESTBUTTON].highlight();
         }
         //multiple choice question 2. User selected A
-        if(correctMultipleChoice2 == 1 && currentQuestion == 7 && question7Answered == true){
+        if(chosenAnswerMultipleChoice2 == 1 && currentQuestion == 7 && question7Answered == true){
             buttons[MCQATESTBUTTON].highlight();
             buttons[MCQBTESTBUTTON].unHighlight();
             buttons[MCQCTESTBUTTON].unHighlight();
             buttons[MCQDTESTBUTTON].unHighlight();
         }
         //multiple choice question 2. User selected B
-        if(correctMultipleChoice2 == 2 && currentQuestion == 7 && question7Answered == true){
+        if(chosenAnswerMultipleChoice2 == 2 && currentQuestion == 7 && question7Answered == true){
             buttons[MCQATESTBUTTON].unHighlight();
             buttons[MCQBTESTBUTTON].highlight();
             buttons[MCQCTESTBUTTON].unHighlight();
             buttons[MCQDTESTBUTTON].unHighlight();
         }
         //multiple choice question 2. User selected C
-        if(correctMultipleChoice2 == 3 && currentQuestion == 7 && question7Answered == true){
+        if(chosenAnswerMultipleChoice2 == 3 && currentQuestion == 7 && question7Answered == true){
             buttons[MCQATESTBUTTON].unHighlight();
             buttons[MCQBTESTBUTTON].unHighlight();
             buttons[MCQCTESTBUTTON].highlight();
             buttons[MCQDTESTBUTTON].unHighlight();
         }
         //multiple choice question 2. User selected D
-        if(correctMultipleChoice2 == 4 && currentQuestion == 7 && question7Answered == true){
+        if(chosenAnswerMultipleChoice2 == 4 && currentQuestion == 7 && question7Answered == true){
             buttons[MCQATESTBUTTON].unHighlight();
             buttons[MCQBTESTBUTTON].unHighlight();
             buttons[MCQCTESTBUTTON].unHighlight();
             buttons[MCQDTESTBUTTON].highlight();
         }
         //multiple choice question 3. User selected A
-        if(correctMultipleChoice3 == 1 && currentQuestion == 8 && question8Answered == true){
+        if(chosenAnswerMultipleChoice3 == 1 && currentQuestion == 8 && question8Answered == true){
             buttons[MCQATESTBUTTON].highlight();
             buttons[MCQBTESTBUTTON].unHighlight();
             buttons[MCQCTESTBUTTON].unHighlight();
             buttons[MCQDTESTBUTTON].unHighlight();
         }
         //multiple choice question 3. User selected B
-        if(correctMultipleChoice3 == 2 && currentQuestion == 8 && question8Answered == true){
+        if(chosenAnswerMultipleChoice3 == 2 && currentQuestion == 8 && question8Answered == true){
             buttons[MCQATESTBUTTON].unHighlight();
             buttons[MCQBTESTBUTTON].highlight();
             buttons[MCQCTESTBUTTON].unHighlight();
             buttons[MCQDTESTBUTTON].unHighlight();
         }
         //multiple choice question 3. User selected C
-        if(correctMultipleChoice3 == 3 && currentQuestion == 8 && question8Answered == true){
+        if(chosenAnswerMultipleChoice3 == 3 && currentQuestion == 8 && question8Answered == true){
             buttons[MCQATESTBUTTON].unHighlight();
             buttons[MCQBTESTBUTTON].unHighlight();
             buttons[MCQCTESTBUTTON].highlight();
             buttons[MCQDTESTBUTTON].unHighlight();
         }
         //multiple choice question 3. User selected D
-        if(correctMultipleChoice3 == 4 && currentQuestion == 8 && question8Answered == true){
+        if(chosenAnswerMultipleChoice3 == 4 && currentQuestion == 8 && question8Answered == true){
             buttons[MCQATESTBUTTON].unHighlight();
             buttons[MCQBTESTBUTTON].unHighlight();
             buttons[MCQCTESTBUTTON].unHighlight();
             buttons[MCQDTESTBUTTON].highlight();
         }
         //multiple choice question 4. User selected A
-        if(correctMultipleChoice4 == 1 && currentQuestion == 9 && question9Answered == true){
+        if(chosenAnswerMultipleChoice4 == 1 && currentQuestion == 9 && question9Answered == true){
             buttons[MCQATESTBUTTON].highlight();
             buttons[MCQBTESTBUTTON].unHighlight();
             buttons[MCQCTESTBUTTON].unHighlight();
             buttons[MCQDTESTBUTTON].unHighlight();
         }
         //multiple choice question 4. User selected B
-        if(correctMultipleChoice4 == 2 && currentQuestion == 9 && question9Answered == true){
+        if(chosenAnswerMultipleChoice4 == 2 && currentQuestion == 9 && question9Answered == true){
             buttons[MCQATESTBUTTON].unHighlight();
             buttons[MCQBTESTBUTTON].highlight();
             buttons[MCQCTESTBUTTON].unHighlight();
             buttons[MCQDTESTBUTTON].unHighlight();
         }
         //multiple choice question 4. User selected C
-        if(correctMultipleChoice4 == 3 && currentQuestion == 9 && question9Answered == true){
+        if(chosenAnswerMultipleChoice4 == 3 && currentQuestion == 9 && question9Answered == true){
             buttons[MCQATESTBUTTON].unHighlight();
             buttons[MCQBTESTBUTTON].unHighlight();
             buttons[MCQCTESTBUTTON].highlight();
             buttons[MCQDTESTBUTTON].unHighlight();
         }
         //multiple choice question 4. User selected D
-        if(correctMultipleChoice4 == 4 && currentQuestion == 9 && question9Answered == true){
+        if(chosenAnswerMultipleChoice4 == 4 && currentQuestion == 9 && question9Answered == true){
             buttons[MCQATESTBUTTON].unHighlight();
             buttons[MCQBTESTBUTTON].unHighlight();
             buttons[MCQCTESTBUTTON].unHighlight();
@@ -3885,25 +3955,63 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
             buttons[MCQDTESTBUTTON].unHighlight();
         }
         //multiple choice question 5. User selected B
-        if(correctMultipleChoice5 == 2 && currentQuestion == 10 && question10Answered == true){
+        if(chosenAnswerMultipleChoice5 == 2 && currentQuestion == 10 && question10Answered == true){
             buttons[MCQATESTBUTTON].unHighlight();
             buttons[MCQBTESTBUTTON].highlight();
             buttons[MCQCTESTBUTTON].unHighlight();
             buttons[MCQDTESTBUTTON].unHighlight();
         }
         //multiple choice question 5. User selected C
-        if(correctMultipleChoice5 == 3 && currentQuestion == 10 && question10Answered == true){
+        if(chosenAnswerMultipleChoice5 == 3 && currentQuestion == 10 && question10Answered == true){
             buttons[MCQATESTBUTTON].unHighlight();
             buttons[MCQBTESTBUTTON].unHighlight();
             buttons[MCQCTESTBUTTON].highlight();
             buttons[MCQDTESTBUTTON].unHighlight();
         }
         //multiple choice question 5. User selected D
-        if(correctMultipleChoice5 == 4 && currentQuestion == 10 && question10Answered == true){
+        if(chosenAnswerMultipleChoice5 == 4 && currentQuestion == 10 && question10Answered == true){
             buttons[MCQATESTBUTTON].unHighlight();
             buttons[MCQBTESTBUTTON].unHighlight();
             buttons[MCQCTESTBUTTON].unHighlight();
             buttons[MCQDTESTBUTTON].highlight();
+        }
+    }
+
+    public void keepButtonInBounds(int buttonIdentifier)
+    {
+        //corners
+        if(buttons[buttonIdentifier].getShape().getBounds().getY() < 50 && buttons[buttonIdentifier].getShape().getBounds().getX() < 201) //top left corner
+        {
+            buttons[buttonIdentifier].setShape(new Rectangle(201, 50, (int)(buttons[buttonIdentifier].getShape().getBounds().getWidth()), (int)(buttons[buttonIdentifier].getShape().getBounds().getHeight())));
+        }
+        if(buttons[buttonIdentifier].getShape().getBounds().getY() < 50 && buttons[buttonIdentifier].getShape().getBounds().getX()+buttons[buttonIdentifier].getShape().getBounds().getWidth() > (xSIZE-11)) //top right corner
+        {
+            buttons[buttonIdentifier].setShape(new Rectangle((xSIZE-11) - (int)buttons[buttonIdentifier].getShape().getBounds().getWidth(), 50, (int)(buttons[buttonIdentifier].getShape().getBounds().getWidth()), (int)(buttons[buttonIdentifier].getShape().getBounds().getHeight())));
+        }
+        if(buttons[buttonIdentifier].getShape().getBounds().getY()+buttons[buttonIdentifier].getShape().getBounds().getHeight() > (ySIZE-34) && buttons[buttonIdentifier].getShape().getBounds().getX()+buttons[buttonIdentifier].getShape().getBounds().getWidth() > (xSIZE-11)) //bottom right corner
+        {
+            buttons[buttonIdentifier].setShape(new Rectangle((xSIZE-11) - (int)buttons[buttonIdentifier].getShape().getBounds().getWidth(), (ySIZE-34)- (int)buttons[buttonIdentifier].getShape().getBounds().getHeight(), (int)(buttons[buttonIdentifier].getShape().getBounds().getWidth()), (int)(buttons[buttonIdentifier].getShape().getBounds().getHeight())));
+        }
+        if(buttons[buttonIdentifier].getShape().getBounds().getY()+buttons[buttonIdentifier].getShape().getBounds().getHeight() > (ySIZE-34) && buttons[buttonIdentifier].getShape().getBounds().getX() < 201) //bottom left corner
+        {
+            buttons[buttonIdentifier].setShape(new Rectangle(201, (ySIZE-34)- (int)buttons[buttonIdentifier].getShape().getBounds().getHeight(), (int)(buttons[buttonIdentifier].getShape().getBounds().getWidth()), (int)(buttons[buttonIdentifier].getShape().getBounds().getHeight())));
+        }
+        //sides
+        if(buttons[buttonIdentifier].getShape().getBounds().getX() < 201) //left
+        {
+            buttons[buttonIdentifier].setShape(new Rectangle(201, mouseY-30, (int)(buttons[buttonIdentifier].getShape().getBounds().getWidth()), (int)(buttons[buttonIdentifier].getShape().getBounds().getHeight())));
+        }
+        if(buttons[buttonIdentifier].getShape().getBounds().getY() < 50) //top
+        {
+            buttons[buttonIdentifier].setShape(new Rectangle(mouseX - 30, 50, (int) (buttons[buttonIdentifier].getShape().getBounds().getWidth()), (int) (buttons[buttonIdentifier].getShape().getBounds().getHeight())));
+        }
+        if(buttons[buttonIdentifier].getShape().getBounds().getX()+buttons[buttonIdentifier].getShape().getBounds().getWidth() > (xSIZE-11)) //right
+        {
+            buttons[buttonIdentifier].setShape(new Rectangle((xSIZE-11) - (int)buttons[buttonIdentifier].getShape().getBounds().getWidth(), mouseY-30, (int)(buttons[buttonIdentifier].getShape().getBounds().getWidth()), (int)(buttons[buttonIdentifier].getShape().getBounds().getHeight())));
+        }
+        if(buttons[buttonIdentifier].getShape().getBounds().getY()+buttons[buttonIdentifier].getShape().getBounds().getHeight() > (ySIZE-34)) //bottom
+        {
+            buttons[buttonIdentifier].setShape(new Rectangle(mouseX - 30, (ySIZE - 34) - (int) buttons[buttonIdentifier].getShape().getBounds().getHeight(), (int) (buttons[buttonIdentifier].getShape().getBounds().getWidth()), (int) (buttons[buttonIdentifier].getShape().getBounds().getHeight())));
         }
     }
 
@@ -3913,20 +4021,151 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
         mouseY = e.getY();
 
         //the new x and y code could be fixed to be more accurate!!
-        if(buttons[MATCHINGDEF1].getShape().contains(mouseX, mouseY) && buttons[MATCHINGDEF1].isEnabled() && movingTerm1 == false)
+        if(buttons[MATCHINGDEF1].getShape().contains(mouseX, mouseY) && buttons[MATCHINGDEF1].isEnabled() && movingTerm1 == false && movingTerm2 == false && movingDef2 == false && movingTerm3 == false && movingDef3 == false  && movingTerm4 == false && movingDef4 == false && movingTerm5 == false && movingDef5 == false)
         {
             buttons[MATCHINGDEF1].setShape(new Rectangle(mouseX-30, mouseY-30, (int)(buttons[MATCHINGDEF1].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGDEF1].getShape().getBounds().getHeight())));
             buttons[MATCHINGTERM1].unHighlight();
             movingDef1 = true;
+            keepButtonInBounds(MATCHINGDEF1);
         }
-        if(buttons[MATCHINGTERM1].getShape().contains(mouseX, mouseY) && buttons[MATCHINGTERM1].isEnabled() && movingDef1 == false)
+        if(movingDef1 == true && !buttons[MATCHINGDEF1].getShape().contains(mouseX, mouseY)) //makes sure the button stays with the mouse, even when the mouse is being dragged really fast
+        {
+            buttons[MATCHINGDEF1].setShape(new Rectangle(mouseX-30, mouseY-30, (int)(buttons[MATCHINGDEF1].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGDEF1].getShape().getBounds().getHeight())));
+            buttons[MATCHINGDEF1].highlight();
+            keepButtonInBounds(MATCHINGDEF1);
+        }
+        if(buttons[MATCHINGTERM1].getShape().contains(mouseX, mouseY) && buttons[MATCHINGTERM1].isEnabled() && movingDef1 == false && movingTerm2 == false && movingDef2 == false && movingTerm3 == false && movingDef3 == false  && movingTerm4 == false && movingDef4 == false && movingTerm5 == false && movingDef5 == false)
         {
             buttons[MATCHINGTERM1].setShape(new Rectangle(mouseX-30, mouseY-30, (int)(buttons[MATCHINGTERM1].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGTERM1].getShape().getBounds().getHeight())));
             buttons[MATCHINGDEF1].unHighlight();
             movingTerm1 = true;
+            keepButtonInBounds(MATCHINGTERM1);
         }
-        if(!buttons[MATCHINGTERM1].getShape().contains(mouseX, mouseY))
+        if(movingTerm1 == true && !buttons[MATCHINGTERM1].getShape().contains(mouseX, mouseY)) //makes sure the button stays with the mouse, even when the mouse is being dragged really fast
+        {
+            buttons[MATCHINGTERM1].setShape(new Rectangle(mouseX-30, mouseY-30, (int)(buttons[MATCHINGTERM1].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGTERM1].getShape().getBounds().getHeight())));
+            buttons[MATCHINGTERM1].highlight();
+            keepButtonInBounds(MATCHINGTERM1);
+        }
+        if(!buttons[MATCHINGTERM1].getShape().contains(mouseX, mouseY) && movingTerm1 == false)
             buttons[MATCHINGTERM1].unHighlight();
+
+        if(buttons[MATCHINGDEF2].getShape().contains(mouseX, mouseY) && buttons[MATCHINGDEF2].isEnabled() && movingTerm2 == false && movingTerm1 == false && movingDef1 == false && movingTerm3 == false && movingDef3 == false  && movingTerm4 == false && movingDef4 == false && movingTerm5 == false && movingDef5 == false)
+        {
+            buttons[MATCHINGDEF2].setShape(new Rectangle(mouseX-30, mouseY-30, (int)(buttons[MATCHINGDEF2].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGDEF2].getShape().getBounds().getHeight())));
+            buttons[MATCHINGTERM2].unHighlight();
+            movingDef2 = true;
+            keepButtonInBounds(MATCHINGDEF2);
+        }
+        if(movingDef2 == true && !buttons[MATCHINGDEF2].getShape().contains(mouseX, mouseY)) //makes sure the button stays with the mouse, even when the mouse is being dragged really fast
+        {
+            buttons[MATCHINGDEF2].setShape(new Rectangle(mouseX-30, mouseY-30, (int)(buttons[MATCHINGDEF2].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGDEF2].getShape().getBounds().getHeight())));
+            buttons[MATCHINGDEF2].highlight();
+            keepButtonInBounds(MATCHINGDEF2);
+        }
+        if(buttons[MATCHINGTERM2].getShape().contains(mouseX, mouseY) && buttons[MATCHINGTERM2].isEnabled() && movingDef2 == false && movingTerm1 == false && movingDef1 == false && movingTerm3 == false && movingDef3 == false  && movingTerm4 == false && movingDef4 == false && movingTerm5 == false && movingDef5 == false)
+        {
+            buttons[MATCHINGTERM2].setShape(new Rectangle(mouseX-30, mouseY-30, (int)(buttons[MATCHINGTERM2].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGTERM2].getShape().getBounds().getHeight())));
+            buttons[MATCHINGDEF2].unHighlight();
+            keepButtonInBounds(MATCHINGTERM2);
+            movingTerm2 = true;
+        }
+        if(movingTerm2 == true && !buttons[MATCHINGTERM2].getShape().contains(mouseX, mouseY)) //makes sure the button stays with the mouse, even when the mouse is being dragged really fast
+        {
+            buttons[MATCHINGTERM2].setShape(new Rectangle(mouseX-30, mouseY-30, (int)(buttons[MATCHINGTERM2].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGTERM2].getShape().getBounds().getHeight())));
+            buttons[MATCHINGTERM2].highlight();
+            keepButtonInBounds(MATCHINGTERM2);
+        }
+        if(!buttons[MATCHINGTERM2].getShape().contains(mouseX, mouseY)  && movingTerm2 == false)
+            buttons[MATCHINGTERM2].unHighlight();
+
+        if(buttons[MATCHINGDEF3].getShape().contains(mouseX, mouseY) && buttons[MATCHINGDEF3].isEnabled() && movingTerm3 == false && movingTerm2 == false && movingDef2 == false && movingTerm1 == false && movingDef1 == false && movingTerm4 == false && movingDef4 == false && movingTerm5 == false && movingDef5 == false)
+        {
+            buttons[MATCHINGDEF3].setShape(new Rectangle(mouseX-30, mouseY-30, (int)(buttons[MATCHINGDEF3].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGDEF3].getShape().getBounds().getHeight())));
+            buttons[MATCHINGTERM3].unHighlight();
+            keepButtonInBounds(MATCHINGDEF3);
+            movingDef3 = true;
+        }
+        if(movingDef3 == true && !buttons[MATCHINGDEF3].getShape().contains(mouseX, mouseY)) //makes sure the button stays with the mouse, even when the mouse is being dragged really fast
+        {
+            buttons[MATCHINGDEF3].setShape(new Rectangle(mouseX-30, mouseY-30, (int)(buttons[MATCHINGDEF3].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGDEF3].getShape().getBounds().getHeight())));
+            buttons[MATCHINGDEF3].highlight();
+            keepButtonInBounds(MATCHINGDEF3);
+        }
+        if(buttons[MATCHINGTERM3].getShape().contains(mouseX, mouseY) && buttons[MATCHINGTERM3].isEnabled() && movingDef3 == false && movingTerm2 == false && movingDef2 == false && movingTerm1 == false && movingDef1 == false  && movingTerm4 == false && movingDef4 == false && movingTerm5 == false && movingDef5 == false)
+        {
+            buttons[MATCHINGTERM3].setShape(new Rectangle(mouseX-30, mouseY-30, (int)(buttons[MATCHINGTERM3].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGTERM3].getShape().getBounds().getHeight())));
+            buttons[MATCHINGDEF3].unHighlight();
+            keepButtonInBounds(MATCHINGTERM3);
+            movingTerm3 = true;
+        }
+        if(movingTerm3 == true && !buttons[MATCHINGTERM3].getShape().contains(mouseX, mouseY)) //makes sure the button stays with the mouse, even when the mouse is being dragged really fast
+        {
+            buttons[MATCHINGTERM3].setShape(new Rectangle(mouseX-30, mouseY-30, (int)(buttons[MATCHINGTERM3].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGTERM3].getShape().getBounds().getHeight())));
+            buttons[MATCHINGTERM3].highlight();
+            keepButtonInBounds(MATCHINGTERM3);
+        }
+        if(!buttons[MATCHINGTERM3].getShape().contains(mouseX, mouseY) && movingTerm3 == false)
+            buttons[MATCHINGTERM3].unHighlight();
+
+        if(buttons[MATCHINGDEF4].getShape().contains(mouseX, mouseY) && buttons[MATCHINGDEF4].isEnabled() && movingTerm4 == false && movingTerm2 == false && movingDef2 == false && movingTerm3 == false && movingDef3 == false  && movingTerm1 == false && movingDef1 == false && movingTerm5 == false && movingDef5 == false)
+        {
+            buttons[MATCHINGDEF4].setShape(new Rectangle(mouseX-30, mouseY-30, (int)(buttons[MATCHINGDEF4].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGDEF4].getShape().getBounds().getHeight())));
+            buttons[MATCHINGTERM4].unHighlight();
+            keepButtonInBounds(MATCHINGDEF4);
+            movingDef4 = true;
+        }
+        if(movingDef4 == true && !buttons[MATCHINGDEF4].getShape().contains(mouseX, mouseY)) //makes sure the button stays with the mouse, even when the mouse is being dragged really fast
+        {
+            buttons[MATCHINGDEF4].setShape(new Rectangle(mouseX-30, mouseY-30, (int)(buttons[MATCHINGDEF4].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGDEF4].getShape().getBounds().getHeight())));
+            buttons[MATCHINGDEF4].highlight();
+            keepButtonInBounds(MATCHINGDEF4);
+        }
+        if(buttons[MATCHINGTERM4].getShape().contains(mouseX, mouseY) && buttons[MATCHINGTERM4].isEnabled() && movingDef4 == false && movingTerm2 == false && movingDef2 == false && movingTerm3 == false && movingDef3 == false  && movingTerm1 == false && movingDef1 == false && movingTerm5 == false && movingDef5 == false)
+        {
+            buttons[MATCHINGTERM4].setShape(new Rectangle(mouseX-30, mouseY-30, (int)(buttons[MATCHINGTERM4].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGTERM4].getShape().getBounds().getHeight())));
+            buttons[MATCHINGDEF4].unHighlight();
+            keepButtonInBounds(MATCHINGTERM4);
+            movingTerm4 = true;
+        }
+        if(movingTerm4 == true && !buttons[MATCHINGTERM4].getShape().contains(mouseX, mouseY)) //makes sure the button stays with the mouse, even when the mouse is being dragged really fast
+        {
+            buttons[MATCHINGTERM4].setShape(new Rectangle(mouseX-30, mouseY-30, (int)(buttons[MATCHINGTERM4].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGTERM4].getShape().getBounds().getHeight())));
+            buttons[MATCHINGTERM4].highlight();
+            keepButtonInBounds(MATCHINGTERM4);
+        }
+        if(!buttons[MATCHINGTERM4].getShape().contains(mouseX, mouseY) && movingTerm4 == false)
+            buttons[MATCHINGTERM4].unHighlight();
+
+        //change 1s to 5s
+        if(buttons[MATCHINGDEF5].getShape().contains(mouseX, mouseY) && buttons[MATCHINGDEF5].isEnabled() && movingTerm5 == false && movingTerm2 == false && movingDef2 == false && movingTerm3 == false && movingDef3 == false  && movingTerm4 == false && movingDef4 == false && movingTerm1 == false && movingDef1 == false)
+        {
+            buttons[MATCHINGDEF5].setShape(new Rectangle(mouseX-30, mouseY-30, (int)(buttons[MATCHINGDEF5].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGDEF5].getShape().getBounds().getHeight())));
+            buttons[MATCHINGTERM5].unHighlight();
+            keepButtonInBounds(MATCHINGDEF5);
+            movingDef5 = true;
+        }
+        if(movingDef5 == true && !buttons[MATCHINGDEF5].getShape().contains(mouseX, mouseY)) //makes sure the button stays with the mouse, even when the mouse is being dragged really fast
+        {
+            buttons[MATCHINGDEF5].setShape(new Rectangle(mouseX-30, mouseY-30, (int)(buttons[MATCHINGDEF5].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGDEF5].getShape().getBounds().getHeight())));
+            buttons[MATCHINGDEF5].highlight();
+            keepButtonInBounds(MATCHINGDEF5);
+        }
+        if(buttons[MATCHINGTERM5].getShape().contains(mouseX, mouseY) && buttons[MATCHINGTERM5].isEnabled() && movingDef5 == false && movingTerm2 == false && movingDef2 == false && movingTerm3 == false && movingDef3 == false  && movingTerm4 == false && movingDef4 == false && movingTerm1 == false && movingDef1 == false)
+        {
+            buttons[MATCHINGTERM5].setShape(new Rectangle(mouseX-30, mouseY-30, (int)(buttons[MATCHINGTERM5].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGTERM5].getShape().getBounds().getHeight())));
+            buttons[MATCHINGDEF5].unHighlight();
+            keepButtonInBounds(MATCHINGTERM5);
+            movingTerm5 = true;
+        }
+        if(movingTerm5 == true && !buttons[MATCHINGTERM5].getShape().contains(mouseX, mouseY)) //makes sure the button stays with the mouse, even when the mouse is being dragged really fast
+        {
+            buttons[MATCHINGTERM5].setShape(new Rectangle(mouseX-30, mouseY-30, (int)(buttons[MATCHINGTERM5].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGTERM5].getShape().getBounds().getHeight())));
+            buttons[MATCHINGTERM5].highlight();
+            keepButtonInBounds(MATCHINGTERM5);
+        }
+        if(!buttons[MATCHINGTERM5].getShape().contains(mouseX, mouseY) && movingTerm5 == false)
+            buttons[MATCHINGTERM5].unHighlight();
 
 
     }
