@@ -152,6 +152,8 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
     private boolean showMatchingDef5 = true;
     private boolean showMatchingTerm5 = true;
 
+    int[] indexForMatching = new int[5];
+
     //images
     //private ImageIcon startScreen  = new ImageIcon("images/backgrounds/startScreen.png");
 
@@ -524,36 +526,36 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
         ImageIcon resetMatching2 = new ImageIcon("resources/images/resetMatching2.png");
         buttons[RESETMATCHING] = new Button(r41, "resetMatching", resetMatching1, resetMatching2);
 
-        Shape r42 = new Rectangle(210, 60, 112, 53); //fix the width and height!
+        Shape r42 = new Rectangle(210, 60, 145, 75); //fix the width and height!
         ImageIcon matchingTerm1 = new ImageIcon("resources/images/matchingTerm1.png");
         ImageIcon matchingTerm2 = new ImageIcon("resources/images/matchingTerm2.png");
         buttons[MATCHINGTERM1] = new Button(r42, "matchingTerm1", matchingTerm1, matchingTerm2);
 
-        Shape r43 = new Rectangle(210, 120, 112, 53); //fix the width and height!
+        Shape r43 = new Rectangle(210, 140, 145, 75); //fix the width and height!
         buttons[MATCHINGDEF1] = new Button(r43, "matchingDef1", matchingTerm1, matchingTerm2);
 
-        Shape r44 = new Rectangle(210, 180, 112, 53); //fix the width and height!
+        Shape r44 = new Rectangle(210, 220, 145, 75); //fix the width and height!
         buttons[MATCHINGTERM2] = new Button(r44, "matchingTerm2", matchingTerm1, matchingTerm2);
 
-        Shape r45 = new Rectangle(210, 240, 112, 53); //fix the width and height!
+        Shape r45 = new Rectangle(210, 300, 145, 75); //fix the width and height!
         buttons[MATCHINGDEF2] = new Button(r45, "matchingDef2", matchingTerm1, matchingTerm2);
 
-        Shape r46 = new Rectangle(210, 300, 112, 53); //fix the width and height!
+        Shape r46 = new Rectangle(210, 380, 145, 75); //fix the width and height!
         buttons[MATCHINGTERM3] = new Button(r46, "matchingTerm3", matchingTerm1, matchingTerm2);
 
-        Shape r47 = new Rectangle(210, 360, 112, 53); //fix the width and height!
+        Shape r47 = new Rectangle(360, 60, 145, 75); //fix the width and height!
         buttons[MATCHINGDEF3] = new Button(r47, "matchingDef3", matchingTerm1, matchingTerm2);
 
-        Shape r48 = new Rectangle(330, 60, 112, 53); //fix the width and height!
+        Shape r48 = new Rectangle(360, 140, 145, 75); //fix the width and height!
         buttons[MATCHINGTERM4] = new Button(r48, "matchingTerm4", matchingTerm1, matchingTerm2);
 
-        Shape r49 = new Rectangle(330, 120, 112, 53); //fix the width and height!
+        Shape r49 = new Rectangle(360, 220, 145, 75); //fix the width and height!
         buttons[MATCHINGDEF4] = new Button(r49, "matchingDef4", matchingTerm1, matchingTerm2);
 
-        Shape r50 = new Rectangle(330, 180, 112, 53); //fix the width and height!
+        Shape r50 = new Rectangle(360, 300, 145, 75); //fix the width and height!
         buttons[MATCHINGTERM5] = new Button(r50, "matchingTerm5", matchingTerm1, matchingTerm2);
 
-        Shape r51 = new Rectangle(330, 240, 112, 53); //fix the width and height!
+        Shape r51 = new Rectangle(360, 380, 145, 75); //fix the width and height!
         buttons[MATCHINGDEF5] = new Button(r51, "matchingDef5", matchingTerm1, matchingTerm2);
 
         //sets the screen mode
@@ -1578,54 +1580,219 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
 
             if(matchingDisplay == true)
             {
-                if(buttons[MATCHINGTERM1].getShape().getBounds().getX() < 200)
-                {
-                    buttons[MATCHINGTERM1].getShape().getBounds().setBounds(200, (int)buttons[MATCHINGTERM1].getShape().getBounds().getY(), (int)buttons[MATCHINGTERM1].getShape().getBounds().getWidth(), (int)buttons[MATCHINGTERM1].getShape().getBounds().getHeight());
-                }
-                if(showMatchingTerm1) {
-                    buttons[MATCHINGTERM1].drawButton(g);
-                    buttons[MATCHINGTERM1].setEnabled(true);
-                }
-                if(showMatchingDef1) {
-                    buttons[MATCHINGDEF1].drawButton(g);
-                    buttons[MATCHINGDEF1].setEnabled(true);
-                }
-                if(showMatchingTerm2) {
-                    buttons[MATCHINGTERM2].drawButton(g);
-                    buttons[MATCHINGTERM2].setEnabled(true);
-                }
-                if(showMatchingDef2) {
-                    buttons[MATCHINGDEF2].drawButton(g);
-                    buttons[MATCHINGDEF2].setEnabled(true);
-                }
-                if(showMatchingTerm3) {
-                    buttons[MATCHINGTERM3].drawButton(g);
-                    buttons[MATCHINGTERM3].setEnabled(true);
-                }
-                if(showMatchingDef3) {
-                    buttons[MATCHINGDEF3].drawButton(g);
-                    buttons[MATCHINGDEF3].setEnabled(true);
-                }
-                if(showMatchingTerm4) {
-                    buttons[MATCHINGTERM4].drawButton(g);
-                    buttons[MATCHINGTERM4].setEnabled(true);
-                }
-                if(showMatchingDef4) {
-                    buttons[MATCHINGDEF4].drawButton(g);
-                    buttons[MATCHINGDEF4].setEnabled(true);
-                }
-                if(showMatchingTerm5) {
-                    buttons[MATCHINGTERM5].drawButton(g);
-                    buttons[MATCHINGTERM5].setEnabled(true);
-                }
-                if(showMatchingDef5) {
-                    buttons[MATCHINGDEF5].drawButton(g);
-                    buttons[MATCHINGDEF5].setEnabled(true);
+                /*
+                            int yValue1 = 260; //increase by 30 each time
+                             ArrayList<String> lines = addLinesToString(32, deck.get(flashcardShownInt).getTerm());
+                             for(int i = 0; i<lines.size(); i++)
+                             {
+                                 g.drawString(lines.get(i), 350, yValue1);
+                                 yValue1 += 33;
+                             }
+                 */
+                if(deck!=null) {
+                    g.setFont(new Font("Helvetica", Font.PLAIN, 11));
+                    g.setColor(Color.BLACK);
+
+                    if (showMatchingTerm1) {
+                        buttons[MATCHINGTERM1].drawButton(g);
+                        buttons[MATCHINGTERM1].setEnabled(true);
+
+                        int yVal1 = (int)buttons[MATCHINGTERM1].getShape().getBounds().getY() + 13;
+                        ArrayList<String> term1Lines = addLinesToString(27, deck.get(indexForMatching[0]).getTerm());
+                        if(term1Lines.size() > 5)
+                            for(int i = 0; i<5; i++)
+                            {
+                                g.drawString(term1Lines.get(i), (int)buttons[MATCHINGTERM1].getShape().getBounds().getX() + 3, yVal1);
+                                yVal1 += 13;
+                            }
+                            else
+                        for(int i = 0; i<term1Lines.size(); i++)
+                        {
+                            g.drawString(term1Lines.get(i), (int)buttons[MATCHINGTERM1].getShape().getBounds().getX() + 3, yVal1);
+                            yVal1 += 13;
+                        }
+
+                       // g.drawString(deck.get(indexForMatching[0]).getTerm(), (int) buttons[MATCHINGTERM1].getShape().getBounds().getX() + 10, (int) buttons[MATCHINGTERM1].getShape().getBounds().getY() + 30);
+                    }
+                    if (showMatchingDef1) {
+                        buttons[MATCHINGDEF1].drawButton(g);
+                        buttons[MATCHINGDEF1].setEnabled(true);
+
+                        int yVal2 = (int)buttons[MATCHINGDEF1].getShape().getBounds().getY() + 13;
+                        ArrayList<String> def1Lines = addLinesToString(27, deck.get(indexForMatching[0]).getDef());
+                        if(def1Lines.size() > 5)
+                            for(int i = 0; i<5; i++)
+                            {
+                                g.drawString(def1Lines.get(i), (int)buttons[MATCHINGDEF1].getShape().getBounds().getX() + 3, yVal2);
+                                yVal2 += 13;
+                            }
+                        else
+                            for(int i = 0; i<def1Lines.size(); i++)
+                            {
+                                g.drawString(def1Lines.get(i), (int)buttons[MATCHINGDEF1].getShape().getBounds().getX() + 3, yVal2);
+                                yVal2 += 13;
+                            }
+
+                        //g.drawString(deck.get(indexForMatching[0]).getDef(), (int) buttons[MATCHINGDEF1].getShape().getBounds().getX() + 10, (int) buttons[MATCHINGDEF1].getShape().getBounds().getY() + 30);
+                    }
+                    if (showMatchingTerm2) {
+                        buttons[MATCHINGTERM2].drawButton(g);
+                        buttons[MATCHINGTERM2].setEnabled(true);
+
+                        int yVal3 = (int)buttons[MATCHINGTERM2].getShape().getBounds().getY() + 13;
+                        ArrayList<String> term2Lines = addLinesToString(27, deck.get(indexForMatching[1]).getTerm());
+                        if(term2Lines.size() > 5)
+                            for(int i = 0; i<5; i++)
+                            {
+                                g.drawString(term2Lines.get(i), (int)buttons[MATCHINGTERM2].getShape().getBounds().getX() + 3, yVal3);
+                                yVal3 += 13;
+                            }
+                        else
+                            for(int i = 0; i<term2Lines.size(); i++)
+                            {
+                                g.drawString(term2Lines.get(i), (int)buttons[MATCHINGTERM2].getShape().getBounds().getX() + 3, yVal3);
+                                yVal3 += 13;
+                            }
+
+                    }
+                    if (showMatchingDef2) {
+                        buttons[MATCHINGDEF2].drawButton(g);
+                        buttons[MATCHINGDEF2].setEnabled(true);
+
+                        int yVal4 = (int)buttons[MATCHINGDEF2].getShape().getBounds().getY() + 13;
+                        ArrayList<String> def2Lines = addLinesToString(27, deck.get(indexForMatching[1]).getDef());
+                        if(def2Lines.size() > 5)
+                            for(int i = 0; i<5; i++)
+                            {
+                                g.drawString(def2Lines.get(i), (int)buttons[MATCHINGDEF2].getShape().getBounds().getX() + 3, yVal4);
+                                yVal4 += 13;
+                            }
+                        else
+                            for(int i = 0; i<def2Lines.size(); i++)
+                            {
+                                g.drawString(def2Lines.get(i), (int)buttons[MATCHINGDEF2].getShape().getBounds().getX() + 3, yVal4);
+                                yVal4 += 13;
+                            }
+                    }
+                    if (showMatchingTerm3) {
+                        buttons[MATCHINGTERM3].drawButton(g);
+                        buttons[MATCHINGTERM3].setEnabled(true);
+
+                        int yVal5 = (int)buttons[MATCHINGTERM3].getShape().getBounds().getY() + 13;
+                        ArrayList<String> term3Lines = addLinesToString(27, deck.get(indexForMatching[2]).getTerm());
+                        if(term3Lines.size() > 5)
+                            for(int i = 0; i<5; i++)
+                            {
+                                g.drawString(term3Lines.get(i), (int)buttons[MATCHINGTERM3].getShape().getBounds().getX() + 3, yVal5);
+                                yVal5 += 13;
+                            }
+                        else
+                            for(int i = 0; i<term3Lines.size(); i++)
+                            {
+                                g.drawString(term3Lines.get(i), (int)buttons[MATCHINGTERM3].getShape().getBounds().getX() + 3, yVal5);
+                                yVal5 += 13;
+                            }
+                    }
+                    if (showMatchingDef3) {
+                        buttons[MATCHINGDEF3].drawButton(g);
+                        buttons[MATCHINGDEF3].setEnabled(true);
+
+                        int yVal6 = (int)buttons[MATCHINGDEF3].getShape().getBounds().getY() + 13;
+                        ArrayList<String> def3Lines = addLinesToString(27, deck.get(indexForMatching[2]).getDef());
+                        if(def3Lines.size() > 5)
+                            for(int i = 0; i<5; i++)
+                            {
+                                g.drawString(def3Lines.get(i), (int)buttons[MATCHINGDEF3].getShape().getBounds().getX() + 3, yVal6);
+                                yVal6 += 13;
+                            }
+                        else
+                            for(int i = 0; i<def3Lines.size(); i++)
+                            {
+                                g.drawString(def3Lines.get(i), (int)buttons[MATCHINGDEF3].getShape().getBounds().getX() + 3, yVal6);
+                                yVal6 += 13;
+                            }
+                    }
+                    if (showMatchingTerm4) {
+                        buttons[MATCHINGTERM4].drawButton(g);
+                        buttons[MATCHINGTERM4].setEnabled(true);
+
+                        int yVal7 = (int)buttons[MATCHINGTERM4].getShape().getBounds().getY() + 13;
+                        ArrayList<String> term4Lines = addLinesToString(27, deck.get(indexForMatching[3]).getTerm());
+                        if(term4Lines.size() > 5)
+                            for(int i = 0; i<5; i++)
+                            {
+                                g.drawString(term4Lines.get(i), (int)buttons[MATCHINGTERM4].getShape().getBounds().getX() + 3, yVal7);
+                                yVal7 += 13;
+                            }
+                        else
+                            for(int i = 0; i<term4Lines.size(); i++)
+                            {
+                                g.drawString(term4Lines.get(i), (int)buttons[MATCHINGTERM4].getShape().getBounds().getX() + 3, yVal7);
+                                yVal7 += 13;
+                            }
+                    }
+                    if (showMatchingDef4) {
+                        buttons[MATCHINGDEF4].drawButton(g);
+                        buttons[MATCHINGDEF4].setEnabled(true);
+
+                        int yVal8 = (int)buttons[MATCHINGDEF4].getShape().getBounds().getY() + 13;
+                        ArrayList<String> def4Lines = addLinesToString(27, deck.get(indexForMatching[3]).getDef());
+                        if(def4Lines.size() > 5)
+                            for(int i = 0; i<5; i++)
+                            {
+                                g.drawString(def4Lines.get(i), (int)buttons[MATCHINGDEF4].getShape().getBounds().getX() + 3, yVal8);
+                                yVal8 += 13;
+                            }
+                        else
+                            for(int i = 0; i<def4Lines.size(); i++)
+                            {
+                                g.drawString(def4Lines.get(i), (int)buttons[MATCHINGDEF4].getShape().getBounds().getX() + 3, yVal8);
+                                yVal8 += 13;
+                            }
+                    }
+                    if (showMatchingTerm5) {
+                        buttons[MATCHINGTERM5].drawButton(g);
+                        buttons[MATCHINGTERM5].setEnabled(true);
+
+                        int yVal9 = (int)buttons[MATCHINGTERM5].getShape().getBounds().getY() + 13;
+                        ArrayList<String> term5Lines = addLinesToString(27, deck.get(indexForMatching[4]).getTerm());
+                        if(term5Lines.size() > 5)
+                            for(int i = 0; i<5; i++)
+                            {
+                                g.drawString(term5Lines.get(i), (int)buttons[MATCHINGTERM5].getShape().getBounds().getX() + 3, yVal9);
+                                yVal9 += 13;
+                            }
+                        else
+                            for(int i = 0; i<term5Lines.size(); i++)
+                            {
+                                g.drawString(term5Lines.get(i), (int)buttons[MATCHINGTERM5].getShape().getBounds().getX() + 3, yVal9);
+                                yVal9 += 13;
+                            }
+                    }
+                    if (showMatchingDef5) {
+                        buttons[MATCHINGDEF5].drawButton(g);
+                        buttons[MATCHINGDEF5].setEnabled(true);
+
+                        int yVal10 = (int)buttons[MATCHINGDEF5].getShape().getBounds().getY() + 13;
+                        ArrayList<String> def5Lines = addLinesToString(27, deck.get(indexForMatching[4]).getDef());
+                        if(def5Lines.size() > 5)
+                            for(int i = 0; i<5; i++)
+                            {
+                                g.drawString(def5Lines.get(i), (int)buttons[MATCHINGDEF5].getShape().getBounds().getX() + 3, yVal10);
+                                yVal10 += 13;
+                            }
+                        else
+                            for(int i = 0; i<def5Lines.size(); i++)
+                            {
+                                g.drawString(def5Lines.get(i), (int)buttons[MATCHINGDEF5].getShape().getBounds().getX() + 3, yVal10);
+                                yVal10 += 13;
+                            }
+                    }
                 }
 
+                //need to add an else for when deck is not selected
 
-             //   if(buttons[MATCHINGTERM1].getShape().getBounds().getX()<200)
-              //      buttons[MATCHINGTERM1].getShape().getBounds().setLocation(200, (int)buttons[MATCHINGTERM1].getShape().getBounds().getY());
+
 
             }
 
@@ -2858,6 +3025,30 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                        this.remove(typeAnswer19);
                        this.remove(typeAnswer20);
 
+
+                       int[] deckIndexes = new int[deck.size()];
+                       for(int i = 0; i<deckIndexes.length; i++)
+                       {
+                           deckIndexes[i] = i;
+                       }
+
+                       int firstIndexM = 0;
+                       int secondIndexM = 0;
+                       int temp;
+
+                       for(int j = 0; j<250; j++) //mix up the flashcards of copyOfDeck for randomness!
+                       {
+                           firstIndexM = (int)(Math.random()*(deck.size()));
+                           secondIndexM = (int)(Math.random()*(deck.size()));
+                           temp = deckIndexes[firstIndexM];
+                           deckIndexes[firstIndexM] = deckIndexes[secondIndexM];
+                           deckIndexes[secondIndexM] = temp;
+                       }
+
+                       for(int i = 0; i<indexForMatching.length; i++)
+                       {
+                           indexForMatching[i] = deckIndexes[i];
+                       }
 
                    }
                    if(b.getTitle().equals("resetMatching"))
