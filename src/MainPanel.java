@@ -282,6 +282,8 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
     //def button [1, 2, 3, 4, 5]
     //term button that has been matched with corresponding def button
 
+    boolean nullDeckDuringMatching = true;
+
     //type your own answer
     JTextField typeAnswer16 = new JTextField(1000);
     JTextField typeAnswer17 = new JTextField(1000);
@@ -1580,16 +1582,32 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
 
             if(matchingDisplay == true)
             {
-                /*
-                            int yValue1 = 260; //increase by 30 each time
-                             ArrayList<String> lines = addLinesToString(32, deck.get(flashcardShownInt).getTerm());
-                             for(int i = 0; i<lines.size(); i++)
-                             {
-                                 g.drawString(lines.get(i), 350, yValue1);
-                                 yValue1 += 33;
-                             }
-                 */
                 if(deck!=null) {
+                    if(nullDeckDuringMatching == true)
+                    {
+                        int[] deckIndexes = new int[deck.size()];
+                        for (int i = 0; i < deckIndexes.length; i++) {
+                            deckIndexes[i] = i;
+                        }
+
+                        int firstIndexM = 0;
+                        int secondIndexM = 0;
+                        int temp;
+
+                        for (int j = 0; j < 250; j++) //mix up the flashcards of copyOfDeck for randomness!
+                        {
+                            firstIndexM = (int) (Math.random() * (deck.size()));
+                            secondIndexM = (int) (Math.random() * (deck.size()));
+                            temp = deckIndexes[firstIndexM];
+                            deckIndexes[firstIndexM] = deckIndexes[secondIndexM];
+                            deckIndexes[secondIndexM] = temp;
+                        }
+
+                        for (int i = 0; i < indexForMatching.length; i++) {
+                            indexForMatching[i] = deckIndexes[i];
+                        }
+                    }
+                    nullDeckDuringMatching = false;
                     g.setFont(new Font("Helvetica", Font.PLAIN, 11));
                     g.setColor(Color.BLACK);
 
@@ -1789,7 +1807,13 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                             }
                     }
                 }
-
+                else
+                {
+                    nullDeckDuringMatching = true;
+                    g.setFont(new Font("Helvetica", Font.PLAIN, 16));
+                    g.setColor(Color.RED);
+                    g.drawString("Please select a deck!", 300, 300);
+                }
                 //need to add an else for when deck is not selected
 
 
@@ -3025,29 +3049,28 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                        this.remove(typeAnswer19);
                        this.remove(typeAnswer20);
 
+                       if(deck != null) {
+                           int[] deckIndexes = new int[deck.size()];
+                           for (int i = 0; i < deckIndexes.length; i++) {
+                               deckIndexes[i] = i;
+                           }
 
-                       int[] deckIndexes = new int[deck.size()];
-                       for(int i = 0; i<deckIndexes.length; i++)
-                       {
-                           deckIndexes[i] = i;
-                       }
+                           int firstIndexM = 0;
+                           int secondIndexM = 0;
+                           int temp;
 
-                       int firstIndexM = 0;
-                       int secondIndexM = 0;
-                       int temp;
+                           for (int j = 0; j < 250; j++) //mix up the flashcards of copyOfDeck for randomness!
+                           {
+                               firstIndexM = (int) (Math.random() * (deck.size()));
+                               secondIndexM = (int) (Math.random() * (deck.size()));
+                               temp = deckIndexes[firstIndexM];
+                               deckIndexes[firstIndexM] = deckIndexes[secondIndexM];
+                               deckIndexes[secondIndexM] = temp;
+                           }
 
-                       for(int j = 0; j<250; j++) //mix up the flashcards of copyOfDeck for randomness!
-                       {
-                           firstIndexM = (int)(Math.random()*(deck.size()));
-                           secondIndexM = (int)(Math.random()*(deck.size()));
-                           temp = deckIndexes[firstIndexM];
-                           deckIndexes[firstIndexM] = deckIndexes[secondIndexM];
-                           deckIndexes[secondIndexM] = temp;
-                       }
-
-                       for(int i = 0; i<indexForMatching.length; i++)
-                       {
-                           indexForMatching[i] = deckIndexes[i];
+                           for (int i = 0; i < indexForMatching.length; i++) {
+                               indexForMatching[i] = deckIndexes[i];
+                           }
                        }
 
                    }
