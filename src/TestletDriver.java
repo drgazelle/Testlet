@@ -9,7 +9,6 @@ public class TestletDriver {
     //window dimensions
     public static final int WIDTH = 960;
     public static final int HEIGHT = 540;
-
     public static MainPanel panel;
 
     public static void main(String[] args) {

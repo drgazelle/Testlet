@@ -158,7 +158,7 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
     //private ImageIcon startScreen  = new ImageIcon("images/backgrounds/startScreen.png");
 
     //array of buttons
-    private Button[] buttons = new Button[48];
+    private Button[] buttons = new Button[49];
 
     //each int represents a different button.
     private static final int HOMEBUTTON = 0;
@@ -210,6 +210,7 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
     private static final int MATCHINGDEF4 = 45;
     private static final int MATCHINGTERM5 = 46;
     private static final int MATCHINGDEF5 = 47;
+    private static final int MATCHINGRESTART = 48;
 
 
     private boolean deckIsComplete = false;
@@ -283,6 +284,7 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
     //term button that has been matched with corresponding def button
 
     boolean nullDeckDuringMatching = true;
+    private String currentDeckNameTest = "";
 
     //type your own answer
     JTextField typeAnswer16 = new JTextField(1000);
@@ -359,12 +361,12 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
         //initializes the button with shape, title, and its images
         buttons[HOMEBUTTON] = new Button(r1, "home", homeButton1, homeButton2);
 
-        Shape r2 = new Ellipse2D.Float(xSIZE - (3*topBarHeight) - 30, 4, topBarHeight-4, topBarHeight-5-4); //circle
+        Shape r2 = new Ellipse2D.Float(xSIZE - (topBarHeight) - 10, 4, topBarHeight-4, topBarHeight-5-4); //circle
         ImageIcon exportButton1 = new ImageIcon("resources/images/export1.png");
         ImageIcon exportButton2 = new ImageIcon("resources/images/export2.png");
         buttons[EXPORTBUTTON] = new Button(r2, "export", exportButton1, exportButton2);
 
-        Shape r3 = new Ellipse2D.Float(xSIZE - (2*topBarHeight) - 20, 4, topBarHeight-4, topBarHeight-5-4); //circle
+        Shape r3 = new Ellipse2D.Float(xSIZE - (topBarHeight) - 10, 4, topBarHeight-4, topBarHeight-5-4); //circle
         ImageIcon settingsButton1 = new ImageIcon("resources/images/settings1.png");
         ImageIcon settingsButton2 = new ImageIcon("resources/images/settings2.png");
         buttons[SETTINGSBUTTON] = new Button(r3, "settings", settingsButton1, settingsButton2);
@@ -533,32 +535,35 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
         ImageIcon matchingTerm2 = new ImageIcon("resources/images/matchingTerm2.png");
         buttons[MATCHINGTERM1] = new Button(r42, "matchingTerm1", matchingTerm1, matchingTerm2);
 
-        Shape r43 = new Rectangle(210, 140, 145, 75); //fix the width and height!
+        Shape r43 = new Rectangle((int)(Math.random()*(xSIZE-11-145-200+1) + 200), (int)(Math.random()*(ySIZE-34-75-50+1) + 50), 145, 75); //fix the width and height!
         buttons[MATCHINGDEF1] = new Button(r43, "matchingDef1", matchingTerm1, matchingTerm2);
 
-        Shape r44 = new Rectangle(210, 220, 145, 75); //fix the width and height!
+        Shape r44 = new Rectangle((int)(Math.random()*(xSIZE-11-145-200+1) + 200), (int)(Math.random()*(ySIZE-34-75-50+1) + 50), 145, 75); //fix the width and height!
         buttons[MATCHINGTERM2] = new Button(r44, "matchingTerm2", matchingTerm1, matchingTerm2);
 
-        Shape r45 = new Rectangle(210, 300, 145, 75); //fix the width and height!
+        Shape r45 = new Rectangle((int)(Math.random()*(xSIZE-11-145-200+1) + 200), (int)(Math.random()*(ySIZE-34-75-50+1) + 50), 145, 75); //fix the width and height!
         buttons[MATCHINGDEF2] = new Button(r45, "matchingDef2", matchingTerm1, matchingTerm2);
 
-        Shape r46 = new Rectangle(210, 380, 145, 75); //fix the width and height!
+        Shape r46 = new Rectangle((int)(Math.random()*(xSIZE-11-145-200+1) + 200), (int)(Math.random()*(ySIZE-34-75-50+1) + 50), 145, 75); //fix the width and height!
         buttons[MATCHINGTERM3] = new Button(r46, "matchingTerm3", matchingTerm1, matchingTerm2);
 
-        Shape r47 = new Rectangle(360, 60, 145, 75); //fix the width and height!
+        Shape r47 = new Rectangle((int)(Math.random()*(xSIZE-11-145-200+1) + 200), (int)(Math.random()*(ySIZE-34-75-50+1) + 50), 145, 75); //fix the width and height!
         buttons[MATCHINGDEF3] = new Button(r47, "matchingDef3", matchingTerm1, matchingTerm2);
 
-        Shape r48 = new Rectangle(360, 140, 145, 75); //fix the width and height!
+        Shape r48 = new Rectangle((int)(Math.random()*(xSIZE-11-145-200+1) + 200), (int)(Math.random()*(ySIZE-34-75-50+1) + 50), 145, 75); //fix the width and height!
         buttons[MATCHINGTERM4] = new Button(r48, "matchingTerm4", matchingTerm1, matchingTerm2);
 
-        Shape r49 = new Rectangle(360, 220, 145, 75); //fix the width and height!
+        Shape r49 = new Rectangle((int)(Math.random()*(xSIZE-11-145-200+1) + 200), (int)(Math.random()*(ySIZE-34-75-50+1) + 50), 145, 75); //fix the width and height!
         buttons[MATCHINGDEF4] = new Button(r49, "matchingDef4", matchingTerm1, matchingTerm2);
 
-        Shape r50 = new Rectangle(360, 300, 145, 75); //fix the width and height!
+        Shape r50 = new Rectangle((int)(Math.random()*(xSIZE-11-145-200+1) + 200), (int)(Math.random()*(ySIZE-34-75-50+1) + 50), 145, 75); //fix the width and height!
         buttons[MATCHINGTERM5] = new Button(r50, "matchingTerm5", matchingTerm1, matchingTerm2);
 
-        Shape r51 = new Rectangle(360, 380, 145, 75); //fix the width and height!
+        Shape r51 = new Rectangle((int)(Math.random()*(xSIZE-11-145-200+1) + 200), (int)(Math.random()*(ySIZE-34-75-50+1) + 50), 145, 75); //fix the width and height!
         buttons[MATCHINGDEF5] = new Button(r51, "matchingDef5", matchingTerm1, matchingTerm2);
+
+        Shape r52 = new Rectangle(350, 280, 365, 80);
+        buttons[MATCHINGRESTART] = new Button(r52, "matchingRestart", tryAgain1, tryAgain2);
 
         //sets the screen mode
         screenMode = HOMESCREEN;
@@ -624,10 +629,26 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                 buttons[LEARND].setVisible(false);
                 buttons[LEARND].setEnabled(false);
                 //deactivate test buttons
-                buttons[PREVIOUSTESTQUESTION].setVisible(false);
-                buttons[PREVIOUSTESTQUESTION].setEnabled(false);
-                buttons[NEXTTESTQUESTION].setVisible(false);
                 buttons[NEXTTESTQUESTION].setEnabled(false);
+                buttons[PREVIOUSTESTQUESTION].setVisible(false);
+                buttons[TRUEBUTTONFORTEST].setVisible(false);
+                buttons[FALSEBUTTONFORTEST].setEnabled(false);
+                buttons[SUBMITTEST].setVisible(false);
+                buttons[MCQATESTBUTTON].setEnabled(false);
+                buttons[MCQBTESTBUTTON].setVisible(false);
+                buttons[MCQCTESTBUTTON].setEnabled(false);
+                buttons[MCQDTESTBUTTON].setVisible(false);
+                buttons[MATCHINGTESTDEFINITION1].setEnabled(false);
+                buttons[MATCHINGTESTDEFINITION2].setEnabled(false);
+                buttons[MATCHINGTESTDEFINITION3].setEnabled(false);
+                buttons[MATCHINGTESTDEFINITION4].setEnabled(false);
+                buttons[MATCHINGTESTDEFINITION5].setEnabled(false);
+                buttons[MATCHINGTESTTERM1].setEnabled(false);
+                buttons[MATCHINGTESTTERM2].setEnabled(false);
+                buttons[MATCHINGTESTTERM3].setEnabled(false);
+                buttons[MATCHINGTESTTERM4].setEnabled(false);
+                buttons[MATCHINGTESTTERM5].setEnabled(false);
+                buttons[RESETMATCHING].setEnabled(false);
                 //activate necessary flashcard buttons
                 buttons[FLASHCARDFLIP].drawButton(g);
                 buttons[FLASHCARDFLIP].setEnabled(true);
@@ -638,6 +659,18 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                 buttons[NEXTCARD].drawButton(g);
                 buttons[NEXTCARD].setEnabled(true);
                 buttons[NEXTCARD].setVisible(true);
+                //deactivate matching buttons
+                buttons[MATCHINGTERM1].setEnabled(false);
+                buttons[MATCHINGDEF1].setVisible(false);
+                buttons[MATCHINGTERM2].setVisible(false);
+                buttons[MATCHINGDEF2].setEnabled(false);
+                buttons[MATCHINGTERM3].setVisible(false);
+                buttons[MATCHINGDEF3].setEnabled(false);
+                buttons[MATCHINGTERM4].setVisible(false);
+                buttons[MATCHINGDEF4].setEnabled(false);
+                buttons[MATCHINGTERM5].setVisible(false);
+                buttons[MATCHINGDEF5].setEnabled(false);
+                buttons[MATCHINGRESTART].setEnabled(false);
 
                 if(deck != null) {
                     g.setColor(Color.BLACK);
@@ -717,11 +750,27 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                 buttons[LEARND].setEnabled(false);
                 buttons[TRYAGAIN].setVisible(false);
                 buttons[TRYAGAIN].setEnabled(false);
+
+                buttons[RESETMATCHING].setEnabled(false);
+
+                //deactivate matching buttons
+                buttons[MATCHINGTERM1].setEnabled(false);
+                buttons[MATCHINGDEF1].setVisible(false);
+                buttons[MATCHINGTERM2].setVisible(false);
+                buttons[MATCHINGDEF2].setEnabled(false);
+                buttons[MATCHINGTERM3].setVisible(false);
+                buttons[MATCHINGDEF3].setEnabled(false);
+                buttons[MATCHINGTERM4].setVisible(false);
+                buttons[MATCHINGDEF4].setEnabled(false);
+                buttons[MATCHINGTERM5].setVisible(false);
+                buttons[MATCHINGDEF5].setEnabled(false);
+                buttons[MATCHINGRESTART].setEnabled(false);
+
                 //activate test buttons
                 //buttons[NEXTTESTQUESTION].drawButton(g);
                 //buttons[NEXTTESTQUESTION].setEnabled(true);
-                buttons[PREVIOUSTESTQUESTION].drawButton(g);
-                buttons[PREVIOUSTESTQUESTION].setEnabled(true);
+               // buttons[PREVIOUSTESTQUESTION].drawButton(g);
+                //buttons[PREVIOUSTESTQUESTION].setEnabled(true);
 
 
                 if(deck == null)
@@ -730,30 +779,114 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                     g.setFont(new Font("Helvetica", Font.PLAIN, 30));
                     g.drawString("Select a deck!", 490, 260);
                     nullDeckDuringTest = true;
+                    buttons[PREVIOUSTESTQUESTION].setVisible(false);
+                    buttons[SUBMITTEST].setVisible(false);
+                    buttons[NEXTTESTQUESTION].setVisible(false);
                 }
                 if(deck != null) {
-                    if(nullDeckDuringTest == true)
-                    {
+                    if (nullDeckDuringTest == true) {
+                            currentDeckNameTest = deck.getName();
+
                         makeTestList();
 
-                        trueFalseWrongAnswer1 = (int)(Math.random()*testQuestions.size());
-                        while(trueFalseWrongAnswer1 == 0)
-                            trueFalseWrongAnswer1 = (int)(Math.random()*testQuestions.size());
-                        trueFalseWrongAnswer2 = (int)(Math.random()*testQuestions.size());
-                        while(trueFalseWrongAnswer2 == 0)
-                            trueFalseWrongAnswer2 = (int)(Math.random()*testQuestions.size());
-                        trueFalseWrongAnswer3 = (int)(Math.random()*testQuestions.size());
-                        while(trueFalseWrongAnswer3 == 0)
-                            trueFalseWrongAnswer3 = (int)(Math.random()*testQuestions.size());
-                        trueFalseWrongAnswer4 = (int)(Math.random()*testQuestions.size());
-                        while(trueFalseWrongAnswer4 == 0)
-                            trueFalseWrongAnswer4 = (int)(Math.random()*testQuestions.size());
-                        trueFalseWrongAnswer5 = (int)(Math.random()*testQuestions.size());
-                        while(trueFalseWrongAnswer5 == 0)
-                            trueFalseWrongAnswer5 = (int)(Math.random()*testQuestions.size());
+                        trueFalseWrongAnswer1 = (int) (Math.random() * testQuestions.size());
+                        while (trueFalseWrongAnswer1 == 0)
+                            trueFalseWrongAnswer1 = (int) (Math.random() * testQuestions.size());
+                        trueFalseWrongAnswer2 = (int) (Math.random() * testQuestions.size());
+                        while (trueFalseWrongAnswer2 == 0)
+                            trueFalseWrongAnswer2 = (int) (Math.random() * testQuestions.size());
+                        trueFalseWrongAnswer3 = (int) (Math.random() * testQuestions.size());
+                        while (trueFalseWrongAnswer3 == 0)
+                            trueFalseWrongAnswer3 = (int) (Math.random() * testQuestions.size());
+                        trueFalseWrongAnswer4 = (int) (Math.random() * testQuestions.size());
+                        while (trueFalseWrongAnswer4 == 0)
+                            trueFalseWrongAnswer4 = (int) (Math.random() * testQuestions.size());
+                        trueFalseWrongAnswer5 = (int) (Math.random() * testQuestions.size());
+                        while (trueFalseWrongAnswer5 == 0)
+                            trueFalseWrongAnswer5 = (int) (Math.random() * testQuestions.size());
 
                         nullDeckDuringTest = false;
                     }
+
+                    if(!deck.getName().trim().toUpperCase().equals(currentDeckNameTest.trim().toUpperCase()))
+                    {
+                        //need to get rid of previous answers
+                        question1Answered = false;
+                        question2Answered = false;
+                        question3Answered = false;
+                        question4Answered = false;
+                        question5Answered = false;
+                        question6Answered = false;
+                        question7Answered = false;
+                        question8Answered = false;
+                        question9Answered = false;
+                        question10Answered = false;
+                        question11Answered = false;
+                        question12Answered = false;
+                        question13Answered = false;
+                        question14Answered = false;
+                        question15Answered = false;
+                        question16Answered = false;
+                        question17Answered = false;
+                        question18Answered = false;
+                        question19Answered = false;
+                        question20Answered = false;
+
+                        this.remove(typeAnswer16);
+                        this.remove(typeAnswer17);
+                        this.remove(typeAnswer18);
+                        this.remove(typeAnswer19);
+                        this.remove(typeAnswer20);
+
+                        currentQuestion = 1;
+
+                        buttons[MATCHINGTESTDEFINITION1].setEnabled(false);
+                        buttons[MATCHINGTESTDEFINITION2].setEnabled(false);
+                        buttons[MATCHINGTESTDEFINITION3].setEnabled(false);
+                        buttons[MATCHINGTESTDEFINITION4].setEnabled(false);
+                        buttons[MATCHINGTESTDEFINITION5].setEnabled(false);
+
+                        if(deck!=null) {
+                            if (!deck.getName().trim().toUpperCase().equals(currentDeckNameTest.trim().toUpperCase()))
+                                for (int i = 0; i < drawLinesHere.length; i++) {
+                                    for (int j = 0; j < drawLinesHere[0].length; j++) {
+                                        drawLinesHere[i][j] = -1;
+                                    }
+                                }
+                        }
+
+                        if(deck!= null) {
+                            makeTestList();
+
+                            trueFalseWrongAnswer1 = (int)(Math.random()*testQuestions.size());
+                            while(trueFalseWrongAnswer1 == 0)
+                                trueFalseWrongAnswer1 = (int)(Math.random()*testQuestions.size());
+                            trueFalseWrongAnswer2 = (int)(Math.random()*testQuestions.size());
+                            while(trueFalseWrongAnswer2 == 0)
+                                trueFalseWrongAnswer2 = (int)(Math.random()*testQuestions.size());
+                            trueFalseWrongAnswer3 = (int)(Math.random()*testQuestions.size());
+                            while(trueFalseWrongAnswer3 == 0)
+                                trueFalseWrongAnswer3 = (int)(Math.random()*testQuestions.size());
+                            trueFalseWrongAnswer4 = (int)(Math.random()*testQuestions.size());
+                            while(trueFalseWrongAnswer4 == 0)
+                                trueFalseWrongAnswer4 = (int)(Math.random()*testQuestions.size());
+                            trueFalseWrongAnswer5 = (int)(Math.random()*testQuestions.size());
+                            while(trueFalseWrongAnswer5 == 0)
+                                trueFalseWrongAnswer5 = (int)(Math.random()*testQuestions.size());
+                        }
+
+                        if(testQuestions.size() >= 13) {
+                            if(testQuestions.size() == 13)
+                                randomizeMatchingTerms(3);
+                            else if(testQuestions.size() == 14)
+                                randomizeMatchingTerms(4);
+                            else //if(testQuestions.size() >= 15)
+                                randomizeMatchingTerms(5);
+                        }
+                        currentDeckNameTest = deck.getName();
+                    }
+
+
                     g.setColor(Color.BLACK);
                     g.setFont(new Font("SansSerif", Font.BOLD, 20));
                     if (deck.size() < 20)
@@ -761,356 +894,342 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                     else
                         g.drawString("" + currentQuestion + "/20", 540, 75);
                     g.setFont(new Font("Helvetica", Font.BOLD, 30));
-                }
 
-                if(currentQuestion < testQuestions.size()) //this part doesn't work?
-                {
-                    buttons[NEXTTESTQUESTION].drawButton(g);
-                    buttons[NEXTTESTQUESTION].setEnabled(true);
-                    buttons[SUBMITTEST].setEnabled(false);
-                    buttons[SUBMITTEST].setVisible(false);
-                }
-                else
-                {
-                    buttons[NEXTTESTQUESTION].setEnabled(false);
-                    buttons[NEXTTESTQUESTION].setVisible(false);
-                    buttons[SUBMITTEST].drawButton(g);
-                    buttons[SUBMITTEST].setEnabled(true);
-                }
 
-                questionsAnsweredBubbles(g);
-
-                if(deck != null && deck.size()>0) { //&& deck.size() >= 20 NEED TO ADD THIS BACK WHEN DONE TESTING!!!!
-                    //true/false questions
-                    if (currentQuestion == 1 || currentQuestion == 2 || currentQuestion == 3 || currentQuestion == 4 || currentQuestion == 5)
-                    {
-                        showTermAndDefinition(g);
-
-                        buttons[TRUEBUTTONFORTEST].drawButton(g);
-                        buttons[FALSEBUTTONFORTEST].drawButton(g);
-                        buttons[TRUEBUTTONFORTEST].setEnabled(true);
-                        buttons[TRUEBUTTONFORTEST].setVisible(true);
-                        buttons[FALSEBUTTONFORTEST].setEnabled(true);
-                        buttons[FALSEBUTTONFORTEST].setVisible(true);
-                        g.setFont(new Font("Helvetica", Font.BOLD, 22));
-                        g.drawString("True", 370, 360);
-                        g.drawString("False", 570, 360);
+                    if (currentQuestion == 1) {
+                        buttons[PREVIOUSTESTQUESTION].drawButton(g);
+                        buttons[PREVIOUSTESTQUESTION].setEnabled(false);
+                    } else {
+                        buttons[PREVIOUSTESTQUESTION].drawButton(g);
+                        buttons[PREVIOUSTESTQUESTION].setEnabled(true);
                     }
-                    //multiple choice questions
-                    else if(currentQuestion == 6 || currentQuestion == 7 || currentQuestion == 8 || currentQuestion == 9 || currentQuestion == 10)
+                    if (currentQuestion < testQuestions.size()) //this part doesn't work?
                     {
-                        buttons[MCQATESTBUTTON].drawButton(g);
-                        buttons[MCQATESTBUTTON].setEnabled(true);
-                        buttons[MCQBTESTBUTTON].drawButton(g);
-                        buttons[MCQBTESTBUTTON].setEnabled(true);
-                        buttons[MCQCTESTBUTTON].drawButton(g);
-                        buttons[MCQCTESTBUTTON].setEnabled(true);
-                        buttons[MCQDTESTBUTTON].drawButton(g);
-                        buttons[MCQDTESTBUTTON].setEnabled(true);
-
-                        drawAnswersForMCQ(g);
+                        buttons[NEXTTESTQUESTION].drawButton(g);
+                        buttons[NEXTTESTQUESTION].setEnabled(true);
+                        buttons[SUBMITTEST].setEnabled(false);
+                        buttons[SUBMITTEST].setVisible(false);
+                    } else {
+                        buttons[NEXTTESTQUESTION].setEnabled(false);
+                        buttons[NEXTTESTQUESTION].setVisible(false);
+                        buttons[SUBMITTEST].drawButton(g);
+                        buttons[SUBMITTEST].setEnabled(true);
                     }
-                    //matching questions
-                    else if(currentQuestion == 11 || currentQuestion == 12 || currentQuestion == 13 || currentQuestion == 14 || currentQuestion == 15)
-                    {
-                        buttons[RESETMATCHING].drawButton(g);
-                        if(testQuestions.size() >= 11) {
-                            //need to add if size of testQuestions is equal to or greater than 13. else, this question will be type your own answer
-                            currentQuestion = 11;
-                            buttons[MATCHINGTESTDEFINITION1].drawButton(g);
-                            buttons[MATCHINGTESTTERM1].setEnabled(true);
-                            buttons[MATCHINGTESTTERM1].drawButton(g);
-                            g.setFont(new Font("Helvetica", Font.PLAIN, 12));
-                            int yValue1stDef = topBarHeight + 90; //increase by 23 each time
-                            ArrayList<String> lines1 = addLinesToString(32, testQuestions.get(10).getDef());
-                            if(lines1.size() > 4) {
-                                for (int i = 0; i < 4; i++) { // for (int i = 0; i < lines1.size(); i++) {
-                                    g.drawString(lines1.get(i), leftBarSize + 140, yValue1stDef);
-                                    yValue1stDef += 13;
+
+                    questionsAnsweredBubbles(g);
+
+                    if (deck != null && deck.size() > 0) { //&& deck.size() >= 20 NEED TO ADD THIS BACK WHEN DONE TESTING!!!!
+                        //true/false questions
+                        if (currentQuestion == 1 || currentQuestion == 2 || currentQuestion == 3 || currentQuestion == 4 || currentQuestion == 5) {
+                            showTermAndDefinition(g);
+
+                            buttons[TRUEBUTTONFORTEST].drawButton(g);
+                            buttons[FALSEBUTTONFORTEST].drawButton(g);
+                            buttons[TRUEBUTTONFORTEST].setEnabled(true);
+                            buttons[TRUEBUTTONFORTEST].setVisible(true);
+                            buttons[FALSEBUTTONFORTEST].setEnabled(true);
+                            buttons[FALSEBUTTONFORTEST].setVisible(true);
+                            g.setFont(new Font("Helvetica", Font.BOLD, 22));
+                            g.drawString("True", 370, 360);
+                            g.drawString("False", 570, 360);
+                        }
+                        //multiple choice questions
+                        else if (currentQuestion == 6 || currentQuestion == 7 || currentQuestion == 8 || currentQuestion == 9 || currentQuestion == 10) {
+                            buttons[MCQATESTBUTTON].drawButton(g);
+                            buttons[MCQATESTBUTTON].setEnabled(true);
+                            buttons[MCQBTESTBUTTON].drawButton(g);
+                            buttons[MCQBTESTBUTTON].setEnabled(true);
+                            buttons[MCQCTESTBUTTON].drawButton(g);
+                            buttons[MCQCTESTBUTTON].setEnabled(true);
+                            buttons[MCQDTESTBUTTON].drawButton(g);
+                            buttons[MCQDTESTBUTTON].setEnabled(true);
+
+                            drawAnswersForMCQ(g);
+                        }
+                        //matching questions
+                        else if (currentQuestion == 11 || currentQuestion == 12 || currentQuestion == 13 || currentQuestion == 14 || currentQuestion == 15) {
+                            buttons[RESETMATCHING].drawButton(g);
+                            buttons[RESETMATCHING].setEnabled(true);
+                            if (testQuestions.size() >= 11) {
+                                //need to add if size of testQuestions is equal to or greater than 13. else, this question will be type your own answer
+                                currentQuestion = 11;
+                                buttons[MATCHINGTESTDEFINITION1].drawButton(g);
+                                buttons[MATCHINGTESTTERM1].setEnabled(true);
+                                buttons[MATCHINGTESTTERM1].drawButton(g);
+                                g.setFont(new Font("Helvetica", Font.PLAIN, 12));
+                                int yValue1stDef = topBarHeight + 90; //increase by 23 each time
+                                ArrayList<String> lines1 = addLinesToString(32, testQuestions.get(10).getDef());
+                                if (lines1.size() > 4) {
+                                    for (int i = 0; i < 4; i++) { // for (int i = 0; i < lines1.size(); i++) {
+                                        g.drawString(lines1.get(i), leftBarSize + 140, yValue1stDef);
+                                        yValue1stDef += 13;
+                                    }
+                                } else {
+                                    for (int i = 0; i < lines1.size(); i++) { // for (int i = 0; i < lines1.size(); i++) {
+                                        g.drawString(lines1.get(i), leftBarSize + 140, yValue1stDef);
+                                        yValue1stDef += 13;
+                                    }
+                                }
+                                yValue1stDef = topBarHeight + 90; //increase by 23 each time
+                                ArrayList<String> linest1 = addLinesToString(32, testQuestions.get(correctMatching[0] - 1).getTerm());
+                                if (linest1.size() > 4) {
+                                    for (int i = 0; i < 4; i++) { // for (int i = 0; i < lines1.size(); i++) {
+                                        g.drawString(linest1.get(i), leftBarSize + 430, yValue1stDef);
+                                        yValue1stDef += 13;
+                                    }
+                                } else {
+                                    for (int i = 0; i < linest1.size(); i++) { // for (int i = 0; i < lines1.size(); i++) {
+                                        g.drawString(linest1.get(i), leftBarSize + 430, yValue1stDef);
+                                        yValue1stDef += 13;
+                                    }
+                                }
+
+                                //g.drawString(testQuestions.get(10).getDef(), leftBarSize + 40, topBarHeight+ 100); //current question is 11
+                            }
+                            if (testQuestions.size() >= 12) {
+                                currentQuestion = 12;
+                                buttons[MATCHINGTESTDEFINITION2].drawButton(g);
+                                buttons[MATCHINGTESTTERM2].setEnabled(true);
+                                buttons[MATCHINGTESTTERM2].drawButton(g);
+                                int yValue2ndDef = topBarHeight + 153; //increase by 23 each time
+                                ArrayList<String> lines2 = addLinesToString(32, testQuestions.get(11).getDef());
+                                if (lines2.size() > 4) {
+                                    for (int i = 0; i < 4; i++) { //for (int i = 0; i < lines2.size(); i++) {
+                                        g.drawString(lines2.get(i), leftBarSize + 140, yValue2ndDef);
+                                        yValue2ndDef += 13;
+                                    }
+                                } else {
+                                    for (int i = 0; i < lines2.size(); i++) { //for (int i = 0; i < lines2.size(); i++) {
+                                        g.drawString(lines2.get(i), leftBarSize + 140, yValue2ndDef);
+                                        yValue2ndDef += 13;
+                                    }
+                                }
+                                //g.drawString(testQuestions.get(11).getDef(), leftBarSize + 40, topBarHeight+ 100); //current question is 12
+                                yValue2ndDef = topBarHeight + 153; //increase by 23 each time
+                                ArrayList<String> linest2 = addLinesToString(32, testQuestions.get(correctMatching[1] - 1).getTerm());
+                                if (linest2.size() > 4) {
+                                    for (int i = 0; i < 4; i++) { // for (int i = 0; i < lines1.size(); i++) {
+                                        g.drawString(linest2.get(i), leftBarSize + 430, yValue2ndDef);
+                                        yValue2ndDef += 13;
+                                    }
+                                } else {
+                                    for (int i = 0; i < linest2.size(); i++) { // for (int i = 0; i < lines1.size(); i++) {
+                                        g.drawString(linest2.get(i), leftBarSize + 430, yValue2ndDef);
+                                        yValue2ndDef += 13;
+                                    }
                                 }
                             }
-                            else {
-                                for (int i = 0; i < lines1.size(); i++) { // for (int i = 0; i < lines1.size(); i++) {
-                                    g.drawString(lines1.get(i), leftBarSize + 140, yValue1stDef);
-                                    yValue1stDef += 13;
+                            if (testQuestions.size() >= 13) {
+                                currentQuestion = 13;
+                                buttons[MATCHINGTESTDEFINITION3].drawButton(g);
+                                buttons[MATCHINGTESTTERM3].setEnabled(true);
+                                buttons[MATCHINGTESTTERM3].drawButton(g);
+                                int yValue3rdDef = topBarHeight + 219; //increase by 23 each time
+                                ArrayList<String> lines3 = addLinesToString(32, testQuestions.get(12).getDef());
+                                if (lines3.size() > 4) {
+                                    for (int i = 0; i < 4; i++) { // for (int i = 0; i < lines3.size(); i++) {
+                                        g.drawString(lines3.get(i), leftBarSize + 140, yValue3rdDef);
+                                        yValue3rdDef += 13;
+                                    }
+                                } else {
+                                    for (int i = 0; i < lines3.size(); i++) { // for (int i = 0; i < lines3.size(); i++) {
+                                        g.drawString(lines3.get(i), leftBarSize + 140, yValue3rdDef);
+                                        yValue3rdDef += 13;
+                                    }
+                                }
+                                //g.drawString(testQuestions.get(12).getDef(), leftBarSize + 40, topBarHeight+ 100); //current question is 13
+                                yValue3rdDef = topBarHeight + 219; //increase by 23 each time
+                                ArrayList<String> linest3 = addLinesToString(32, testQuestions.get(correctMatching[2] - 1).getTerm());
+                                if (linest3.size() > 4) {
+                                    for (int i = 0; i < 4; i++) { // for (int i = 0; i < lines1.size(); i++) {
+                                        g.drawString(linest3.get(i), leftBarSize + 430, yValue3rdDef);
+                                        yValue3rdDef += 13;
+                                    }
+                                } else {
+                                    for (int i = 0; i < linest3.size(); i++) { // for (int i = 0; i < lines1.size(); i++) {
+                                        g.drawString(linest3.get(i), leftBarSize + 430, yValue3rdDef);
+                                        yValue3rdDef += 13;
+                                    }
                                 }
                             }
-                            yValue1stDef = topBarHeight + 90; //increase by 23 each time
-                            ArrayList<String> linest1 = addLinesToString(32, testQuestions.get(correctMatching[0]-1).getTerm());
-                            if(linest1.size() > 4) {
-                                for (int i = 0; i < 4; i++) { // for (int i = 0; i < lines1.size(); i++) {
-                                    g.drawString(linest1.get(i), leftBarSize + 430, yValue1stDef);
-                                    yValue1stDef += 13;
+                            if (testQuestions.size() >= 14) {
+                                currentQuestion = 14;
+                                buttons[MATCHINGTESTDEFINITION4].drawButton(g);
+                                buttons[MATCHINGTESTTERM4].setEnabled(true);
+                                buttons[MATCHINGTESTTERM4].drawButton(g);
+                                int yValue4thDef = topBarHeight + 286; //increase by 23 each time
+                                ArrayList<String> lines4 = addLinesToString(32, testQuestions.get(13).getDef());
+                                if (lines4.size() > 4) {
+                                    for (int i = 0; i < 4; i++) { //for (int i = 0; i < lines4.size(); i++) {
+                                        g.drawString(lines4.get(i), leftBarSize + 140, yValue4thDef);
+                                        yValue4thDef += 13;
+                                    }
+                                } else {
+                                    for (int i = 0; i < lines4.size(); i++) { //for (int i = 0; i < lines4.size(); i++) {
+                                        g.drawString(lines4.get(i), leftBarSize + 140, yValue4thDef);
+                                        yValue4thDef += 13;
+                                    }
+                                }
+                                //g.drawString(testQuestions.get(13).getDef(), leftBarSize + 40, topBarHeight+ 100); //current question is 14
+                                yValue4thDef = topBarHeight + 286; //increase by 23 each time
+                                ArrayList<String> linest4 = addLinesToString(32, testQuestions.get(correctMatching[3] - 1).getTerm());
+                                if (linest4.size() > 4) {
+                                    for (int i = 0; i < 4; i++) { // for (int i = 0; i < lines1.size(); i++) {
+                                        g.drawString(linest4.get(i), leftBarSize + 430, yValue4thDef);
+                                        yValue4thDef += 13;
+                                    }
+                                } else {
+                                    for (int i = 0; i < linest4.size(); i++) { // for (int i = 0; i < lines1.size(); i++) {
+                                        g.drawString(linest4.get(i), leftBarSize + 430, yValue4thDef);
+                                        yValue4thDef += 13;
+                                    }
                                 }
                             }
-                            else {
-                                for (int i = 0; i < linest1.size(); i++) { // for (int i = 0; i < lines1.size(); i++) {
-                                    g.drawString(linest1.get(i), leftBarSize + 430, yValue1stDef);
-                                    yValue1stDef += 13;
+                            if (testQuestions.size() >= 15) {
+                                currentQuestion = 15;
+                                buttons[MATCHINGTESTDEFINITION5].drawButton(g);
+                                buttons[MATCHINGTESTTERM5].setEnabled(true);
+                                buttons[MATCHINGTESTTERM5].drawButton(g);
+                                int yValue5thDef = topBarHeight + 350; //increase by 23 each time
+                                ArrayList<String> lines5 = addLinesToString(32, testQuestions.get(14).getDef());
+                                if (lines5.size() > 4) {
+                                    for (int i = 0; i < 4; i++) { //for (int i = 0; i < lines5.size(); i++) {
+                                        g.drawString(lines5.get(i), leftBarSize + 140, yValue5thDef);
+                                        yValue5thDef += 13;
+                                    }
+                                } else {
+                                    for (int i = 0; i < lines5.size(); i++) { //for (int i = 0; i < lines5.size(); i++) {
+                                        g.drawString(lines5.get(i), leftBarSize + 140, yValue5thDef);
+                                        yValue5thDef += 13;
+                                    }
+                                }
+                                //g.drawString(testQuestions.get(14).getDef(), leftBarSize + 40, topBarHeight+ 100); //current question is 15
+                                yValue5thDef = topBarHeight + 350; //increase by 23 each time
+                                ArrayList<String> linest5 = addLinesToString(32, testQuestions.get(correctMatching[4] - 1).getTerm());
+                                if (linest5.size() > 4) {
+                                    for (int i = 0; i < 4; i++) { // for (int i = 0; i < lines1.size(); i++) {
+                                        g.drawString(linest5.get(i), leftBarSize + 430, yValue5thDef);
+                                        yValue5thDef += 13;
+                                    }
+                                } else {
+                                    for (int i = 0; i < linest5.size(); i++) { // for (int i = 0; i < lines1.size(); i++) {
+                                        g.drawString(linest5.get(i), leftBarSize + 430, yValue5thDef);
+                                        yValue5thDef += 13;
+                                    }
                                 }
                             }
 
-                            //g.drawString(testQuestions.get(10).getDef(), leftBarSize + 40, topBarHeight+ 100); //current question is 11
-                        }
-                        if(testQuestions.size() >= 12) {
-                            currentQuestion = 12;
-                            buttons[MATCHINGTESTDEFINITION2].drawButton(g);
-                            buttons[MATCHINGTESTTERM2].setEnabled(true);
-                            buttons[MATCHINGTESTTERM2].drawButton(g);
-                            int yValue2ndDef = topBarHeight + 153; //increase by 23 each time
-                            ArrayList<String> lines2 = addLinesToString(32, testQuestions.get(11).getDef());
-                            if(lines2.size() > 4) {
-                                for (int i = 0; i < 4; i++) { //for (int i = 0; i < lines2.size(); i++) {
-                                    g.drawString(lines2.get(i), leftBarSize + 140, yValue2ndDef);
-                                    yValue2ndDef += 13;
-                                }
-                            }
-                            else {
-                                for (int i = 0; i < lines2.size(); i++) { //for (int i = 0; i < lines2.size(); i++) {
-                                    g.drawString(lines2.get(i), leftBarSize + 140, yValue2ndDef);
-                                    yValue2ndDef += 13;
-                                }
-                            }
-                            //g.drawString(testQuestions.get(11).getDef(), leftBarSize + 40, topBarHeight+ 100); //current question is 12
-                            yValue2ndDef = topBarHeight + 153; //increase by 23 each time
-                            ArrayList<String> linest2 = addLinesToString(32, testQuestions.get(correctMatching[1]-1).getTerm());
-                            if(linest2.size() > 4) {
-                                for (int i = 0; i < 4; i++) { // for (int i = 0; i < lines1.size(); i++) {
-                                    g.drawString(linest2.get(i), leftBarSize + 430, yValue2ndDef);
-                                    yValue2ndDef += 13;
-                                }
-                            }
-                            else {
-                                for (int i = 0; i < linest2.size(); i++) { // for (int i = 0; i < lines1.size(); i++) {
-                                    g.drawString(linest2.get(i), leftBarSize + 430, yValue2ndDef);
-                                    yValue2ndDef += 13;
-                                }
-                            }
-                        }
-                        if(testQuestions.size() >= 13) {
-                            currentQuestion = 13;
-                            buttons[MATCHINGTESTDEFINITION3].drawButton(g);
-                            buttons[MATCHINGTESTTERM3].setEnabled(true);
-                            buttons[MATCHINGTESTTERM3].drawButton(g);
-                            int yValue3rdDef = topBarHeight + 219; //increase by 23 each time
-                            ArrayList<String> lines3 = addLinesToString(32, testQuestions.get(12).getDef());
-                            if(lines3.size() > 4) {
-                                for (int i = 0; i < 4; i++) { // for (int i = 0; i < lines3.size(); i++) {
-                                    g.drawString(lines3.get(i), leftBarSize + 140, yValue3rdDef);
-                                    yValue3rdDef += 13;
-                                }
-                            }
-                            else {
-                                for (int i = 0; i < lines3.size(); i++) { // for (int i = 0; i < lines3.size(); i++) {
-                                    g.drawString(lines3.get(i), leftBarSize + 140, yValue3rdDef);
-                                    yValue3rdDef += 13;
-                                }
-                            }
-                            //g.drawString(testQuestions.get(12).getDef(), leftBarSize + 40, topBarHeight+ 100); //current question is 13
-                            yValue3rdDef = topBarHeight + 219; //increase by 23 each time
-                            ArrayList<String> linest3 = addLinesToString(32, testQuestions.get(correctMatching[2]-1).getTerm());
-                            if(linest3.size() > 4) {
-                                for (int i = 0; i < 4; i++) { // for (int i = 0; i < lines1.size(); i++) {
-                                    g.drawString(linest3.get(i), leftBarSize + 430, yValue3rdDef);
-                                    yValue3rdDef += 13;
-                                }
-                            }
-                            else {
-                                for (int i = 0; i < linest3.size(); i++) { // for (int i = 0; i < lines1.size(); i++) {
-                                    g.drawString(linest3.get(i), leftBarSize + 430, yValue3rdDef);
-                                    yValue3rdDef += 13;
-                                }
-                            }
-                        }
-                        if(testQuestions.size() >= 14) {
-                            currentQuestion = 14;
-                            buttons[MATCHINGTESTDEFINITION4].drawButton(g);
-                            buttons[MATCHINGTESTTERM4].setEnabled(true);
-                            buttons[MATCHINGTESTTERM4].drawButton(g);
-                            int yValue4thDef = topBarHeight + 286; //increase by 23 each time
-                            ArrayList<String> lines4 = addLinesToString(32, testQuestions.get(13).getDef());
-                            if(lines4.size() > 4) {
-                                for (int i = 0; i < 4; i++) { //for (int i = 0; i < lines4.size(); i++) {
-                                    g.drawString(lines4.get(i), leftBarSize + 140, yValue4thDef);
-                                    yValue4thDef += 13;
-                                }
-                            }
-                            else {
-                                for (int i = 0; i < lines4.size(); i++) { //for (int i = 0; i < lines4.size(); i++) {
-                                    g.drawString(lines4.get(i), leftBarSize + 140, yValue4thDef);
-                                    yValue4thDef += 13;
-                                }
-                            }
-                            //g.drawString(testQuestions.get(13).getDef(), leftBarSize + 40, topBarHeight+ 100); //current question is 14
-                            yValue4thDef = topBarHeight + 286; //increase by 23 each time
-                            ArrayList<String> linest4 = addLinesToString(32, testQuestions.get(correctMatching[3]-1).getTerm());
-                            if(linest4.size() > 4) {
-                                for (int i = 0; i < 4; i++) { // for (int i = 0; i < lines1.size(); i++) {
-                                    g.drawString(linest4.get(i), leftBarSize + 430, yValue4thDef);
-                                    yValue4thDef += 13;
-                                }
-                            }
-                            else {
-                                for (int i = 0; i < linest4.size(); i++) { // for (int i = 0; i < lines1.size(); i++) {
-                                    g.drawString(linest4.get(i), leftBarSize + 430, yValue4thDef);
-                                    yValue4thDef += 13;
-                                }
-                            }
-                        }
-                        if(testQuestions.size() >= 15) {
-                            currentQuestion = 15;
-                            buttons[MATCHINGTESTDEFINITION5].drawButton(g);
-                            buttons[MATCHINGTESTTERM5].setEnabled(true);
-                            buttons[MATCHINGTESTTERM5].drawButton(g);
-                            int yValue5thDef = topBarHeight + 350; //increase by 23 each time
-                            ArrayList<String> lines5 = addLinesToString(32, testQuestions.get(14).getDef());
-                            if(lines5.size() > 4) {
-                                for (int i = 0; i < 4; i++) { //for (int i = 0; i < lines5.size(); i++) {
-                                    g.drawString(lines5.get(i), leftBarSize + 140, yValue5thDef);
-                                    yValue5thDef += 13;
-                                }
-                            }
-                            else
-                            {
-                                for (int i = 0; i < lines5.size(); i++) { //for (int i = 0; i < lines5.size(); i++) {
-                                    g.drawString(lines5.get(i), leftBarSize + 140, yValue5thDef);
-                                    yValue5thDef += 13;
-                                }
-                            }
-                            //g.drawString(testQuestions.get(14).getDef(), leftBarSize + 40, topBarHeight+ 100); //current question is 15
-                            yValue5thDef = topBarHeight + 350; //increase by 23 each time
-                            ArrayList<String> linest5 = addLinesToString(32, testQuestions.get(correctMatching[4]-1).getTerm());
-                            if(linest5.size() > 4) {
-                                for (int i = 0; i < 4; i++) { // for (int i = 0; i < lines1.size(); i++) {
-                                    g.drawString(linest5.get(i), leftBarSize + 430, yValue5thDef);
-                                    yValue5thDef += 13;
-                                }
-                            }
-                            else {
-                                for (int i = 0; i < linest5.size(); i++) { // for (int i = 0; i < lines1.size(); i++) {
-                                    g.drawString(linest5.get(i), leftBarSize + 430, yValue5thDef);
-                                    yValue5thDef += 13;
-                                }
-                            }
-                        }
+                            if (termClicked == true && termMouseX != -1 && termMouseY != -1)
+                                g.drawLine(termMouseX, termMouseY, mouseX, mouseY);
 
-                        if(termClicked == true && termMouseX != -1 && termMouseY != -1)
-                        g.drawLine(termMouseX, termMouseY, mouseX, mouseY);
 
-                        if(termClicked == true)
-                        {
-                            buttons[MATCHINGTESTTERM1].setEnabled(false);
-                            buttons[MATCHINGTESTTERM2].setEnabled(false);
-                            buttons[MATCHINGTESTTERM3].setEnabled(false);
-                            buttons[MATCHINGTESTTERM4].setEnabled(false);
-                            buttons[MATCHINGTESTTERM5].setEnabled(false);
-                            buttons[MATCHINGTESTDEFINITION1].setEnabled(true);
-                            buttons[MATCHINGTESTDEFINITION2].setEnabled(true);
-                            buttons[MATCHINGTESTDEFINITION3].setEnabled(true);
-                            buttons[MATCHINGTESTDEFINITION4].setEnabled(true);
-                            buttons[MATCHINGTESTDEFINITION5].setEnabled(true);
-                        }
-                        else
-                        {
-                            buttons[MATCHINGTESTTERM1].setEnabled(true);
-                            buttons[MATCHINGTESTTERM2].setEnabled(true);
-                            buttons[MATCHINGTESTTERM3].setEnabled(true);
-                            buttons[MATCHINGTESTTERM4].setEnabled(true);
-                            buttons[MATCHINGTESTTERM5].setEnabled(true);
-                            buttons[MATCHINGTESTDEFINITION1].setEnabled(false);
-                            buttons[MATCHINGTESTDEFINITION2].setEnabled(false);
-                            buttons[MATCHINGTESTDEFINITION3].setEnabled(false);
-                            buttons[MATCHINGTESTDEFINITION4].setEnabled(false);
-                            buttons[MATCHINGTESTDEFINITION5].setEnabled(false);
-                        }
 
-                        for(int i = 0; i<userMatched.length; i++) //we have already used this term or definition. We should not be able to use it again
-                        {
-                            if(termButtonsClicked[0] == true)
+                            if (termClicked == true) {
                                 buttons[MATCHINGTESTTERM1].setEnabled(false);
-                            if(termButtonsClicked[1] == true)
                                 buttons[MATCHINGTESTTERM2].setEnabled(false);
-                            if(termButtonsClicked[2] == true)
                                 buttons[MATCHINGTESTTERM3].setEnabled(false);
-                            if(termButtonsClicked[3] == true)
                                 buttons[MATCHINGTESTTERM4].setEnabled(false);
-                            if(termButtonsClicked[4] == true)
                                 buttons[MATCHINGTESTTERM5].setEnabled(false);
-                            if(i == 0 && userMatched[i] > 0) //def button 1
+                                buttons[MATCHINGTESTDEFINITION1].setEnabled(true);
+                                buttons[MATCHINGTESTDEFINITION2].setEnabled(true);
+                                buttons[MATCHINGTESTDEFINITION3].setEnabled(true);
+                                buttons[MATCHINGTESTDEFINITION4].setEnabled(true);
+                                buttons[MATCHINGTESTDEFINITION5].setEnabled(true);
+                            } else {
+                                buttons[MATCHINGTESTTERM1].setEnabled(true);
+                                buttons[MATCHINGTESTTERM2].setEnabled(true);
+                                buttons[MATCHINGTESTTERM3].setEnabled(true);
+                                buttons[MATCHINGTESTTERM4].setEnabled(true);
+                                buttons[MATCHINGTESTTERM5].setEnabled(true);
                                 buttons[MATCHINGTESTDEFINITION1].setEnabled(false);
-                            if(i == 1 && userMatched[i] > 0) //def button 2
                                 buttons[MATCHINGTESTDEFINITION2].setEnabled(false);
-                            if(i == 2 && userMatched[i] > 0) //def button 3
                                 buttons[MATCHINGTESTDEFINITION3].setEnabled(false);
-                            if(i == 3 && userMatched[i] > 0) //def button 4
                                 buttons[MATCHINGTESTDEFINITION4].setEnabled(false);
-                            if(i == 4 && userMatched[i] > 0) //def button 5
                                 buttons[MATCHINGTESTDEFINITION5].setEnabled(false);
-                        }
-
-                        for(int j = 0; j<drawLinesHere[0].length; j++) {
-                            if (drawLinesHere[3][j] != -1) {
-                                g.drawLine(drawLinesHere[0][j], drawLinesHere[1][j], drawLinesHere[2][j], drawLinesHere[3][j]);
                             }
+
+                            for (int i = 0; i < userMatched.length; i++) //we have already used this term or definition. We should not be able to use it again
+                            {
+                                if (termButtonsClicked[0] == true)
+                                    buttons[MATCHINGTESTTERM1].setEnabled(false);
+                                if (termButtonsClicked[1] == true)
+                                    buttons[MATCHINGTESTTERM2].setEnabled(false);
+                                if (termButtonsClicked[2] == true)
+                                    buttons[MATCHINGTESTTERM3].setEnabled(false);
+                                if (termButtonsClicked[3] == true)
+                                    buttons[MATCHINGTESTTERM4].setEnabled(false);
+                                if (termButtonsClicked[4] == true)
+                                    buttons[MATCHINGTESTTERM5].setEnabled(false);
+                                if (i == 0 && userMatched[i] > 0) //def button 1
+                                    buttons[MATCHINGTESTDEFINITION1].setEnabled(false);
+                                if (i == 1 && userMatched[i] > 0) //def button 2
+                                    buttons[MATCHINGTESTDEFINITION2].setEnabled(false);
+                                if (i == 2 && userMatched[i] > 0) //def button 3
+                                    buttons[MATCHINGTESTDEFINITION3].setEnabled(false);
+                                if (i == 3 && userMatched[i] > 0) //def button 4
+                                    buttons[MATCHINGTESTDEFINITION4].setEnabled(false);
+                                if (i == 4 && userMatched[i] > 0) //def button 5
+                                    buttons[MATCHINGTESTDEFINITION5].setEnabled(false);
+                            }
+
+                            for (int j = 0; j < drawLinesHere[0].length; j++) {
+                                if (drawLinesHere[3][j] != -1) {
+                                    g.drawLine(drawLinesHere[0][j], drawLinesHere[1][j], drawLinesHere[2][j], drawLinesHere[3][j]);
+                                }
+                            }
+
+                            if (numberOfLinesDrawn >= 1) {
+                                question11Answered = true;
+                            }
+                            if (numberOfLinesDrawn >= 2) {
+                                question12Answered = true;
+                            }
+                            if (numberOfLinesDrawn >= 3) {
+                                question13Answered = true;
+                            }
+                            if (numberOfLinesDrawn >= 4) {
+                                question14Answered = true;
+                            }
+                            if (numberOfLinesDrawn == 5) {
+                                question15Answered = true;
+                            }
+
+
                         }
+                        //type your answer questions
+                        else if (currentQuestion == 16 || currentQuestion == 17 || currentQuestion == 18 || currentQuestion == 19 || currentQuestion == 20) {
+                            drawAnswersForTypeYourAnswerQuestions(g);
 
-                        if(numberOfLinesDrawn >= 1)
-                        {
-                          question11Answered = true;
+                            typedAnswer1 = typeAnswer16.getText();
+                            if (typedAnswer1 == null || typedAnswer1.trim().equals("") || typedAnswer1.equals(" "))
+                                question16Answered = false;
+                            else
+                                question16Answered = true;
+
+                            typedAnswer2 = typeAnswer17.getText();
+                            if (typedAnswer2 == null || typedAnswer2.trim().equals("") || typedAnswer2.equals(" "))
+                                question17Answered = false;
+                            else
+                                question17Answered = true;
+
+                            typedAnswer3 = typeAnswer18.getText();
+                            if (typedAnswer3 == null || typedAnswer3.trim().equals("") || typedAnswer3.equals(" "))
+                                question18Answered = false;
+                            else
+                                question18Answered = true;
+
+                            typedAnswer4 = typeAnswer19.getText();
+                            if (typedAnswer4 == null || typedAnswer4.trim().equals("") || typedAnswer4.equals(" "))
+                                question19Answered = false;
+                            else
+                                question19Answered = true;
+
+                            typedAnswer5 = typeAnswer20.getText();
+                            if (typedAnswer5 == null || typedAnswer5.trim().equals("") || typedAnswer5.equals(" "))
+                                question20Answered = false;
+                            else
+                                question20Answered = true;
                         }
-                        if(numberOfLinesDrawn >=2)
-                        {
-                            question12Answered = true;
-                        }
-                        if(numberOfLinesDrawn >=3)
-                        {
-                            question13Answered = true;
-                        }
-                        if(numberOfLinesDrawn >=4)
-                        {
-                            question14Answered = true;
-                        }
-                        if(numberOfLinesDrawn == 5)
-                        {
-                            question15Answered = true;
-                        }
-
-
-                    }
-                    //type your answer questions
-                    else if(currentQuestion == 16 || currentQuestion == 17 || currentQuestion == 18 || currentQuestion == 19 || currentQuestion == 20)
-                    {
-                        drawAnswersForTypeYourAnswerQuestions(g);
-
-                        typedAnswer1 = typeAnswer16.getText();
-                        if(typedAnswer1 == null || typedAnswer1.trim().equals("") || typedAnswer1.equals(" "))
-                            question16Answered = false;
-                        else
-                            question16Answered = true;
-
-                        typedAnswer2 = typeAnswer17.getText();
-                        if(typedAnswer2 == null || typedAnswer2.trim().equals("") || typedAnswer2.equals(" "))
-                            question17Answered = false;
-                        else
-                            question17Answered = true;
-
-                        typedAnswer3 = typeAnswer18.getText();
-                        if(typedAnswer3 == null || typedAnswer3.trim().equals("") || typedAnswer3.equals(" "))
-                            question18Answered = false;
-                        else
-                            question18Answered = true;
-
-                        typedAnswer4 = typeAnswer19.getText();
-                        if(typedAnswer4 == null || typedAnswer4.trim().equals("") || typedAnswer4.equals(" "))
-                            question19Answered = false;
-                        else
-                            question19Answered = true;
-
-                        typedAnswer5 = typeAnswer20.getText();
-                        if(typedAnswer5 == null || typedAnswer5.trim().equals("") || typedAnswer5.equals(" "))
-                            question20Answered = false;
-                        else
-                            question20Answered = true;
                     }
                 }
             }
@@ -1123,8 +1242,9 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                 g.setFont(new Font("Helvetica", Font.PLAIN, 22));
                 g.drawString("" + getTestScore() + "/" + testQuestions.size(), 410, 245);
 
+
                 //testing purposes
-                g.drawString("User answer:" + typedAnswer1 + " Correct Answer:" + testQuestions.get(16-1).getTerm(), 410, 300);
+               // g.drawString("User answer:" + typedAnswer1 + " Correct Answer:" + testQuestions.get(16-1).getTerm(), 410, 300);
 
             }
 
@@ -1140,16 +1260,56 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                 buttons[PREVIOUSCARD].setEnabled(false);
                 buttons[NEXTCARD].setVisible(false);
                 buttons[NEXTCARD].setEnabled(false);
+                //deactivate matching buttons
+                buttons[MATCHINGTERM1].setEnabled(false);
+                buttons[MATCHINGDEF1].setVisible(false);
+                buttons[MATCHINGTERM2].setVisible(false);
+                buttons[MATCHINGDEF2].setEnabled(false);
+                buttons[MATCHINGTERM3].setVisible(false);
+                buttons[MATCHINGDEF3].setEnabled(false);
+                buttons[MATCHINGTERM4].setVisible(false);
+                buttons[MATCHINGDEF4].setEnabled(false);
+                buttons[MATCHINGTERM5].setVisible(false);
+                buttons[MATCHINGDEF5].setEnabled(false);
+                buttons[MATCHINGRESTART].setEnabled(false);
+                //deactivate test buttons
+                buttons[NEXTTESTQUESTION].setEnabled(false);
+                buttons[PREVIOUSTESTQUESTION].setVisible(false);
+                buttons[TRUEBUTTONFORTEST].setVisible(false);
+                buttons[FALSEBUTTONFORTEST].setEnabled(false);
+                buttons[SUBMITTEST].setVisible(false);
+                buttons[MCQATESTBUTTON].setEnabled(false);
+                buttons[MCQBTESTBUTTON].setVisible(false);
+                buttons[MCQCTESTBUTTON].setEnabled(false);
+                buttons[MCQDTESTBUTTON].setVisible(false);
+                buttons[MATCHINGTESTDEFINITION1].setEnabled(false);
+                buttons[MATCHINGTESTDEFINITION2].setEnabled(false);
+                buttons[MATCHINGTESTDEFINITION3].setEnabled(false);
+                buttons[MATCHINGTESTDEFINITION4].setEnabled(false);
+                buttons[MATCHINGTESTDEFINITION5].setEnabled(false);
+                buttons[MATCHINGTESTTERM1].setEnabled(false);
+                buttons[MATCHINGTESTTERM2].setEnabled(false);
+                buttons[MATCHINGTESTTERM3].setEnabled(false);
+                buttons[MATCHINGTESTTERM4].setEnabled(false);
+                buttons[MATCHINGTESTTERM5].setEnabled(false);
+                buttons[RESETMATCHING].setEnabled(false);
 
                 //draw and activate learn buttons needed for learn display
-                buttons[LEARNA].drawButton(g);
-                buttons[LEARNA].setEnabled(true);
-                buttons[LEARNB].drawButton(g);
-                buttons[LEARNB].setEnabled(true);
-                buttons[LEARNC].drawButton(g);
-                buttons[LEARNC].setEnabled(true);
-                buttons[LEARND].drawButton(g);
-                buttons[LEARND].setEnabled(true);
+
+
+                buttons[TRYAGAIN].setEnabled(false);
+
+                if(deck != null)
+                {
+                    buttons[LEARNA].drawButton(g);
+                    buttons[LEARNA].setEnabled(true);
+                    buttons[LEARNB].drawButton(g);
+                    buttons[LEARNB].setEnabled(true);
+                    buttons[LEARNC].drawButton(g);
+                    buttons[LEARNC].setEnabled(true);
+                    buttons[LEARND].drawButton(g);
+                    buttons[LEARND].setEnabled(true);
+                }
 
                 if(nullDeckDuringLearn == true && deck != null)
                 {
@@ -1328,6 +1488,7 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
 
                 if(deck!= null && !currentDeckName.equals(deck.getName()))
                 {
+
                     currentDeckName = deck.getName();
                     //reset everything. We have a new deck!!
 
@@ -1582,6 +1743,37 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
 
             if(matchingDisplay == true)
             {
+                buttons[GRAVITYSTARTGAME].setEnabled(false);
+                buttons[FLASHCARDFLIP].setEnabled(false);
+                buttons[PREVIOUSCARD].setEnabled(false);
+                buttons[NEXTCARD].setEnabled(false);
+                buttons[LEARNA].setEnabled(false);
+                buttons[LEARNB].setEnabled(false);
+                buttons[LEARNC].setEnabled(false);
+                buttons[LEARND].setEnabled(false);
+                buttons[TRYAGAIN].setEnabled(false);
+                buttons[NEXTTESTQUESTION].setEnabled(false);
+                buttons[PREVIOUSTESTQUESTION].setEnabled(false);
+                buttons[TRUEBUTTONFORTEST].setEnabled(false);
+                buttons[FALSEBUTTONFORTEST].setEnabled(false);
+                buttons[SUBMITTEST].setEnabled(false);
+                buttons[MCQATESTBUTTON].setEnabled(false);
+                buttons[MCQBTESTBUTTON].setEnabled(false);
+                buttons[MCQCTESTBUTTON].setEnabled(false);
+                buttons[MCQDTESTBUTTON].setEnabled(false);
+                buttons[MATCHINGTESTDEFINITION1].setEnabled(false);
+                buttons[MATCHINGTESTDEFINITION2].setEnabled(false);
+                buttons[MATCHINGTESTDEFINITION3].setEnabled(false);
+                buttons[MATCHINGTESTDEFINITION4].setEnabled(false);
+                buttons[MATCHINGTESTDEFINITION5].setEnabled(false);
+                buttons[MATCHINGTESTTERM1].setEnabled(false);
+                buttons[MATCHINGTESTTERM2].setEnabled(false);
+                buttons[MATCHINGTESTTERM3].setEnabled(false);
+                buttons[MATCHINGTESTTERM4].setEnabled(false);
+                buttons[MATCHINGTESTTERM5].setEnabled(false);
+                buttons[RESETMATCHING].setEnabled(false);
+                buttons[MATCHINGRESTART].setEnabled(false);
+
                 if(deck!=null) {
                     if(nullDeckDuringMatching == true)
                     {
@@ -1613,6 +1805,7 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
 
                     if (showMatchingTerm1) {
                         buttons[MATCHINGTERM1].drawButton(g);
+
                         buttons[MATCHINGTERM1].setEnabled(true);
 
                         int yVal1 = (int)buttons[MATCHINGTERM1].getShape().getBounds().getY() + 13;
@@ -1806,18 +1999,21 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                                 yVal10 += 13;
                             }
                     }
+                    if(showMatchingTerm1 == false && showMatchingDef1 == false && showMatchingTerm2 == false && showMatchingDef2 == false && showMatchingTerm3 == false && showMatchingDef3 == false && showMatchingTerm4 == false && showMatchingDef4 == false && showMatchingTerm5 == false && showMatchingDef5 == false)
+                    {
+                        //draw restart button
+                        buttons[MATCHINGRESTART].drawButton(g);
+                        buttons[MATCHINGRESTART].setEnabled(true);
+                    }
                 }
                 else
                 {
                     nullDeckDuringMatching = true;
-                    g.setFont(new Font("Helvetica", Font.PLAIN, 16));
                     g.setColor(Color.RED);
-                    g.drawString("Please select a deck!", 300, 300);
+                    g.setFont(new Font("Helvetica", Font.PLAIN, 30));
+                    g.drawString("Select a deck!", 490, 260);
                 }
                 //need to add an else for when deck is not selected
-
-
-
             }
 
             //top bar with settings buttons
@@ -1830,12 +2026,12 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
             buttons[EXPORTBUTTON].drawButton(g);
             buttons[EXPORTBUTTON].setEnabled(true);
             buttons[EXPORTBUTTON].setVisible(true);
-            buttons[SETTINGSBUTTON].drawButton(g);
-            buttons[SETTINGSBUTTON].setEnabled(true);
-            buttons[SETTINGSBUTTON].setVisible(true);
-            buttons[NEWDECKBUTTON].drawButton(g);
-            buttons[NEWDECKBUTTON].setEnabled(true);
-            buttons[NEWDECKBUTTON].setVisible(true);
+       //     buttons[SETTINGSBUTTON].drawButton(g);
+        //    buttons[SETTINGSBUTTON].setEnabled(true);
+         //   buttons[SETTINGSBUTTON].setVisible(true);
+         //   buttons[NEWDECKBUTTON].drawButton(g);
+          //  buttons[NEWDECKBUTTON].setEnabled(true);
+           // buttons[NEWDECKBUTTON].setVisible(true);
 
             g.setColor(Color.BLACK);
             g.fillRect(0,topBarHeight, leftBarSize, 3);
@@ -2436,64 +2632,60 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
     public int getTestScore()
     {
         int score = 0;
-     if(question1Answered && trueOrFalse1 == 0 && trueFalse1 == true)
-         score++;
-        if(question1Answered && trueOrFalse1 == 1 && trueFalse1 == false)
-            score++;
-        if(question2Answered && trueOrFalse2 == 0 && trueFalse2 == true)
-            score++;
-        if(question2Answered && trueOrFalse2 == 1 && trueFalse2 == false)
-            score++;
-        if(question3Answered && trueOrFalse3 == 0 && trueFalse3 == true)
-            score++;
-        if(question3Answered && trueOrFalse3 == 1 && trueFalse3 == false)
-            score++;
-        if(question4Answered && trueOrFalse4 == 0 && trueFalse4 == true)
-            score++;
-        if(question4Answered && trueOrFalse4 == 1 && trueFalse4 == false)
-            score++;
-        if(question5Answered && trueOrFalse5 == 0 && trueFalse5 == true)
-            score++;
-        if(question5Answered && trueOrFalse5 == 1 && trueFalse5 == false)
-            score++;
 
-        if(question6Answered && correctMultipleChoice1 == chosenAnswerMultipleChoice1)
-            score++;
-        if(question7Answered && correctMultipleChoice2 == chosenAnswerMultipleChoice2)
-            score++;
-        if(question8Answered && correctMultipleChoice3 == chosenAnswerMultipleChoice3)
-            score++;
-        if(question9Answered && correctMultipleChoice4 == chosenAnswerMultipleChoice4)
-            score++;
-        if(question10Answered && correctMultipleChoice5 == chosenAnswerMultipleChoice5)
-            score++;
+            if (testQuestions.size()>= 1 && question1Answered && trueOrFalse1 == 0 && trueFalse1 == true)
+                score++;
+            if (testQuestions.size()>= 1 && question1Answered && trueOrFalse1 == 1 && trueFalse1 == false)
+                score++;
+            if (testQuestions.size()>= 2 && question2Answered && trueOrFalse2 == 0 && trueFalse2 == true)
+                score++;
+            if (testQuestions.size()>= 2 && question2Answered && trueOrFalse2 == 1 && trueFalse2 == false)
+                score++;
+            if (testQuestions.size()>= 3 && question3Answered && trueOrFalse3 == 0 && trueFalse3 == true)
+                score++;
+            if (testQuestions.size()>= 3 && question3Answered && trueOrFalse3 == 1 && trueFalse3 == false)
+                score++;
+            if (testQuestions.size()>= 4 && question4Answered && trueOrFalse4 == 0 && trueFalse4 == true)
+                score++;
+            if (testQuestions.size()>= 4 && question4Answered && trueOrFalse4 == 1 && trueFalse4 == false)
+                score++;
+            if (testQuestions.size()>= 5 &&question5Answered && trueOrFalse5 == 0 && trueFalse5 == true)
+                score++;
+            if (testQuestions.size()>= 5 &&question5Answered && trueOrFalse5 == 1 && trueFalse5 == false)
+                score++;
 
-//        for(int i = 0; i<userMatched.length; i++) //does not work
-//        {
-//            if(userMatched[i] == (correctMatching[i]))
-//                score++;
-//        }
-        if(userMatched[0] == 11)
-            score++;
-        if(userMatched[1] == 12)
-            score++;
-        if(userMatched[2] == 13)
-            score++;
-        if(userMatched[3] == 14)
-            score++;
-        if(userMatched[4] == 15)
-            score++;
+            if (testQuestions.size()>= 6 && question6Answered && correctMultipleChoice1 == chosenAnswerMultipleChoice1)
+                score++;
+            if (testQuestions.size()>= 7 && question7Answered && correctMultipleChoice2 == chosenAnswerMultipleChoice2)
+                score++;
+            if (testQuestions.size()>= 8 && question8Answered && correctMultipleChoice3 == chosenAnswerMultipleChoice3)
+                score++;
+            if (testQuestions.size()>= 9 && question9Answered && correctMultipleChoice4 == chosenAnswerMultipleChoice4)
+                score++;
+            if (testQuestions.size()>= 10 && question10Answered && correctMultipleChoice5 == chosenAnswerMultipleChoice5)
+                score++;
 
-        if(((typedAnswer1.trim()).toUpperCase()).equals(testQuestions.get(15).getTerm().trim().toUpperCase()))
-            score++;
-        if(((typedAnswer2.trim()).toUpperCase()).equals(testQuestions.get(16).getTerm().trim().toUpperCase()))
-            score++;
-        if(((typedAnswer3.trim()).toUpperCase()).equals(testQuestions.get(17).getTerm().trim().toUpperCase()))
-            score++;
-        if(((typedAnswer4.trim()).toUpperCase()).equals(testQuestions.get(18).getTerm().trim().toUpperCase()))
-            score++;
-        if(((typedAnswer5.trim()).toUpperCase()).equals(testQuestions.get(19).getTerm().trim().toUpperCase()))
-            score++;
+            if (testQuestions.size()>= 11 && userMatched[0] == 11)
+                score++;
+            if (testQuestions.size()>= 12 &&userMatched[1] == 12)
+                score++;
+            if (testQuestions.size()>= 13 &&userMatched[2] == 13)
+                score++;
+            if (testQuestions.size()>= 14 && userMatched[3] == 14)
+                score++;
+            if (testQuestions.size()>= 15 && userMatched[4] == 15)
+                score++;
+
+            if (typedAnswer1 != null && testQuestions.size()>= 16 && ((typedAnswer1.trim()).toUpperCase()).equals(testQuestions.get(15).getTerm().trim().toUpperCase()))
+                score++;
+            if (typedAnswer2 != null && testQuestions.size()>= 17 && ((typedAnswer2.trim()).toUpperCase()).equals(testQuestions.get(16).getTerm().trim().toUpperCase()))
+                score++;
+            if (typedAnswer3 != null && testQuestions.size()>= 18 && ((typedAnswer3.trim()).toUpperCase()).equals(testQuestions.get(17).getTerm().trim().toUpperCase()))
+                score++;
+            if (typedAnswer4 != null && testQuestions.size()>= 19 && ((typedAnswer4.trim()).toUpperCase()).equals(testQuestions.get(18).getTerm().trim().toUpperCase()))
+                score++;
+            if (typedAnswer5 != null && testQuestions.size()>= 20 && ((typedAnswer5.trim()).toUpperCase()).equals(testQuestions.get(19).getTerm().trim().toUpperCase()))
+                score++;
 
      return score;
     }
@@ -2867,6 +3059,7 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                            numberOfSettingsClicks = 0;
                        learnDisplay = false;
                        testDisplay = false;
+                       testSubmittedDisplay = false;
                        gravityDisplay = false;
                        gravityStartDisplay = false;
                        flashcardsDisplay = false;
@@ -2877,19 +3070,20 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                        data.showDatabaseGUI();
                    }
                    if (b.getTitle().equals("settings")) {
-                       if (numberOfSettingsClicks == 0)
-                           numberOfSettingsClicks = 1;
-                       else //numberOfSettingsClicks == 1
-                           numberOfSettingsClicks = 0;
+                     //  if (numberOfSettingsClicks == 0)
+                      //     numberOfSettingsClicks = 1;
+                       //else //numberOfSettingsClicks == 1
+                        //   numberOfSettingsClicks = 0;
                    }
                    if (b.getTitle().equals("newDeck")) {
-                       screenMode = 1; //change this for what to do when newCourse is clicked
+                      // screenMode = 1; //change this for what to do when newCourse is clicked
                    }
                    if (b.getTitle().equals("flashcards"))
                    {
                        homeScreenDisplay = false;
                        learnDisplay = false;
                        testDisplay = false;
+                       testSubmittedDisplay = false;
                        gravityDisplay = false;
                        gravityStartDisplay = false;
                        flashcardsDisplay = true;
@@ -2908,6 +3102,7 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                        gravityDisplay = false;
                        learnDisplay = true;
                        testDisplay = false;
+                       testSubmittedDisplay = false;
                        gravityStartDisplay = false;
                        flashcardsDisplay = false;
                        matchingDisplay = false;
@@ -2946,11 +3141,6 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                    }
                    if (b.getTitle().equals("test"))
                    {
-                       this.remove(typeAnswer16);
-                       this.remove(typeAnswer17);
-                       this.remove(typeAnswer18);
-                       this.remove(typeAnswer19);
-                       this.remove(typeAnswer20);
 
                        homeScreenDisplay = false;
                        gravityDisplay = false;
@@ -2961,6 +3151,15 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                        matchingDisplay = false;
                        testSubmittedDisplay = false;
 
+                       if(deck != null)
+                       currentDeckNameTest = deck.getName();
+
+                       this.remove(typeAnswer16);
+                       this.remove(typeAnswer17);
+                       this.remove(typeAnswer18);
+                       this.remove(typeAnswer19);
+                       this.remove(typeAnswer20);
+
                        currentQuestion = 1;
 
                        buttons[MATCHINGTESTDEFINITION1].setEnabled(false);
@@ -2969,12 +3168,13 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                        buttons[MATCHINGTESTDEFINITION4].setEnabled(false);
                        buttons[MATCHINGTESTDEFINITION5].setEnabled(false);
 
-                       for(int i = 0; i<drawLinesHere.length; i++)
-                       {
-                           for(int j = 0; j<drawLinesHere[0].length; j++)
-                           {
-                               drawLinesHere[i][j] = -1;
-                           }
+                       if(deck!=null) {
+                           if (!deck.getName().trim().toUpperCase().equals(currentDeckNameTest.trim().toUpperCase()))
+                               for (int i = 0; i < drawLinesHere.length; i++) {
+                                   for (int j = 0; j < drawLinesHere[0].length; j++) {
+                                       drawLinesHere[i][j] = -1;
+                                   }
+                               }
                        }
 
                        if(deck!= null) {
@@ -3006,12 +3206,70 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                                randomizeMatchingTerms(5);
                        }
                    }
+                   if(b.getTitle().equals("matchingRestart"))
+                   {
+                       homeScreenDisplay = false;
+                       flashcardsDisplay = false;
+                       learnDisplay = false;
+                       testDisplay = false;
+                       testSubmittedDisplay = false;
+                       gravityStartDisplay = false;
+                       gravityDisplay = false;
+                       matchingDisplay = true;
+
+                       if(deck != null) {
+                           int[] deckIndexes = new int[deck.size()];
+                           for (int i = 0; i < deckIndexes.length; i++) {
+                               deckIndexes[i] = i;
+                           }
+
+                           int firstIndexM = 0;
+                           int secondIndexM = 0;
+                           int temp;
+
+                           for (int j = 0; j < 250; j++) //mix up the flashcards of copyOfDeck for randomness!
+                           {
+                               firstIndexM = (int) (Math.random() * (deck.size()));
+                               secondIndexM = (int) (Math.random() * (deck.size()));
+                               temp = deckIndexes[firstIndexM];
+                               deckIndexes[firstIndexM] = deckIndexes[secondIndexM];
+                               deckIndexes[secondIndexM] = temp;
+                           }
+
+                           for (int i = 0; i < indexForMatching.length; i++) {
+                               indexForMatching[i] = deckIndexes[i];
+                           }
+                       }
+
+                       showMatchingTerm1 = true;
+                       showMatchingDef1 = true;
+                       showMatchingTerm2 = true;
+                       showMatchingDef2 = true;
+                       showMatchingTerm3 = true;
+                       showMatchingDef3 = true;
+                       showMatchingTerm4 = true;
+                       showMatchingDef4 = true;
+                       showMatchingTerm5 = true;
+                       showMatchingDef5 = true;
+
+                       buttons[MATCHINGTERM1].setShape(new Rectangle((int)(Math.random()*(xSIZE-11-145-200+1) + 200), (int)(Math.random()*(ySIZE-34-75-50+1) + 50), (int)(buttons[MATCHINGTERM1].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGTERM1].getShape().getBounds().getHeight())));
+                       buttons[MATCHINGDEF1].setShape(new Rectangle((int)(Math.random()*(xSIZE-11-145-200+1) + 200), (int)(Math.random()*(ySIZE-34-75-50+1) + 50), (int)(buttons[MATCHINGDEF1].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGDEF1].getShape().getBounds().getHeight())));
+                       buttons[MATCHINGTERM2].setShape(new Rectangle((int)(Math.random()*(xSIZE-11-145-200+1) + 200), (int)(Math.random()*(ySIZE-34-75-50+1) + 50), (int)(buttons[MATCHINGTERM2].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGTERM2].getShape().getBounds().getHeight())));
+                       buttons[MATCHINGDEF2].setShape(new Rectangle((int)(Math.random()*(xSIZE-11-145-200+1) + 200), (int)(Math.random()*(ySIZE-34-75-50+1) + 50), (int)(buttons[MATCHINGDEF2].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGDEF2].getShape().getBounds().getHeight())));
+                       buttons[MATCHINGTERM3].setShape(new Rectangle((int)(Math.random()*(xSIZE-11-145-200+1) + 200), (int)(Math.random()*(ySIZE-34-75-50+1) + 50), (int)(buttons[MATCHINGTERM3].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGTERM3].getShape().getBounds().getHeight())));
+                       buttons[MATCHINGDEF3].setShape(new Rectangle((int)(Math.random()*(xSIZE-11-145-200+1) + 200), (int)(Math.random()*(ySIZE-34-75-50+1) + 50), (int)(buttons[MATCHINGDEF3].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGDEF3].getShape().getBounds().getHeight())));
+                       buttons[MATCHINGTERM4].setShape(new Rectangle((int)(Math.random()*(xSIZE-11-145-200+1) + 200), (int)(Math.random()*(ySIZE-34-75-50+1) + 50), (int)(buttons[MATCHINGTERM4].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGTERM4].getShape().getBounds().getHeight())));
+                       buttons[MATCHINGDEF4].setShape(new Rectangle((int)(Math.random()*(xSIZE-11-145-200+1) + 200), (int)(Math.random()*(ySIZE-34-75-50+1) + 50), (int)(buttons[MATCHINGDEF4].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGDEF4].getShape().getBounds().getHeight())));
+                       buttons[MATCHINGTERM5].setShape(new Rectangle((int)(Math.random()*(xSIZE-11-145-200+1) + 200), (int)(Math.random()*(ySIZE-34-75-50+1) + 50), (int)(buttons[MATCHINGTERM5].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGTERM5].getShape().getBounds().getHeight())));
+                       buttons[MATCHINGDEF5].setShape(new Rectangle((int)(Math.random()*(xSIZE-11-145-200+1) + 200), (int)(Math.random()*(ySIZE-34-75-50+1) + 50), (int)(buttons[MATCHINGDEF5].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGDEF5].getShape().getBounds().getHeight())));
+                   }
                    if (b.getTitle().equals("gravity"))
                    {
                        homeScreenDisplay = false;
                        flashcardsDisplay = false;
                        learnDisplay = false;
                        testDisplay = false;
+                       testSubmittedDisplay = false;
                        gravityDisplay = false;
                        gravityStartDisplay = true;
                        matchingDisplay = false;
@@ -3028,6 +3286,7 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                        flashcardsDisplay = false;
                        learnDisplay = false;
                        testDisplay = false;
+                       testSubmittedDisplay = false;
                        gravityStartDisplay = false;
                        gravityDisplay = true;
                        matchingDisplay = false;
@@ -3039,6 +3298,7 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                        flashcardsDisplay = false;
                        learnDisplay = false;
                        testDisplay = false;
+                       testSubmittedDisplay = false;
                        gravityStartDisplay = false;
                        gravityDisplay = false;
                        matchingDisplay = true;
@@ -3071,7 +3331,50 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                            for (int i = 0; i < indexForMatching.length; i++) {
                                indexForMatching[i] = deckIndexes[i];
                            }
+
+                         /*  buttons[MATCHINGTERM1].setEnabled(true);
+                           buttons[MATCHINGTERM1].setVisible(true);
+                           buttons[MATCHINGTERM2].setEnabled(true);
+                           buttons[MATCHINGTERM2].setVisible(true);
+                           buttons[MATCHINGTERM3].setEnabled(true);
+                           buttons[MATCHINGTERM3].setVisible(true);
+                           buttons[MATCHINGTERM4].setEnabled(true);
+                           buttons[MATCHINGTERM4].setVisible(true);
+                           buttons[MATCHINGTERM5].setEnabled(true);
+                           buttons[MATCHINGTERM5].setVisible(true);
+                           buttons[MATCHINGDEF1].setEnabled(true);
+                           buttons[MATCHINGDEF1].setVisible(true);
+                           buttons[MATCHINGDEF2].setEnabled(true);
+                           buttons[MATCHINGDEF2].setVisible(true);
+                           buttons[MATCHINGDEF3].setEnabled(true);
+                           buttons[MATCHINGDEF3].setVisible(true);
+                           buttons[MATCHINGDEF4].setEnabled(true);
+                           buttons[MATCHINGDEF4].setVisible(true);
+                           buttons[MATCHINGDEF5].setEnabled(true);
+                           buttons[MATCHINGDEF5].setVisible(true);*/
                        }
+                       showMatchingTerm1 = true;
+                       showMatchingDef1 = true;
+                       showMatchingTerm2 = true;
+                       showMatchingDef2 = true;
+                       showMatchingTerm3 = true;
+                       showMatchingDef3 = true;
+                       showMatchingTerm4 = true;
+                       showMatchingDef4 = true;
+                       showMatchingTerm5 = true;
+                       showMatchingDef5 = true;
+
+                       buttons[MATCHINGTERM1].setShape(new Rectangle((int)(Math.random()*(xSIZE-11-145-200+1) + 200), (int)(Math.random()*(ySIZE-34-75-50+1) + 50), (int)(buttons[MATCHINGTERM1].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGTERM1].getShape().getBounds().getHeight())));
+                       buttons[MATCHINGDEF1].setShape(new Rectangle((int)(Math.random()*(xSIZE-11-145-200+1) + 200), (int)(Math.random()*(ySIZE-34-75-50+1) + 50), (int)(buttons[MATCHINGDEF1].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGDEF1].getShape().getBounds().getHeight())));
+                       buttons[MATCHINGTERM2].setShape(new Rectangle((int)(Math.random()*(xSIZE-11-145-200+1) + 200), (int)(Math.random()*(ySIZE-34-75-50+1) + 50), (int)(buttons[MATCHINGTERM2].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGTERM2].getShape().getBounds().getHeight())));
+                       buttons[MATCHINGDEF2].setShape(new Rectangle((int)(Math.random()*(xSIZE-11-145-200+1) + 200), (int)(Math.random()*(ySIZE-34-75-50+1) + 50), (int)(buttons[MATCHINGDEF2].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGDEF2].getShape().getBounds().getHeight())));
+                       buttons[MATCHINGTERM3].setShape(new Rectangle((int)(Math.random()*(xSIZE-11-145-200+1) + 200), (int)(Math.random()*(ySIZE-34-75-50+1) + 50), (int)(buttons[MATCHINGTERM3].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGTERM3].getShape().getBounds().getHeight())));
+                       buttons[MATCHINGDEF3].setShape(new Rectangle((int)(Math.random()*(xSIZE-11-145-200+1) + 200), (int)(Math.random()*(ySIZE-34-75-50+1) + 50), (int)(buttons[MATCHINGDEF3].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGDEF3].getShape().getBounds().getHeight())));
+                       buttons[MATCHINGTERM4].setShape(new Rectangle((int)(Math.random()*(xSIZE-11-145-200+1) + 200), (int)(Math.random()*(ySIZE-34-75-50+1) + 50), (int)(buttons[MATCHINGTERM4].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGTERM4].getShape().getBounds().getHeight())));
+                       buttons[MATCHINGDEF4].setShape(new Rectangle((int)(Math.random()*(xSIZE-11-145-200+1) + 200), (int)(Math.random()*(ySIZE-34-75-50+1) + 50), (int)(buttons[MATCHINGDEF4].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGDEF4].getShape().getBounds().getHeight())));
+                       buttons[MATCHINGTERM5].setShape(new Rectangle((int)(Math.random()*(xSIZE-11-145-200+1) + 200), (int)(Math.random()*(ySIZE-34-75-50+1) + 50), (int)(buttons[MATCHINGTERM5].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGTERM5].getShape().getBounds().getHeight())));
+                       buttons[MATCHINGDEF5].setShape(new Rectangle((int)(Math.random()*(xSIZE-11-145-200+1) + 200), (int)(Math.random()*(ySIZE-34-75-50+1) + 50), (int)(buttons[MATCHINGDEF5].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGDEF5].getShape().getBounds().getHeight())));
+
 
                    }
                    if(b.getTitle().equals("resetMatching"))
@@ -3784,6 +4087,7 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                    {
                        if(learnQueue.peek() != null) {
                            currentTimer = frameGravity;
+                           frameGravity = currentTimer;
                            changeAnswers = true;
                            if (A.equals(learnQueue.peek().getTerm())) //correct
                            {
@@ -3805,6 +4109,7 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                    {
                        if(learnQueue.peek() != null) {
                            currentTimer = frameGravity;
+                           frameGravity = currentTimer;
                            changeAnswers = true;
 
                            if (B.equals(learnQueue.peek().getTerm())) //correct
@@ -3827,6 +4132,7 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                    {
                        if(learnQueue.peek() != null) {
                            currentTimer = frameGravity;
+                           frameGravity = currentTimer;
                            changeAnswers = true;
 
                            if (C.equals(learnQueue.peek().getTerm())) //correct
@@ -3849,6 +4155,7 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                    {
                        if(learnQueue.peek() != null) {
                            currentTimer = frameGravity;
+                           frameGravity = currentTimer;
                            changeAnswers = true;
 
                            if (D.equals(learnQueue.peek().getTerm())) //correct
@@ -3872,6 +4179,34 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                        makeLearnQueue();
                        deckIsComplete = false;
                        learnCardNumber = 1;
+
+                       this.remove(typeAnswer16);
+                       this.remove(typeAnswer17);
+                       this.remove(typeAnswer18);
+                       this.remove(typeAnswer19);
+                       this.remove(typeAnswer20);
+
+                       if(learnQueue.peek() != null) {
+                           randomAnswers = (int) (Math.random() * (4)) + 1;
+
+                           randomWrongAnswer1 = (int) (Math.random() * (deck.size()));
+                           while (deck.get(randomWrongAnswer1).getTerm().trim().equals(learnQueue.peek().getTerm().trim()))
+                               randomWrongAnswer1 = (int)(Math.random()*(deck.size()));
+
+                           randomWrongAnswer2 = (int) (Math.random() * (deck.size()));
+                           while (deck.get(randomWrongAnswer2).getTerm().trim().equals(deck.get(randomWrongAnswer1).getTerm().trim()) || deck.get(randomWrongAnswer2).getTerm().trim().equals(learnQueue.peek().getTerm().trim()))
+                               randomWrongAnswer2 = (int) (Math.random() * (deck.size()));
+
+                           randomWrongAnswer3 = (int) (Math.random() * (deck.size()));
+                           while (deck.get(randomWrongAnswer3).getTerm().trim().equals(deck.get(randomWrongAnswer1).getTerm().trim()) || deck.get(randomWrongAnswer3).getTerm().trim().equals(deck.get(randomWrongAnswer2).getTerm().trim()) || deck.get(randomWrongAnswer3).getTerm().trim().equals(learnQueue.peek().getTerm().trim()))
+                               randomWrongAnswer3 = (int) (Math.random() * (deck.size()));
+
+                           randomWrongAnswer4 = (int) (Math.random() * (deck.size()));
+                           while (deck.get(randomWrongAnswer4).getTerm().trim().equals(deck.get(randomWrongAnswer1).getTerm().trim()) || deck.get(randomWrongAnswer4).getTerm().trim().equals(deck.get(randomWrongAnswer2).getTerm().trim()) || deck.get(randomWrongAnswer4).getTerm().trim().equals(deck.get(randomWrongAnswer3).getTerm().trim()) || deck.get(randomWrongAnswer4).getTerm().trim().equals(learnQueue.peek().getTerm().trim()))
+                               randomWrongAnswer4 = (int) (Math.random() * (deck.size()));
+                       }
+                       if(deck!= null)
+                           currentDeckName = deck.getName();
                    }
                }
               } //end of buttons for loop
@@ -3993,6 +4328,10 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
             buttons[LEARN].highlight();
         }
         if (testDisplay == true) {
+            buttons[TEST].highlight();
+        }
+        if(testSubmittedDisplay == true)
+        {
             buttons[TEST].highlight();
         }
         if (matchingDisplay == true) {
@@ -4235,97 +4574,81 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
         mouseY = e.getY();
 
         //the new x and y code could be fixed to be more accurate!!
-        if(buttons[MATCHINGDEF1].getShape().contains(mouseX, mouseY) && buttons[MATCHINGDEF1].isEnabled() && movingTerm1 == false && movingTerm2 == false && movingDef2 == false && movingTerm3 == false && movingDef3 == false  && movingTerm4 == false && movingDef4 == false && movingTerm5 == false && movingDef5 == false)
+        if(buttons[MATCHINGDEF5].getShape().contains(mouseX, mouseY) && buttons[MATCHINGDEF5].isEnabled() && movingTerm5 == false && movingTerm2 == false && movingDef2 == false && movingTerm3 == false && movingDef3 == false  && movingTerm4 == false && movingDef4 == false && movingTerm1 == false && movingDef1 == false)
         {
-            buttons[MATCHINGDEF1].setShape(new Rectangle(mouseX-30, mouseY-30, (int)(buttons[MATCHINGDEF1].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGDEF1].getShape().getBounds().getHeight())));
+            buttons[MATCHINGDEF5].setShape(new Rectangle(mouseX-30, mouseY-30, (int)(buttons[MATCHINGDEF5].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGDEF5].getShape().getBounds().getHeight())));
+            buttons[MATCHINGTERM5].unHighlight();
             buttons[MATCHINGTERM1].unHighlight();
-            movingDef1 = true;
-            keepButtonInBounds(MATCHINGDEF1);
-        }
-        if(movingDef1 == true && !buttons[MATCHINGDEF1].getShape().contains(mouseX, mouseY)) //makes sure the button stays with the mouse, even when the mouse is being dragged really fast
-        {
-            buttons[MATCHINGDEF1].setShape(new Rectangle(mouseX-30, mouseY-30, (int)(buttons[MATCHINGDEF1].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGDEF1].getShape().getBounds().getHeight())));
-            buttons[MATCHINGDEF1].highlight();
-            keepButtonInBounds(MATCHINGDEF1);
-        }
-        if(buttons[MATCHINGTERM1].getShape().contains(mouseX, mouseY) && buttons[MATCHINGTERM1].isEnabled() && movingDef1 == false && movingTerm2 == false && movingDef2 == false && movingTerm3 == false && movingDef3 == false  && movingTerm4 == false && movingDef4 == false && movingTerm5 == false && movingDef5 == false)
-        {
-            buttons[MATCHINGTERM1].setShape(new Rectangle(mouseX-30, mouseY-30, (int)(buttons[MATCHINGTERM1].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGTERM1].getShape().getBounds().getHeight())));
             buttons[MATCHINGDEF1].unHighlight();
-            movingTerm1 = true;
-            keepButtonInBounds(MATCHINGTERM1);
-        }
-        if(movingTerm1 == true && !buttons[MATCHINGTERM1].getShape().contains(mouseX, mouseY)) //makes sure the button stays with the mouse, even when the mouse is being dragged really fast
-        {
-            buttons[MATCHINGTERM1].setShape(new Rectangle(mouseX-30, mouseY-30, (int)(buttons[MATCHINGTERM1].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGTERM1].getShape().getBounds().getHeight())));
-            buttons[MATCHINGTERM1].highlight();
-            keepButtonInBounds(MATCHINGTERM1);
-        }
-        if(!buttons[MATCHINGTERM1].getShape().contains(mouseX, mouseY) && movingTerm1 == false)
-            buttons[MATCHINGTERM1].unHighlight();
-
-        if(buttons[MATCHINGDEF2].getShape().contains(mouseX, mouseY) && buttons[MATCHINGDEF2].isEnabled() && movingTerm2 == false && movingTerm1 == false && movingDef1 == false && movingTerm3 == false && movingDef3 == false  && movingTerm4 == false && movingDef4 == false && movingTerm5 == false && movingDef5 == false)
-        {
-            buttons[MATCHINGDEF2].setShape(new Rectangle(mouseX-30, mouseY-30, (int)(buttons[MATCHINGDEF2].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGDEF2].getShape().getBounds().getHeight())));
             buttons[MATCHINGTERM2].unHighlight();
-            movingDef2 = true;
-            keepButtonInBounds(MATCHINGDEF2);
-        }
-        if(movingDef2 == true && !buttons[MATCHINGDEF2].getShape().contains(mouseX, mouseY)) //makes sure the button stays with the mouse, even when the mouse is being dragged really fast
-        {
-            buttons[MATCHINGDEF2].setShape(new Rectangle(mouseX-30, mouseY-30, (int)(buttons[MATCHINGDEF2].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGDEF2].getShape().getBounds().getHeight())));
-            buttons[MATCHINGDEF2].highlight();
-            keepButtonInBounds(MATCHINGDEF2);
-        }
-        if(buttons[MATCHINGTERM2].getShape().contains(mouseX, mouseY) && buttons[MATCHINGTERM2].isEnabled() && movingDef2 == false && movingTerm1 == false && movingDef1 == false && movingTerm3 == false && movingDef3 == false  && movingTerm4 == false && movingDef4 == false && movingTerm5 == false && movingDef5 == false)
-        {
-            buttons[MATCHINGTERM2].setShape(new Rectangle(mouseX-30, mouseY-30, (int)(buttons[MATCHINGTERM2].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGTERM2].getShape().getBounds().getHeight())));
             buttons[MATCHINGDEF2].unHighlight();
-            keepButtonInBounds(MATCHINGTERM2);
-            movingTerm2 = true;
-        }
-        if(movingTerm2 == true && !buttons[MATCHINGTERM2].getShape().contains(mouseX, mouseY)) //makes sure the button stays with the mouse, even when the mouse is being dragged really fast
-        {
-            buttons[MATCHINGTERM2].setShape(new Rectangle(mouseX-30, mouseY-30, (int)(buttons[MATCHINGTERM2].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGTERM2].getShape().getBounds().getHeight())));
-            buttons[MATCHINGTERM2].highlight();
-            keepButtonInBounds(MATCHINGTERM2);
-        }
-        if(!buttons[MATCHINGTERM2].getShape().contains(mouseX, mouseY)  && movingTerm2 == false)
-            buttons[MATCHINGTERM2].unHighlight();
-
-        if(buttons[MATCHINGDEF3].getShape().contains(mouseX, mouseY) && buttons[MATCHINGDEF3].isEnabled() && movingTerm3 == false && movingTerm2 == false && movingDef2 == false && movingTerm1 == false && movingDef1 == false && movingTerm4 == false && movingDef4 == false && movingTerm5 == false && movingDef5 == false)
-        {
-            buttons[MATCHINGDEF3].setShape(new Rectangle(mouseX-30, mouseY-30, (int)(buttons[MATCHINGDEF3].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGDEF3].getShape().getBounds().getHeight())));
             buttons[MATCHINGTERM3].unHighlight();
-            keepButtonInBounds(MATCHINGDEF3);
-            movingDef3 = true;
-        }
-        if(movingDef3 == true && !buttons[MATCHINGDEF3].getShape().contains(mouseX, mouseY)) //makes sure the button stays with the mouse, even when the mouse is being dragged really fast
-        {
-            buttons[MATCHINGDEF3].setShape(new Rectangle(mouseX-30, mouseY-30, (int)(buttons[MATCHINGDEF3].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGDEF3].getShape().getBounds().getHeight())));
-            buttons[MATCHINGDEF3].highlight();
-            keepButtonInBounds(MATCHINGDEF3);
-        }
-        if(buttons[MATCHINGTERM3].getShape().contains(mouseX, mouseY) && buttons[MATCHINGTERM3].isEnabled() && movingDef3 == false && movingTerm2 == false && movingDef2 == false && movingTerm1 == false && movingDef1 == false  && movingTerm4 == false && movingDef4 == false && movingTerm5 == false && movingDef5 == false)
-        {
-            buttons[MATCHINGTERM3].setShape(new Rectangle(mouseX-30, mouseY-30, (int)(buttons[MATCHINGTERM3].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGTERM3].getShape().getBounds().getHeight())));
             buttons[MATCHINGDEF3].unHighlight();
-            keepButtonInBounds(MATCHINGTERM3);
-            movingTerm3 = true;
+            buttons[MATCHINGTERM4].unHighlight();
+            buttons[MATCHINGDEF4].unHighlight();
+            keepButtonInBounds(MATCHINGDEF5);
+            movingDef5 = true;
         }
-        if(movingTerm3 == true && !buttons[MATCHINGTERM3].getShape().contains(mouseX, mouseY)) //makes sure the button stays with the mouse, even when the mouse is being dragged really fast
+        if(movingDef5 == true && !buttons[MATCHINGDEF5].getShape().contains(mouseX, mouseY)) //makes sure the button stays with the mouse, even when the mouse is being dragged really fast
         {
-            buttons[MATCHINGTERM3].setShape(new Rectangle(mouseX-30, mouseY-30, (int)(buttons[MATCHINGTERM3].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGTERM3].getShape().getBounds().getHeight())));
-            buttons[MATCHINGTERM3].highlight();
-            keepButtonInBounds(MATCHINGTERM3);
-        }
-        if(!buttons[MATCHINGTERM3].getShape().contains(mouseX, mouseY) && movingTerm3 == false)
+            buttons[MATCHINGDEF5].setShape(new Rectangle(mouseX-30, mouseY-30, (int)(buttons[MATCHINGDEF5].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGDEF5].getShape().getBounds().getHeight())));
+            buttons[MATCHINGDEF5].highlight();
+            buttons[MATCHINGTERM5].unHighlight();
+            buttons[MATCHINGTERM1].unHighlight();
+            buttons[MATCHINGDEF1].unHighlight();
+            buttons[MATCHINGTERM2].unHighlight();
+            buttons[MATCHINGDEF2].unHighlight();
             buttons[MATCHINGTERM3].unHighlight();
+            buttons[MATCHINGDEF3].unHighlight();
+            buttons[MATCHINGTERM4].unHighlight();
+            buttons[MATCHINGDEF4].unHighlight();
+            keepButtonInBounds(MATCHINGDEF5);
+        }
+        if(buttons[MATCHINGTERM5].getShape().contains(mouseX, mouseY) && buttons[MATCHINGTERM5].isEnabled() && movingDef5 == false && movingTerm2 == false && movingDef2 == false && movingTerm3 == false && movingDef3 == false  && movingTerm4 == false && movingDef4 == false && movingTerm1 == false && movingDef1 == false)
+        {
+            buttons[MATCHINGTERM5].setShape(new Rectangle(mouseX-30, mouseY-30, (int)(buttons[MATCHINGTERM5].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGTERM5].getShape().getBounds().getHeight())));
+            buttons[MATCHINGDEF5].unHighlight();
+            buttons[MATCHINGTERM1].unHighlight();
+            buttons[MATCHINGDEF1].unHighlight();
+            buttons[MATCHINGTERM2].unHighlight();
+            buttons[MATCHINGDEF2].unHighlight();
+            buttons[MATCHINGTERM3].unHighlight();
+            buttons[MATCHINGDEF3].unHighlight();
+            buttons[MATCHINGTERM4].unHighlight();
+            buttons[MATCHINGDEF4].unHighlight();
+            keepButtonInBounds(MATCHINGTERM5);
+            movingTerm5 = true;
+        }
+        if(movingTerm5 == true && !buttons[MATCHINGTERM5].getShape().contains(mouseX, mouseY)) //makes sure the button stays with the mouse, even when the mouse is being dragged really fast
+        {
+            buttons[MATCHINGTERM5].setShape(new Rectangle(mouseX-30, mouseY-30, (int)(buttons[MATCHINGTERM5].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGTERM5].getShape().getBounds().getHeight())));
+            buttons[MATCHINGTERM5].highlight();
+            buttons[MATCHINGDEF5].unHighlight();
+            buttons[MATCHINGTERM1].unHighlight();
+            buttons[MATCHINGDEF1].unHighlight();
+            buttons[MATCHINGTERM2].unHighlight();
+            buttons[MATCHINGDEF2].unHighlight();
+            buttons[MATCHINGTERM3].unHighlight();
+            buttons[MATCHINGDEF3].unHighlight();
+            buttons[MATCHINGTERM4].unHighlight();
+            buttons[MATCHINGDEF4].unHighlight();
+            keepButtonInBounds(MATCHINGTERM5);
+        }
+        if(!buttons[MATCHINGTERM5].getShape().contains(mouseX, mouseY) && movingTerm5 == false)
+            buttons[MATCHINGTERM5].unHighlight();
 
         if(buttons[MATCHINGDEF4].getShape().contains(mouseX, mouseY) && buttons[MATCHINGDEF4].isEnabled() && movingTerm4 == false && movingTerm2 == false && movingDef2 == false && movingTerm3 == false && movingDef3 == false  && movingTerm1 == false && movingDef1 == false && movingTerm5 == false && movingDef5 == false)
         {
             buttons[MATCHINGDEF4].setShape(new Rectangle(mouseX-30, mouseY-30, (int)(buttons[MATCHINGDEF4].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGDEF4].getShape().getBounds().getHeight())));
             buttons[MATCHINGTERM4].unHighlight();
+            buttons[MATCHINGTERM1].unHighlight();
+            buttons[MATCHINGDEF1].unHighlight();
+            buttons[MATCHINGTERM2].unHighlight();
+            buttons[MATCHINGDEF2].unHighlight();
+            buttons[MATCHINGTERM3].unHighlight();
+            buttons[MATCHINGDEF3].unHighlight();
+            buttons[MATCHINGTERM5].unHighlight();
+            buttons[MATCHINGDEF5].unHighlight();
             keepButtonInBounds(MATCHINGDEF4);
             movingDef4 = true;
         }
@@ -4339,6 +4662,14 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
         {
             buttons[MATCHINGTERM4].setShape(new Rectangle(mouseX-30, mouseY-30, (int)(buttons[MATCHINGTERM4].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGTERM4].getShape().getBounds().getHeight())));
             buttons[MATCHINGDEF4].unHighlight();
+            buttons[MATCHINGTERM1].unHighlight();
+            buttons[MATCHINGDEF1].unHighlight();
+            buttons[MATCHINGTERM2].unHighlight();
+            buttons[MATCHINGDEF2].unHighlight();
+            buttons[MATCHINGTERM3].unHighlight();
+            buttons[MATCHINGDEF3].unHighlight();
+            buttons[MATCHINGTERM5].unHighlight();
+            buttons[MATCHINGDEF5].unHighlight();
             keepButtonInBounds(MATCHINGTERM4);
             movingTerm4 = true;
         }
@@ -4346,42 +4677,208 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
         {
             buttons[MATCHINGTERM4].setShape(new Rectangle(mouseX-30, mouseY-30, (int)(buttons[MATCHINGTERM4].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGTERM4].getShape().getBounds().getHeight())));
             buttons[MATCHINGTERM4].highlight();
+            buttons[MATCHINGDEF4].unHighlight();
+            buttons[MATCHINGTERM1].unHighlight();
+            buttons[MATCHINGDEF1].unHighlight();
+            buttons[MATCHINGTERM2].unHighlight();
+            buttons[MATCHINGDEF2].unHighlight();
+            buttons[MATCHINGTERM3].unHighlight();
+            buttons[MATCHINGDEF3].unHighlight();
+            buttons[MATCHINGTERM5].unHighlight();
+            buttons[MATCHINGDEF5].unHighlight();
             keepButtonInBounds(MATCHINGTERM4);
         }
         if(!buttons[MATCHINGTERM4].getShape().contains(mouseX, mouseY) && movingTerm4 == false)
             buttons[MATCHINGTERM4].unHighlight();
 
-        //change 1s to 5s
-        if(buttons[MATCHINGDEF5].getShape().contains(mouseX, mouseY) && buttons[MATCHINGDEF5].isEnabled() && movingTerm5 == false && movingTerm2 == false && movingDef2 == false && movingTerm3 == false && movingDef3 == false  && movingTerm4 == false && movingDef4 == false && movingTerm1 == false && movingDef1 == false)
+        if(buttons[MATCHINGDEF3].getShape().contains(mouseX, mouseY) && buttons[MATCHINGDEF3].isEnabled() && movingTerm3 == false && movingTerm2 == false && movingDef2 == false && movingTerm1 == false && movingDef1 == false && movingTerm4 == false && movingDef4 == false && movingTerm5 == false && movingDef5 == false)
         {
-            buttons[MATCHINGDEF5].setShape(new Rectangle(mouseX-30, mouseY-30, (int)(buttons[MATCHINGDEF5].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGDEF5].getShape().getBounds().getHeight())));
+            buttons[MATCHINGDEF3].setShape(new Rectangle(mouseX-30, mouseY-30, (int)(buttons[MATCHINGDEF3].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGDEF3].getShape().getBounds().getHeight())));
+            buttons[MATCHINGTERM3].unHighlight();
+            buttons[MATCHINGTERM1].unHighlight();
+            buttons[MATCHINGDEF1].unHighlight();
+            buttons[MATCHINGTERM2].unHighlight();
+            buttons[MATCHINGDEF2].unHighlight();
+            buttons[MATCHINGTERM4].unHighlight();
+            buttons[MATCHINGDEF4].unHighlight();
             buttons[MATCHINGTERM5].unHighlight();
-            keepButtonInBounds(MATCHINGDEF5);
-            movingDef5 = true;
-        }
-        if(movingDef5 == true && !buttons[MATCHINGDEF5].getShape().contains(mouseX, mouseY)) //makes sure the button stays with the mouse, even when the mouse is being dragged really fast
-        {
-            buttons[MATCHINGDEF5].setShape(new Rectangle(mouseX-30, mouseY-30, (int)(buttons[MATCHINGDEF5].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGDEF5].getShape().getBounds().getHeight())));
-            buttons[MATCHINGDEF5].highlight();
-            keepButtonInBounds(MATCHINGDEF5);
-        }
-        if(buttons[MATCHINGTERM5].getShape().contains(mouseX, mouseY) && buttons[MATCHINGTERM5].isEnabled() && movingDef5 == false && movingTerm2 == false && movingDef2 == false && movingTerm3 == false && movingDef3 == false  && movingTerm4 == false && movingDef4 == false && movingTerm1 == false && movingDef1 == false)
-        {
-            buttons[MATCHINGTERM5].setShape(new Rectangle(mouseX-30, mouseY-30, (int)(buttons[MATCHINGTERM5].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGTERM5].getShape().getBounds().getHeight())));
             buttons[MATCHINGDEF5].unHighlight();
-            keepButtonInBounds(MATCHINGTERM5);
-            movingTerm5 = true;
+            keepButtonInBounds(MATCHINGDEF3);
+            movingDef3 = true;
         }
-        if(movingTerm5 == true && !buttons[MATCHINGTERM5].getShape().contains(mouseX, mouseY)) //makes sure the button stays with the mouse, even when the mouse is being dragged really fast
+        if(movingDef3 == true && !buttons[MATCHINGDEF3].getShape().contains(mouseX, mouseY)) //makes sure the button stays with the mouse, even when the mouse is being dragged really fast
         {
-            buttons[MATCHINGTERM5].setShape(new Rectangle(mouseX-30, mouseY-30, (int)(buttons[MATCHINGTERM5].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGTERM5].getShape().getBounds().getHeight())));
-            buttons[MATCHINGTERM5].highlight();
-            keepButtonInBounds(MATCHINGTERM5);
-        }
-        if(!buttons[MATCHINGTERM5].getShape().contains(mouseX, mouseY) && movingTerm5 == false)
+            buttons[MATCHINGDEF3].setShape(new Rectangle(mouseX-30, mouseY-30, (int)(buttons[MATCHINGDEF3].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGDEF3].getShape().getBounds().getHeight())));
+            buttons[MATCHINGDEF3].highlight();
+            buttons[MATCHINGTERM3].unHighlight();
+            buttons[MATCHINGTERM1].unHighlight();
+            buttons[MATCHINGDEF1].unHighlight();
+            buttons[MATCHINGTERM2].unHighlight();
+            buttons[MATCHINGDEF2].unHighlight();
+            buttons[MATCHINGTERM4].unHighlight();
+            buttons[MATCHINGDEF4].unHighlight();
             buttons[MATCHINGTERM5].unHighlight();
+            buttons[MATCHINGDEF5].unHighlight();
+            keepButtonInBounds(MATCHINGDEF3);
+        }
+        if(buttons[MATCHINGTERM3].getShape().contains(mouseX, mouseY) && buttons[MATCHINGTERM3].isEnabled() && movingDef3 == false && movingTerm2 == false && movingDef2 == false && movingTerm1 == false && movingDef1 == false  && movingTerm4 == false && movingDef4 == false && movingTerm5 == false && movingDef5 == false)
+        {
+            buttons[MATCHINGTERM3].setShape(new Rectangle(mouseX-30, mouseY-30, (int)(buttons[MATCHINGTERM3].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGTERM3].getShape().getBounds().getHeight())));
+            buttons[MATCHINGDEF3].unHighlight();
+            buttons[MATCHINGTERM1].unHighlight();
+            buttons[MATCHINGDEF1].unHighlight();
+            buttons[MATCHINGTERM2].unHighlight();
+            buttons[MATCHINGDEF2].unHighlight();
+            buttons[MATCHINGTERM4].unHighlight();
+            buttons[MATCHINGDEF4].unHighlight();
+            buttons[MATCHINGTERM5].unHighlight();
+            buttons[MATCHINGDEF5].unHighlight();
+            keepButtonInBounds(MATCHINGTERM3);
+            movingTerm3 = true;
+        }
+        if(movingTerm3 == true && !buttons[MATCHINGTERM3].getShape().contains(mouseX, mouseY)) //makes sure the button stays with the mouse, even when the mouse is being dragged really fast
+        {
+            buttons[MATCHINGTERM3].setShape(new Rectangle(mouseX-30, mouseY-30, (int)(buttons[MATCHINGTERM3].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGTERM3].getShape().getBounds().getHeight())));
+            buttons[MATCHINGTERM3].highlight();
+            buttons[MATCHINGDEF3].unHighlight();
+            buttons[MATCHINGTERM1].unHighlight();
+            buttons[MATCHINGDEF1].unHighlight();
+            buttons[MATCHINGTERM2].unHighlight();
+            buttons[MATCHINGDEF2].unHighlight();
+            buttons[MATCHINGTERM4].unHighlight();
+            buttons[MATCHINGDEF4].unHighlight();
+            buttons[MATCHINGTERM5].unHighlight();
+            buttons[MATCHINGDEF5].unHighlight();
+            keepButtonInBounds(MATCHINGTERM3);
+        }
+        if(!buttons[MATCHINGTERM3].getShape().contains(mouseX, mouseY) && movingTerm3 == false)
+            buttons[MATCHINGTERM3].unHighlight();
 
+        if(buttons[MATCHINGDEF2].getShape().contains(mouseX, mouseY) && buttons[MATCHINGDEF2].isEnabled() && movingTerm2 == false && movingTerm1 == false && movingDef1 == false && movingTerm3 == false && movingDef3 == false  && movingTerm4 == false && movingDef4 == false && movingTerm5 == false && movingDef5 == false)
+        {
+            buttons[MATCHINGDEF2].setShape(new Rectangle(mouseX-30, mouseY-30, (int)(buttons[MATCHINGDEF2].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGDEF2].getShape().getBounds().getHeight())));
+            buttons[MATCHINGTERM2].unHighlight();
+            buttons[MATCHINGTERM1].unHighlight();
+            buttons[MATCHINGDEF1].unHighlight();
+            buttons[MATCHINGTERM3].unHighlight();
+            buttons[MATCHINGDEF3].unHighlight();
+            buttons[MATCHINGTERM4].unHighlight();
+            buttons[MATCHINGDEF4].unHighlight();
+            buttons[MATCHINGTERM5].unHighlight();
+            buttons[MATCHINGDEF5].unHighlight();
+            movingDef2 = true;
+            keepButtonInBounds(MATCHINGDEF2);
+        }
+        if(movingDef2 == true && !buttons[MATCHINGDEF2].getShape().contains(mouseX, mouseY)) //makes sure the button stays with the mouse, even when the mouse is being dragged really fast
+        {
+            buttons[MATCHINGDEF2].setShape(new Rectangle(mouseX-30, mouseY-30, (int)(buttons[MATCHINGDEF2].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGDEF2].getShape().getBounds().getHeight())));
+            buttons[MATCHINGDEF2].highlight();
+            buttons[MATCHINGTERM2].unHighlight();
+            buttons[MATCHINGTERM1].unHighlight();
+            buttons[MATCHINGDEF1].unHighlight();
+            buttons[MATCHINGTERM3].unHighlight();
+            buttons[MATCHINGDEF3].unHighlight();
+            buttons[MATCHINGTERM4].unHighlight();
+            buttons[MATCHINGDEF4].unHighlight();
+            buttons[MATCHINGTERM5].unHighlight();
+            buttons[MATCHINGDEF5].unHighlight();
+            keepButtonInBounds(MATCHINGDEF2);
+        }
+        if(buttons[MATCHINGTERM2].getShape().contains(mouseX, mouseY) && buttons[MATCHINGTERM2].isEnabled() && movingDef2 == false && movingTerm1 == false && movingDef1 == false && movingTerm3 == false && movingDef3 == false  && movingTerm4 == false && movingDef4 == false && movingTerm5 == false && movingDef5 == false)
+        {
+            buttons[MATCHINGTERM2].setShape(new Rectangle(mouseX-30, mouseY-30, (int)(buttons[MATCHINGTERM2].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGTERM2].getShape().getBounds().getHeight())));
+            buttons[MATCHINGDEF2].unHighlight();
+            buttons[MATCHINGTERM1].unHighlight();
+            buttons[MATCHINGDEF1].unHighlight();
+            buttons[MATCHINGTERM3].unHighlight();
+            buttons[MATCHINGDEF3].unHighlight();
+            buttons[MATCHINGTERM4].unHighlight();
+            buttons[MATCHINGDEF4].unHighlight();
+            buttons[MATCHINGTERM5].unHighlight();
+            buttons[MATCHINGDEF5].unHighlight();
+            keepButtonInBounds(MATCHINGTERM2);
+            movingTerm2 = true;
+        }
+        if(movingTerm2 == true && !buttons[MATCHINGTERM2].getShape().contains(mouseX, mouseY)) //makes sure the button stays with the mouse, even when the mouse is being dragged really fast
+        {
+            buttons[MATCHINGTERM2].setShape(new Rectangle(mouseX-30, mouseY-30, (int)(buttons[MATCHINGTERM2].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGTERM2].getShape().getBounds().getHeight())));
+            buttons[MATCHINGTERM2].highlight();
+            buttons[MATCHINGDEF2].unHighlight();
+            buttons[MATCHINGTERM1].unHighlight();
+            buttons[MATCHINGDEF1].unHighlight();
+            buttons[MATCHINGTERM3].unHighlight();
+            buttons[MATCHINGDEF3].unHighlight();
+            buttons[MATCHINGTERM4].unHighlight();
+            buttons[MATCHINGDEF4].unHighlight();
+            buttons[MATCHINGTERM5].unHighlight();
+            buttons[MATCHINGDEF5].unHighlight();
+            keepButtonInBounds(MATCHINGTERM2);
+        }
+        if(!buttons[MATCHINGTERM2].getShape().contains(mouseX, mouseY)  && movingTerm2 == false)
+            buttons[MATCHINGTERM2].unHighlight();
 
+        if(buttons[MATCHINGDEF1].getShape().contains(mouseX, mouseY) && buttons[MATCHINGDEF1].isEnabled() && movingTerm1 == false && movingTerm2 == false && movingDef2 == false && movingTerm3 == false && movingDef3 == false  && movingTerm4 == false && movingDef4 == false && movingTerm5 == false && movingDef5 == false)
+        {
+            buttons[MATCHINGDEF1].setShape(new Rectangle(mouseX-30, mouseY-30, (int)(buttons[MATCHINGDEF1].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGDEF1].getShape().getBounds().getHeight())));
+            buttons[MATCHINGTERM1].unHighlight();
+            buttons[MATCHINGTERM2].unHighlight();
+            buttons[MATCHINGDEF2].unHighlight();
+            buttons[MATCHINGTERM3].unHighlight();
+            buttons[MATCHINGDEF3].unHighlight();
+            buttons[MATCHINGTERM4].unHighlight();
+            buttons[MATCHINGDEF4].unHighlight();
+            buttons[MATCHINGTERM5].unHighlight();
+            buttons[MATCHINGDEF5].unHighlight();
+            movingDef1 = true;
+            keepButtonInBounds(MATCHINGDEF1);
+        }
+        if(movingDef1 == true && !buttons[MATCHINGDEF1].getShape().contains(mouseX, mouseY)) //makes sure the button stays with the mouse, even when the mouse is being dragged really fast
+        {
+            buttons[MATCHINGDEF1].setShape(new Rectangle(mouseX-30, mouseY-30, (int)(buttons[MATCHINGDEF1].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGDEF1].getShape().getBounds().getHeight())));
+            buttons[MATCHINGDEF1].highlight();
+            buttons[MATCHINGTERM1].unHighlight();
+            buttons[MATCHINGTERM2].unHighlight();
+            buttons[MATCHINGDEF2].unHighlight();
+            buttons[MATCHINGTERM3].unHighlight();
+            buttons[MATCHINGDEF3].unHighlight();
+            buttons[MATCHINGTERM4].unHighlight();
+            buttons[MATCHINGDEF4].unHighlight();
+            buttons[MATCHINGTERM5].unHighlight();
+            buttons[MATCHINGDEF5].unHighlight();
+            keepButtonInBounds(MATCHINGDEF1);
+        }
+        if(buttons[MATCHINGTERM1].getShape().contains(mouseX, mouseY) && buttons[MATCHINGTERM1].isEnabled() && movingDef1 == false && movingTerm2 == false && movingDef2 == false && movingTerm3 == false && movingDef3 == false  && movingTerm4 == false && movingDef4 == false && movingTerm5 == false && movingDef5 == false)
+        {
+            buttons[MATCHINGTERM1].setShape(new Rectangle(mouseX-30, mouseY-30, (int)(buttons[MATCHINGTERM1].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGTERM1].getShape().getBounds().getHeight())));
+            buttons[MATCHINGDEF1].unHighlight();
+            buttons[MATCHINGTERM2].unHighlight();
+            buttons[MATCHINGDEF2].unHighlight();
+            buttons[MATCHINGTERM3].unHighlight();
+            buttons[MATCHINGDEF3].unHighlight();
+            buttons[MATCHINGTERM4].unHighlight();
+            buttons[MATCHINGDEF4].unHighlight();
+            buttons[MATCHINGTERM5].unHighlight();
+            buttons[MATCHINGDEF5].unHighlight();
+            movingTerm1 = true;
+            keepButtonInBounds(MATCHINGTERM1);
+        }
+        if(movingTerm1 == true && !buttons[MATCHINGTERM1].getShape().contains(mouseX, mouseY)) //makes sure the button stays with the mouse, even when the mouse is being dragged really fast
+        {
+            buttons[MATCHINGTERM1].setShape(new Rectangle(mouseX-30, mouseY-30, (int)(buttons[MATCHINGTERM1].getShape().getBounds().getWidth()), (int)(buttons[MATCHINGTERM1].getShape().getBounds().getHeight())));
+            buttons[MATCHINGTERM1].highlight();
+            buttons[MATCHINGDEF1].unHighlight();
+            buttons[MATCHINGTERM2].unHighlight();
+            buttons[MATCHINGDEF2].unHighlight();
+            buttons[MATCHINGTERM3].unHighlight();
+            buttons[MATCHINGDEF3].unHighlight();
+            buttons[MATCHINGTERM4].unHighlight();
+            buttons[MATCHINGDEF4].unHighlight();
+            buttons[MATCHINGTERM5].unHighlight();
+            buttons[MATCHINGDEF5].unHighlight();
+            keepButtonInBounds(MATCHINGTERM1);
+        }
+        if(!buttons[MATCHINGTERM1].getShape().contains(mouseX, mouseY) && movingTerm1 == false)
+            buttons[MATCHINGTERM1].unHighlight();
     }
 
     public void mouseExited( MouseEvent e )
