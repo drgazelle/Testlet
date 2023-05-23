@@ -442,8 +442,8 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
         buttons[LEARND] = new Button(r20, "learnD", learnD1, learnD2);
 
         Shape r21 = new Rectangle(350, 280, 365, 80);
-        ImageIcon tryAgain1 = new ImageIcon("resources/images/tryAgain.png"); //change images
-        ImageIcon tryAgain2 = new ImageIcon("resources/images/tryAgain.png");
+        ImageIcon tryAgain1 = new ImageIcon("resources/images/tryAgain1.png"); //change images
+        ImageIcon tryAgain2 = new ImageIcon("resources/images/tryAgain2.png");
         buttons[TRYAGAIN] = new Button(r21, "tryAgain", tryAgain1, tryAgain2);
 
         Shape r22 = new Rectangle(210, 445, 101, 53);
@@ -562,8 +562,10 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
         Shape r51 = new Rectangle((int)(Math.random()*(xSIZE-11-145-200+1) + 200), (int)(Math.random()*(ySIZE-34-75-50+1) + 50), 145, 75); //fix the width and height!
         buttons[MATCHINGDEF5] = new Button(r51, "matchingDef5", matchingTerm1, matchingTerm2);
 
-        Shape r52 = new Rectangle(350, 280, 365, 80);
-        buttons[MATCHINGRESTART] = new Button(r52, "matchingRestart", tryAgain1, tryAgain2);
+        Shape r52 = new Rectangle(490, 280, 185, 65);
+        ImageIcon matchingRestart1 = new ImageIcon("resources/images/matchingRestart1.png");
+        ImageIcon matchingRestart2 = new ImageIcon("resources/images/matchingRestart2.png");
+        buttons[MATCHINGRESTART] = new Button(r52, "matchingRestart", matchingRestart1, matchingRestart2);
 
         //sets the screen mode
         screenMode = HOMESCREEN;
