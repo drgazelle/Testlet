@@ -40,7 +40,7 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
 
     //the top bar's height is 50 (y)
     private static final int topBarHeight = 50;
-    private boolean homeScreenDisplay = false;
+    private boolean homeScreenDisplay = true;
     private boolean learnDisplay = false;
     private boolean testDisplay = false;
     private boolean testSubmittedDisplay = false;
@@ -441,7 +441,7 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
         ImageIcon learnD2 = new ImageIcon("resources/images/learnA2.png");
         buttons[LEARND] = new Button(r20, "learnD", learnD1, learnD2);
 
-        Shape r21 = new Rectangle(350, 280, 365, 80);
+        Shape r21 = new Rectangle(470, 280, 185, 65);
         ImageIcon tryAgain1 = new ImageIcon("resources/images/tryAgain1.png"); //change images
         ImageIcon tryAgain2 = new ImageIcon("resources/images/tryAgain2.png");
         buttons[TRYAGAIN] = new Button(r21, "tryAgain", tryAgain1, tryAgain2);
@@ -468,7 +468,7 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
 
         Shape r26 = new Rectangle(840, 445, 101, 53);
         ImageIcon submitButton1 = new ImageIcon("resources/images/submit1.png");
-        ImageIcon submitButton2 = new ImageIcon("resources/images/nextflashcard2.png");
+        ImageIcon submitButton2 = new ImageIcon("resources/images/submit2.png");
         buttons[SUBMITTEST] = new Button(r26, "submitTest", submitButton1, submitButton2);
 
         Shape r27 = new Rectangle(320, 350, 250, 65);
@@ -897,6 +897,245 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                         g.drawString("" + currentQuestion + "/20", 540, 75);
                     g.setFont(new Font("Helvetica", Font.BOLD, 30));
 
+                   /* if (trueFalse1 == true && currentQuestion == 1 && question1Answered == true) {
+                        buttons[TRUEBUTTONFORTEST].highlight();
+                        buttons[FALSEBUTTONFORTEST].unHighlight();
+                    }
+                    if (trueFalse1 == false && currentQuestion == 1 && question1Answered == true) {
+                        buttons[FALSEBUTTONFORTEST].highlight();
+                        buttons[TRUEBUTTONFORTEST].unHighlight();
+                    }
+                    if(currentQuestion == 1 && question1Answered == false)
+                    {
+                        buttons[FALSEBUTTONFORTEST].unHighlight();
+                        buttons[TRUEBUTTONFORTEST].unHighlight();
+                    }
+                    //true/false question 2
+                    if (trueFalse2 == true && currentQuestion == 2 && question2Answered == true) {
+                        buttons[TRUEBUTTONFORTEST].highlight();
+                        buttons[FALSEBUTTONFORTEST].unHighlight();
+                    }
+                    if (trueFalse2 == false && currentQuestion == 2 && question2Answered == true) {
+                        buttons[FALSEBUTTONFORTEST].highlight();
+                        buttons[TRUEBUTTONFORTEST].unHighlight();
+                    }
+                    if(currentQuestion == 2 && question2Answered == false)
+                    {
+                        buttons[FALSEBUTTONFORTEST].unHighlight();
+                        buttons[TRUEBUTTONFORTEST].unHighlight();
+                    }
+                    //true/false question 3
+                    if (trueFalse3 == true && currentQuestion == 3 && question3Answered == true) {
+                        buttons[TRUEBUTTONFORTEST].highlight();
+                        buttons[FALSEBUTTONFORTEST].unHighlight();
+                    }
+                    if (trueFalse3 == false && currentQuestion == 3 && question3Answered == true) {
+                        buttons[FALSEBUTTONFORTEST].highlight();
+                        buttons[TRUEBUTTONFORTEST].unHighlight();
+                    }
+                    if(currentQuestion == 3 && question3Answered == false)
+                    {
+                        buttons[FALSEBUTTONFORTEST].unHighlight();
+                        buttons[TRUEBUTTONFORTEST].unHighlight();
+                    }
+                    //true/false question 4
+                    if (trueFalse4 == true && currentQuestion == 4 && question4Answered == true) {
+                        buttons[TRUEBUTTONFORTEST].highlight();
+                        buttons[FALSEBUTTONFORTEST].unHighlight();
+                    }
+                    if (trueFalse4 == false && currentQuestion == 4 && question4Answered == true) {
+                        buttons[FALSEBUTTONFORTEST].highlight();
+                        buttons[TRUEBUTTONFORTEST].unHighlight();
+                    }
+                    if(currentQuestion == 4 && question4Answered == false)
+                    {
+                        buttons[FALSEBUTTONFORTEST].unHighlight();
+                        buttons[TRUEBUTTONFORTEST].unHighlight();
+                    }
+                    //true/false question 5
+                    if (trueFalse5 == true && currentQuestion == 5 && question5Answered == true) {
+                        buttons[TRUEBUTTONFORTEST].highlight();
+                        buttons[FALSEBUTTONFORTEST].unHighlight();
+                    }
+                    if (trueFalse5 == false && currentQuestion == 5 && question5Answered == true) {
+                        buttons[FALSEBUTTONFORTEST].highlight();
+                        buttons[TRUEBUTTONFORTEST].unHighlight();
+                    }
+                    if(currentQuestion == 5 && question5Answered == false)
+                    {
+                        buttons[FALSEBUTTONFORTEST].unHighlight();
+                        buttons[TRUEBUTTONFORTEST].unHighlight();
+                    }
+                    //multiple choice question 1. User selected A
+                    if(chosenAnswerMultipleChoice1 == 1 && currentQuestion == 6 && question6Answered == true){
+                        buttons[MCQATESTBUTTON].highlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 1. User selected B
+                    if(chosenAnswerMultipleChoice1 == 2 && currentQuestion == 6 && question6Answered == true){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].highlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 1. User selected C
+                    if(chosenAnswerMultipleChoice1 == 3 && currentQuestion == 6 && question6Answered == true){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].highlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 1. User selected D
+                    if(chosenAnswerMultipleChoice1 == 4 && currentQuestion == 6 && question6Answered == true){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].highlight();
+                    }
+                    if(currentQuestion == 6 && question6Answered == false){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 2. User selected A
+                    if(chosenAnswerMultipleChoice2 == 1 && currentQuestion == 7 && question7Answered == true){
+                        buttons[MCQATESTBUTTON].highlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 2. User selected B
+                    if(chosenAnswerMultipleChoice2 == 2 && currentQuestion == 7 && question7Answered == true){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].highlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 2. User selected C
+                    if(chosenAnswerMultipleChoice2 == 3 && currentQuestion == 7 && question7Answered == true){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].highlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 2. User selected D
+                    if(chosenAnswerMultipleChoice2 == 4 && currentQuestion == 7 && question7Answered == true){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].highlight();
+                    }
+                    if(currentQuestion == 7 && question7Answered == false){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 3. User selected A
+                    if(chosenAnswerMultipleChoice3 == 1 && currentQuestion == 8 && question8Answered == true){
+                        buttons[MCQATESTBUTTON].highlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 3. User selected B
+                    if(chosenAnswerMultipleChoice3 == 2 && currentQuestion == 8 && question8Answered == true){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].highlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 3. User selected C
+                    if(chosenAnswerMultipleChoice3 == 3 && currentQuestion == 8 && question8Answered == true){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].highlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 3. User selected D
+                    if(chosenAnswerMultipleChoice3 == 4 && currentQuestion == 8 && question8Answered == true){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].highlight();
+                    }
+                    if(currentQuestion == 8 && question8Answered == false){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 4. User selected A
+                    if(chosenAnswerMultipleChoice4 == 1 && currentQuestion == 9 && question9Answered == true){
+                        buttons[MCQATESTBUTTON].highlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 4. User selected B
+                    if(chosenAnswerMultipleChoice4 == 2 && currentQuestion == 9 && question9Answered == true){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].highlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 4. User selected C
+                    if(chosenAnswerMultipleChoice4 == 3 && currentQuestion == 9 && question9Answered == true){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].highlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 4. User selected D
+                    if(chosenAnswerMultipleChoice4 == 4 && currentQuestion == 9 && question9Answered == true){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].highlight();
+                    }
+                    if(currentQuestion == 9 && question9Answered == false){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 5. User selected A
+                    if(correctMultipleChoice5 == 1 && currentQuestion == 10 && question10Answered == true){
+                        buttons[MCQATESTBUTTON].highlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 5. User selected B
+                    if(chosenAnswerMultipleChoice5 == 2 && currentQuestion == 10 && question10Answered == true){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].highlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 5. User selected C
+                    if(chosenAnswerMultipleChoice5 == 3 && currentQuestion == 10 && question10Answered == true){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].highlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 5. User selected D
+                    if(chosenAnswerMultipleChoice5 == 4 && currentQuestion == 10 && question10Answered == true){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].highlight();
+                    }
+                    if(currentQuestion == 10 && question10Answered == false){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }*/
 
                     if (currentQuestion == 1) {
                         buttons[PREVIOUSTESTQUESTION].drawButton(g);
@@ -958,31 +1197,31 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                                 buttons[MATCHINGTESTDEFINITION1].drawButton(g);
                                 buttons[MATCHINGTESTTERM1].setEnabled(true);
                                 buttons[MATCHINGTESTTERM1].drawButton(g);
-                                g.setFont(new Font("Helvetica", Font.PLAIN, 12));
-                                int yValue1stDef = topBarHeight + 90; //increase by 23 each time
+                                g.setFont(new Font("Helvetica", Font.PLAIN, 11));
+                                int yValue1stDef = topBarHeight + 87; //increase by 23 each time
                                 ArrayList<String> lines1 = addLinesToString(32, testQuestions.get(10).getDef());
                                 if (lines1.size() > 4) {
                                     for (int i = 0; i < 4; i++) { // for (int i = 0; i < lines1.size(); i++) {
                                         g.drawString(lines1.get(i), leftBarSize + 140, yValue1stDef);
-                                        yValue1stDef += 13;
+                                        yValue1stDef += 12;
                                     }
                                 } else {
                                     for (int i = 0; i < lines1.size(); i++) { // for (int i = 0; i < lines1.size(); i++) {
                                         g.drawString(lines1.get(i), leftBarSize + 140, yValue1stDef);
-                                        yValue1stDef += 13;
+                                        yValue1stDef += 12;
                                     }
                                 }
-                                yValue1stDef = topBarHeight + 90; //increase by 23 each time
+                                yValue1stDef = topBarHeight + 87; //increase by 23 each time
                                 ArrayList<String> linest1 = addLinesToString(32, testQuestions.get(correctMatching[0] - 1).getTerm());
                                 if (linest1.size() > 4) {
                                     for (int i = 0; i < 4; i++) { // for (int i = 0; i < lines1.size(); i++) {
-                                        g.drawString(linest1.get(i), leftBarSize + 430, yValue1stDef);
-                                        yValue1stDef += 13;
+                                        g.drawString(linest1.get(i), leftBarSize + 450, yValue1stDef);
+                                        yValue1stDef += 12;
                                     }
                                 } else {
                                     for (int i = 0; i < linest1.size(); i++) { // for (int i = 0; i < lines1.size(); i++) {
-                                        g.drawString(linest1.get(i), leftBarSize + 430, yValue1stDef);
-                                        yValue1stDef += 13;
+                                        g.drawString(linest1.get(i), leftBarSize + 450, yValue1stDef);
+                                        yValue1stDef += 12;
                                     }
                                 }
 
@@ -993,31 +1232,31 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                                 buttons[MATCHINGTESTDEFINITION2].drawButton(g);
                                 buttons[MATCHINGTESTTERM2].setEnabled(true);
                                 buttons[MATCHINGTESTTERM2].drawButton(g);
-                                int yValue2ndDef = topBarHeight + 153; //increase by 23 each time
+                                int yValue2ndDef = topBarHeight + 152; //increase by 23 each time
                                 ArrayList<String> lines2 = addLinesToString(32, testQuestions.get(11).getDef());
                                 if (lines2.size() > 4) {
                                     for (int i = 0; i < 4; i++) { //for (int i = 0; i < lines2.size(); i++) {
                                         g.drawString(lines2.get(i), leftBarSize + 140, yValue2ndDef);
-                                        yValue2ndDef += 13;
+                                        yValue2ndDef += 12;
                                     }
                                 } else {
                                     for (int i = 0; i < lines2.size(); i++) { //for (int i = 0; i < lines2.size(); i++) {
                                         g.drawString(lines2.get(i), leftBarSize + 140, yValue2ndDef);
-                                        yValue2ndDef += 13;
+                                        yValue2ndDef += 12;
                                     }
                                 }
                                 //g.drawString(testQuestions.get(11).getDef(), leftBarSize + 40, topBarHeight+ 100); //current question is 12
-                                yValue2ndDef = topBarHeight + 153; //increase by 23 each time
+                                yValue2ndDef = topBarHeight + 152; //increase by 23 each time
                                 ArrayList<String> linest2 = addLinesToString(32, testQuestions.get(correctMatching[1] - 1).getTerm());
                                 if (linest2.size() > 4) {
                                     for (int i = 0; i < 4; i++) { // for (int i = 0; i < lines1.size(); i++) {
-                                        g.drawString(linest2.get(i), leftBarSize + 430, yValue2ndDef);
-                                        yValue2ndDef += 13;
+                                        g.drawString(linest2.get(i), leftBarSize + 450, yValue2ndDef);
+                                        yValue2ndDef += 12;
                                     }
                                 } else {
                                     for (int i = 0; i < linest2.size(); i++) { // for (int i = 0; i < lines1.size(); i++) {
-                                        g.drawString(linest2.get(i), leftBarSize + 430, yValue2ndDef);
-                                        yValue2ndDef += 13;
+                                        g.drawString(linest2.get(i), leftBarSize + 450, yValue2ndDef);
+                                        yValue2ndDef += 12;
                                     }
                                 }
                             }
@@ -1026,31 +1265,31 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                                 buttons[MATCHINGTESTDEFINITION3].drawButton(g);
                                 buttons[MATCHINGTESTTERM3].setEnabled(true);
                                 buttons[MATCHINGTESTTERM3].drawButton(g);
-                                int yValue3rdDef = topBarHeight + 219; //increase by 23 each time
+                                int yValue3rdDef = topBarHeight + 216; //increase by 23 each time
                                 ArrayList<String> lines3 = addLinesToString(32, testQuestions.get(12).getDef());
                                 if (lines3.size() > 4) {
                                     for (int i = 0; i < 4; i++) { // for (int i = 0; i < lines3.size(); i++) {
                                         g.drawString(lines3.get(i), leftBarSize + 140, yValue3rdDef);
-                                        yValue3rdDef += 13;
+                                        yValue3rdDef += 12;
                                     }
                                 } else {
                                     for (int i = 0; i < lines3.size(); i++) { // for (int i = 0; i < lines3.size(); i++) {
                                         g.drawString(lines3.get(i), leftBarSize + 140, yValue3rdDef);
-                                        yValue3rdDef += 13;
+                                        yValue3rdDef += 12;
                                     }
                                 }
                                 //g.drawString(testQuestions.get(12).getDef(), leftBarSize + 40, topBarHeight+ 100); //current question is 13
-                                yValue3rdDef = topBarHeight + 219; //increase by 23 each time
+                                yValue3rdDef = topBarHeight + 216; //increase by 23 each time
                                 ArrayList<String> linest3 = addLinesToString(32, testQuestions.get(correctMatching[2] - 1).getTerm());
                                 if (linest3.size() > 4) {
                                     for (int i = 0; i < 4; i++) { // for (int i = 0; i < lines1.size(); i++) {
-                                        g.drawString(linest3.get(i), leftBarSize + 430, yValue3rdDef);
-                                        yValue3rdDef += 13;
+                                        g.drawString(linest3.get(i), leftBarSize + 450, yValue3rdDef);
+                                        yValue3rdDef += 12;
                                     }
                                 } else {
                                     for (int i = 0; i < linest3.size(); i++) { // for (int i = 0; i < lines1.size(); i++) {
-                                        g.drawString(linest3.get(i), leftBarSize + 430, yValue3rdDef);
-                                        yValue3rdDef += 13;
+                                        g.drawString(linest3.get(i), leftBarSize + 450, yValue3rdDef);
+                                        yValue3rdDef += 12;
                                     }
                                 }
                             }
@@ -1059,31 +1298,31 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                                 buttons[MATCHINGTESTDEFINITION4].drawButton(g);
                                 buttons[MATCHINGTESTTERM4].setEnabled(true);
                                 buttons[MATCHINGTESTTERM4].drawButton(g);
-                                int yValue4thDef = topBarHeight + 286; //increase by 23 each time
+                                int yValue4thDef = topBarHeight + 283; //increase by 23 each time
                                 ArrayList<String> lines4 = addLinesToString(32, testQuestions.get(13).getDef());
                                 if (lines4.size() > 4) {
                                     for (int i = 0; i < 4; i++) { //for (int i = 0; i < lines4.size(); i++) {
                                         g.drawString(lines4.get(i), leftBarSize + 140, yValue4thDef);
-                                        yValue4thDef += 13;
+                                        yValue4thDef += 12;
                                     }
                                 } else {
                                     for (int i = 0; i < lines4.size(); i++) { //for (int i = 0; i < lines4.size(); i++) {
                                         g.drawString(lines4.get(i), leftBarSize + 140, yValue4thDef);
-                                        yValue4thDef += 13;
+                                        yValue4thDef += 12;
                                     }
                                 }
                                 //g.drawString(testQuestions.get(13).getDef(), leftBarSize + 40, topBarHeight+ 100); //current question is 14
-                                yValue4thDef = topBarHeight + 286; //increase by 23 each time
+                                yValue4thDef = topBarHeight + 283; //increase by 23 each time
                                 ArrayList<String> linest4 = addLinesToString(32, testQuestions.get(correctMatching[3] - 1).getTerm());
                                 if (linest4.size() > 4) {
                                     for (int i = 0; i < 4; i++) { // for (int i = 0; i < lines1.size(); i++) {
-                                        g.drawString(linest4.get(i), leftBarSize + 430, yValue4thDef);
-                                        yValue4thDef += 13;
+                                        g.drawString(linest4.get(i), leftBarSize + 450, yValue4thDef);
+                                        yValue4thDef += 12;
                                     }
                                 } else {
                                     for (int i = 0; i < linest4.size(); i++) { // for (int i = 0; i < lines1.size(); i++) {
-                                        g.drawString(linest4.get(i), leftBarSize + 430, yValue4thDef);
-                                        yValue4thDef += 13;
+                                        g.drawString(linest4.get(i), leftBarSize + 450, yValue4thDef);
+                                        yValue4thDef += 12;
                                     }
                                 }
                             }
@@ -1092,31 +1331,31 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                                 buttons[MATCHINGTESTDEFINITION5].drawButton(g);
                                 buttons[MATCHINGTESTTERM5].setEnabled(true);
                                 buttons[MATCHINGTESTTERM5].drawButton(g);
-                                int yValue5thDef = topBarHeight + 350; //increase by 23 each time
+                                int yValue5thDef = topBarHeight + 347; //increase by 23 each time
                                 ArrayList<String> lines5 = addLinesToString(32, testQuestions.get(14).getDef());
                                 if (lines5.size() > 4) {
                                     for (int i = 0; i < 4; i++) { //for (int i = 0; i < lines5.size(); i++) {
                                         g.drawString(lines5.get(i), leftBarSize + 140, yValue5thDef);
-                                        yValue5thDef += 13;
+                                        yValue5thDef += 12;
                                     }
                                 } else {
                                     for (int i = 0; i < lines5.size(); i++) { //for (int i = 0; i < lines5.size(); i++) {
                                         g.drawString(lines5.get(i), leftBarSize + 140, yValue5thDef);
-                                        yValue5thDef += 13;
+                                        yValue5thDef += 12;
                                     }
                                 }
                                 //g.drawString(testQuestions.get(14).getDef(), leftBarSize + 40, topBarHeight+ 100); //current question is 15
-                                yValue5thDef = topBarHeight + 350; //increase by 23 each time
+                                yValue5thDef = topBarHeight + 347; //increase by 23 each time
                                 ArrayList<String> linest5 = addLinesToString(32, testQuestions.get(correctMatching[4] - 1).getTerm());
                                 if (linest5.size() > 4) {
                                     for (int i = 0; i < 4; i++) { // for (int i = 0; i < lines1.size(); i++) {
-                                        g.drawString(linest5.get(i), leftBarSize + 430, yValue5thDef);
-                                        yValue5thDef += 13;
+                                        g.drawString(linest5.get(i), leftBarSize + 450, yValue5thDef);
+                                        yValue5thDef += 12;
                                     }
                                 } else {
                                     for (int i = 0; i < linest5.size(); i++) { // for (int i = 0; i < lines1.size(); i++) {
-                                        g.drawString(linest5.get(i), leftBarSize + 430, yValue5thDef);
-                                        yValue5thDef += 13;
+                                        g.drawString(linest5.get(i), leftBarSize + 450, yValue5thDef);
+                                        yValue5thDef += 12;
                                     }
                                 }
                             }
@@ -2392,70 +2631,70 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
         int yVal = topBarHeight + 130; //increase by 30 each time
 
         if(currentQuestion == 1 && trueOrFalse1 == 0) { //show true definition
-            ArrayList<String> linesforDefinition = addLinesToString(40, testQuestions.get(currentQuestion - 1).getDef());
+            ArrayList<String> linesforDefinition = addLinesToString(36, testQuestions.get(currentQuestion - 1).getDef());
             for (int i = 0; i < linesforDefinition.size(); i++) {
                 g.drawString(linesforDefinition.get(i), leftBarSize + 380, yVal);
                 yVal += 30;
             }
         }
         else if(currentQuestion == 1 && trueOrFalse1 == 1) { //show false definition
-            ArrayList<String> linesforDefinition = addLinesToString(40, testQuestions.get(trueFalseWrongAnswer1).getDef());
+            ArrayList<String> linesforDefinition = addLinesToString(36, testQuestions.get(trueFalseWrongAnswer1).getDef());
             for (int i = 0; i < linesforDefinition.size(); i++) {
                 g.drawString(linesforDefinition.get(i), leftBarSize + 380, yVal);
                 yVal += 30;
             }
         }
         if(currentQuestion == 2 && trueOrFalse2 == 0) { //show true definition
-            ArrayList<String> linesforDefinition = addLinesToString(40, testQuestions.get(currentQuestion - 1).getDef());
+            ArrayList<String> linesforDefinition = addLinesToString(36, testQuestions.get(currentQuestion - 1).getDef());
             for (int i = 0; i < linesforDefinition.size(); i++) {
                 g.drawString(linesforDefinition.get(i), leftBarSize + 380, yVal);
                 yVal += 30;
             }
         }
         else if(currentQuestion == 2 && trueOrFalse2 == 1) { //show false definition
-            ArrayList<String> linesforDefinition = addLinesToString(40, testQuestions.get(trueFalseWrongAnswer2).getDef());
+            ArrayList<String> linesforDefinition = addLinesToString(36, testQuestions.get(trueFalseWrongAnswer2).getDef());
             for (int i = 0; i < linesforDefinition.size(); i++) {
                 g.drawString(linesforDefinition.get(i), leftBarSize + 380, yVal);
                 yVal += 30;
             }
         }
         if(currentQuestion == 3 && trueOrFalse3 == 0) { //show true definition
-            ArrayList<String> linesforDefinition = addLinesToString(40, testQuestions.get(currentQuestion - 1).getDef());
+            ArrayList<String> linesforDefinition = addLinesToString(36, testQuestions.get(currentQuestion - 1).getDef());
             for (int i = 0; i < linesforDefinition.size(); i++) {
                 g.drawString(linesforDefinition.get(i), leftBarSize + 380, yVal);
                 yVal += 30;
             }
         }
         else if(currentQuestion == 3 && trueOrFalse3 == 1) { //show false definition
-            ArrayList<String> linesforDefinition = addLinesToString(40, testQuestions.get(trueFalseWrongAnswer3).getDef());
+            ArrayList<String> linesforDefinition = addLinesToString(36, testQuestions.get(trueFalseWrongAnswer3).getDef());
             for (int i = 0; i < linesforDefinition.size(); i++) {
                 g.drawString(linesforDefinition.get(i), leftBarSize + 380, yVal);
                 yVal += 30;
             }
         }
         if(currentQuestion == 4 && trueOrFalse4 == 0) { //show true definition
-            ArrayList<String> linesforDefinition = addLinesToString(40, testQuestions.get(currentQuestion - 1).getDef());
+            ArrayList<String> linesforDefinition = addLinesToString(36, testQuestions.get(currentQuestion - 1).getDef());
             for (int i = 0; i < linesforDefinition.size(); i++) {
                 g.drawString(linesforDefinition.get(i), leftBarSize + 380, yVal);
                 yVal += 30;
             }
         }
         else if(currentQuestion == 4 && trueOrFalse4 == 1){ //show false definition
-            ArrayList<String> linesforDefinition = addLinesToString(40, testQuestions.get(trueFalseWrongAnswer4).getDef());
+            ArrayList<String> linesforDefinition = addLinesToString(36, testQuestions.get(trueFalseWrongAnswer4).getDef());
             for (int i = 0; i < linesforDefinition.size(); i++) {
                 g.drawString(linesforDefinition.get(i), leftBarSize + 380, yVal);
                 yVal += 30;
             }
         }
         if(currentQuestion == 5 && trueOrFalse5 == 0) { //show true definition
-            ArrayList<String> linesforDefinition = addLinesToString(40, testQuestions.get(currentQuestion - 1).getDef());
+            ArrayList<String> linesforDefinition = addLinesToString(36, testQuestions.get(currentQuestion - 1).getDef());
             for (int i = 0; i < linesforDefinition.size(); i++) {
                 g.drawString(linesforDefinition.get(i), leftBarSize + 380, yVal);
                 yVal += 30;
             }
         }
         else if(currentQuestion == 5 && trueOrFalse5 == 1) { //show false definition
-            ArrayList<String> linesforDefinition = addLinesToString(40, testQuestions.get(trueFalseWrongAnswer5).getDef());
+            ArrayList<String> linesforDefinition = addLinesToString(36, testQuestions.get(trueFalseWrongAnswer5).getDef());
             for (int i = 0; i < linesforDefinition.size(); i++) {
                 g.drawString(linesforDefinition.get(i), leftBarSize + 380, yVal);
                 yVal += 30;
@@ -2484,126 +2723,126 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
 
                 if(currentQuestion == 6) {
                     if (correctMultipleChoice1 == 1) {
-                        g.drawString(testQuestions.get(currentQuestion - 1).getTerm(), 330, 390); //A is correct
-                        g.drawString(deck.get(randomAnswersMCQ1[1]).getTerm(), 590, 390); //B
-                        g.drawString(deck.get(randomAnswersMCQ1[2]).getTerm(), 330, 465); //C
-                        g.drawString(deck.get(randomAnswersMCQ1[3]).getTerm(), 590, 465); //D
+                        g.drawString(limitCharacterCount(22,testQuestions.get(currentQuestion - 1).getTerm()), 330, 390); //A is correct
+                        g.drawString(limitCharacterCount(22,deck.get(randomAnswersMCQ1[1]).getTerm()), 590, 390); //B
+                        g.drawString(limitCharacterCount(22,deck.get(randomAnswersMCQ1[2]).getTerm()), 330, 465); //C
+                        g.drawString(limitCharacterCount(22,deck.get(randomAnswersMCQ1[3]).getTerm()), 590, 465); //D
                     } else if (correctMultipleChoice1 == 2) {
-                        g.drawString(deck.get(randomAnswersMCQ1[0]).getTerm(), 330, 390); //A
-                        g.drawString(testQuestions.get(currentQuestion - 1).getTerm(), 590, 390); //B is correct
-                        g.drawString(deck.get(randomAnswersMCQ1[2]).getTerm(), 330, 465); //C
-                        g.drawString(deck.get(randomAnswersMCQ1[3]).getTerm(), 590, 465); //D
+                        g.drawString(limitCharacterCount(22,deck.get(randomAnswersMCQ1[0]).getTerm()), 330, 390); //A
+                        g.drawString(limitCharacterCount(22,testQuestions.get(currentQuestion - 1).getTerm()), 590, 390); //B is correct
+                        g.drawString(limitCharacterCount(22,deck.get(randomAnswersMCQ1[2]).getTerm()), 330, 465); //C
+                        g.drawString(limitCharacterCount(22,deck.get(randomAnswersMCQ1[3]).getTerm()), 590, 465); //D
                     } else if (correctMultipleChoice1 == 3) {
-                        g.drawString(deck.get(randomAnswersMCQ1[0]).getTerm(), 330, 390); //A
-                        g.drawString(deck.get(randomAnswersMCQ1[1]).getTerm(), 590, 390); //B
-                        g.drawString(testQuestions.get(currentQuestion - 1).getTerm(), 330, 465); //C is correct
-                        g.drawString(deck.get(randomAnswersMCQ1[3]).getTerm(), 590, 465);
+                        g.drawString(limitCharacterCount(22,deck.get(randomAnswersMCQ1[0]).getTerm()), 330, 390); //A
+                        g.drawString(limitCharacterCount(22,deck.get(randomAnswersMCQ1[1]).getTerm()), 590, 390); //B
+                        g.drawString(limitCharacterCount(22,testQuestions.get(currentQuestion - 1).getTerm()), 330, 465); //C is correct
+                        g.drawString(limitCharacterCount(22,deck.get(randomAnswersMCQ1[3]).getTerm()), 590, 465);
                     } else //if(correctMultipleChoice1 == 4)
                     {
-                        g.drawString(deck.get(randomAnswersMCQ1[0]).getTerm(), 330, 390); //A
-                        g.drawString(deck.get(randomAnswersMCQ1[1]).getTerm(), 590, 390); //B
-                        g.drawString(deck.get(randomAnswersMCQ1[2]).getTerm(), 330, 465); //C
-                        g.drawString(testQuestions.get(currentQuestion - 1).getTerm(), 590, 465); //D is correct
+                        g.drawString(limitCharacterCount(22,deck.get(randomAnswersMCQ1[0]).getTerm()), 330, 390); //A
+                        g.drawString(limitCharacterCount(22,deck.get(randomAnswersMCQ1[1]).getTerm()), 590, 390); //B
+                        g.drawString(limitCharacterCount(22,deck.get(randomAnswersMCQ1[2]).getTerm()), 330, 465); //C
+                        g.drawString(limitCharacterCount(22,testQuestions.get(currentQuestion - 1).getTerm()), 590, 465); //D is correct
                     }
                 }
 
                 if(currentQuestion == 7) {
                     if (correctMultipleChoice2 == 1) {
-                        g.drawString(testQuestions.get(currentQuestion - 1).getTerm(), 330, 390); //A is correct
-                        g.drawString(deck.get(randomAnswersMCQ2[1]).getTerm(), 590, 390); //B
-                        g.drawString(deck.get(randomAnswersMCQ2[2]).getTerm(), 330, 465); //C
-                        g.drawString(deck.get(randomAnswersMCQ2[3]).getTerm(), 590, 465); //D
+                        g.drawString(limitCharacterCount(22,testQuestions.get(currentQuestion - 1).getTerm()), 330, 390); //A is correct
+                        g.drawString(limitCharacterCount(22,deck.get(randomAnswersMCQ2[1]).getTerm()), 590, 390); //B
+                        g.drawString(limitCharacterCount(22,deck.get(randomAnswersMCQ2[2]).getTerm()), 330, 465); //C
+                        g.drawString(limitCharacterCount(22,deck.get(randomAnswersMCQ2[3]).getTerm()), 590, 465); //D
                     } else if (correctMultipleChoice2 == 2) {
-                        g.drawString(deck.get(randomAnswersMCQ2[0]).getTerm(), 330, 390); //A
-                        g.drawString(testQuestions.get(currentQuestion - 1).getTerm(), 590, 390); //B is correct
-                        g.drawString(deck.get(randomAnswersMCQ2[2]).getTerm(), 330, 465); //C
-                        g.drawString(deck.get(randomAnswersMCQ2[3]).getTerm(), 590, 465); //D
+                        g.drawString(limitCharacterCount(22,deck.get(randomAnswersMCQ2[0]).getTerm()), 330, 390); //A
+                        g.drawString(limitCharacterCount(22,testQuestions.get(currentQuestion - 1).getTerm()), 590, 390); //B is correct
+                        g.drawString(limitCharacterCount(22,deck.get(randomAnswersMCQ2[2]).getTerm()), 330, 465); //C
+                        g.drawString(limitCharacterCount(22,deck.get(randomAnswersMCQ2[3]).getTerm()), 590, 465); //D
                     } else if (correctMultipleChoice2 == 3) {
-                        g.drawString(deck.get(randomAnswersMCQ2[0]).getTerm(), 330, 390); //A
-                        g.drawString(deck.get(randomAnswersMCQ2[1]).getTerm(), 590, 390); //B
-                        g.drawString(testQuestions.get(currentQuestion - 1).getTerm(), 330, 465); //C is correct
-                        g.drawString(deck.get(randomAnswersMCQ2[3]).getTerm(), 590, 465); //D
+                        g.drawString(limitCharacterCount(22,deck.get(randomAnswersMCQ2[0]).getTerm()), 330, 390); //A
+                        g.drawString(limitCharacterCount(22,deck.get(randomAnswersMCQ2[1]).getTerm()), 590, 390); //B
+                        g.drawString(limitCharacterCount(22,testQuestions.get(currentQuestion - 1).getTerm()), 330, 465); //C is correct
+                        g.drawString(limitCharacterCount(22,deck.get(randomAnswersMCQ2[3]).getTerm()), 590, 465); //D
                     } else //if(correctMultipleChoice2 == 4)
                     {
-                        g.drawString(deck.get(randomAnswersMCQ2[0]).getTerm(), 330, 390); //A
-                        g.drawString(deck.get(randomAnswersMCQ2[1]).getTerm(), 590, 390); //B
-                        g.drawString(deck.get(randomAnswersMCQ2[2]).getTerm(), 330, 465); //C
-                        g.drawString(testQuestions.get(currentQuestion - 1).getTerm(), 590, 465); //D is correct
+                        g.drawString(limitCharacterCount(22,deck.get(randomAnswersMCQ2[0]).getTerm()), 330, 390); //A
+                        g.drawString(limitCharacterCount(22,deck.get(randomAnswersMCQ2[1]).getTerm()), 590, 390); //B
+                        g.drawString(limitCharacterCount(22,deck.get(randomAnswersMCQ2[2]).getTerm()), 330, 465); //C
+                        g.drawString(limitCharacterCount(22,testQuestions.get(currentQuestion - 1).getTerm()), 590, 465); //D is correct
                     }
                 }
 
                 if(currentQuestion == 8) {
                     if (correctMultipleChoice3 == 1) {
-                        g.drawString(testQuestions.get(currentQuestion - 1).getTerm(), 330, 390); //A is correct
-                        g.drawString(deck.get(randomAnswersMCQ3[1]).getTerm(), 590, 390); //B
-                        g.drawString(deck.get(randomAnswersMCQ3[2]).getTerm(), 330, 465); //C
-                        g.drawString(deck.get(randomAnswersMCQ3[3]).getTerm(), 590, 465); //D
+                        g.drawString(limitCharacterCount(22,testQuestions.get(currentQuestion - 1).getTerm()), 330, 390); //A is correct
+                        g.drawString(limitCharacterCount(22,deck.get(randomAnswersMCQ3[1]).getTerm()), 590, 390); //B
+                        g.drawString(limitCharacterCount(22,deck.get(randomAnswersMCQ3[2]).getTerm()), 330, 465); //C
+                        g.drawString(limitCharacterCount(22,deck.get(randomAnswersMCQ3[3]).getTerm()), 590, 465); //D
                     } else if (correctMultipleChoice3 == 2) {
-                        g.drawString(deck.get(randomAnswersMCQ3[0]).getTerm(), 330, 390);
-                        g.drawString(testQuestions.get(currentQuestion - 1).getTerm(), 590, 390); //B is correct
-                        g.drawString(deck.get(randomAnswersMCQ3[2]).getTerm(), 330, 465);
-                        g.drawString(deck.get(randomAnswersMCQ3[3]).getTerm(), 590, 465);
+                        g.drawString(limitCharacterCount(22,deck.get(randomAnswersMCQ3[0]).getTerm()), 330, 390);
+                        g.drawString(limitCharacterCount(22,testQuestions.get(currentQuestion - 1).getTerm()), 590, 390); //B is correct
+                        g.drawString(limitCharacterCount(22,deck.get(randomAnswersMCQ3[2]).getTerm()), 330, 465);
+                        g.drawString(limitCharacterCount(22,deck.get(randomAnswersMCQ3[3]).getTerm()), 590, 465);
                     } else if (correctMultipleChoice3 == 3) {
-                        g.drawString(deck.get(randomAnswersMCQ3[0]).getTerm(), 330, 390);
-                        g.drawString(deck.get(randomAnswersMCQ3[1]).getTerm(), 590, 390);
-                        g.drawString(testQuestions.get(currentQuestion - 1).getTerm(), 330, 465); //C is correct
-                        g.drawString(deck.get(randomAnswersMCQ3[3]).getTerm(), 590, 465);
+                        g.drawString(limitCharacterCount(22,deck.get(randomAnswersMCQ3[0]).getTerm()), 330, 390);
+                        g.drawString(limitCharacterCount(22,deck.get(randomAnswersMCQ3[1]).getTerm()), 590, 390);
+                        g.drawString(limitCharacterCount(22,testQuestions.get(currentQuestion - 1).getTerm()), 330, 465); //C is correct
+                        g.drawString(limitCharacterCount(22,deck.get(randomAnswersMCQ3[3]).getTerm()), 590, 465);
                     } else //if(correctMultipleChoice3 == 4)
                     {
-                        g.drawString(deck.get(randomAnswersMCQ3[0]).getTerm(), 330, 390);
-                        g.drawString(deck.get(randomAnswersMCQ3[1]).getTerm(), 590, 390);
-                        g.drawString(deck.get(randomAnswersMCQ3[2]).getTerm(), 330, 465);
-                        g.drawString(testQuestions.get(currentQuestion - 1).getTerm(), 590, 465); //D is correct
+                        g.drawString(limitCharacterCount(22,deck.get(randomAnswersMCQ3[0]).getTerm()), 330, 390);
+                        g.drawString(limitCharacterCount(22,deck.get(randomAnswersMCQ3[1]).getTerm()), 590, 390);
+                        g.drawString(limitCharacterCount(22,deck.get(randomAnswersMCQ3[2]).getTerm()), 330, 465);
+                        g.drawString(limitCharacterCount(22,testQuestions.get(currentQuestion - 1).getTerm()), 590, 465); //D is correct
                     }
                 }
 
                 if(currentQuestion == 9) {
                     if (correctMultipleChoice4 == 1) {
-                        g.drawString(testQuestions.get(currentQuestion - 1).getTerm(), 330, 390); //A is correct
-                        g.drawString(deck.get(randomAnswersMCQ4[1]).getTerm(), 590, 390); //B
-                        g.drawString(deck.get(randomAnswersMCQ4[2]).getTerm(), 330, 465); //C
-                        g.drawString(deck.get(randomAnswersMCQ4[3]).getTerm(), 590, 465); //D
+                        g.drawString(limitCharacterCount(22,testQuestions.get(currentQuestion - 1).getTerm()), 330, 390); //A is correct
+                        g.drawString(limitCharacterCount(22,deck.get(randomAnswersMCQ4[1]).getTerm()), 590, 390); //B
+                        g.drawString(limitCharacterCount(22,deck.get(randomAnswersMCQ4[2]).getTerm()), 330, 465); //C
+                        g.drawString(limitCharacterCount(22,deck.get(randomAnswersMCQ4[3]).getTerm()), 590, 465); //D
                     } else if (correctMultipleChoice4 == 2) {
-                        g.drawString(deck.get(randomAnswersMCQ4[0]).getTerm(), 330, 390);
-                        g.drawString(testQuestions.get(currentQuestion - 1).getTerm(), 590, 390); //B is correct
-                        g.drawString(deck.get(randomAnswersMCQ4[2]).getTerm(), 330, 465);
-                        g.drawString(deck.get(randomAnswersMCQ4[3]).getTerm(), 590, 465);
+                        g.drawString(limitCharacterCount(22,deck.get(randomAnswersMCQ4[0]).getTerm()), 330, 390);
+                        g.drawString(limitCharacterCount(22,testQuestions.get(currentQuestion - 1).getTerm()), 590, 390); //B is correct
+                        g.drawString(limitCharacterCount(22,deck.get(randomAnswersMCQ4[2]).getTerm()), 330, 465);
+                        g.drawString(limitCharacterCount(22,deck.get(randomAnswersMCQ4[3]).getTerm()), 590, 465);
                     } else if (correctMultipleChoice4 == 3) {
-                        g.drawString(deck.get(randomAnswersMCQ4[0]).getTerm(), 330, 390);
-                        g.drawString(deck.get(randomAnswersMCQ4[1]).getTerm(), 590, 390);
-                        g.drawString(testQuestions.get(currentQuestion - 1).getTerm(), 330, 465); //C is correct
-                        g.drawString(deck.get(randomAnswersMCQ4[3]).getTerm(), 590, 465);
+                        g.drawString(limitCharacterCount(22,deck.get(randomAnswersMCQ4[0]).getTerm()), 330, 390);
+                        g.drawString(limitCharacterCount(22,deck.get(randomAnswersMCQ4[1]).getTerm()), 590, 390);
+                        g.drawString(limitCharacterCount(22,testQuestions.get(currentQuestion - 1).getTerm()), 330, 465); //C is correct
+                        g.drawString(limitCharacterCount(22,deck.get(randomAnswersMCQ4[3]).getTerm()), 590, 465);
                     } else //if(correctMultipleChoice4 == 4)
                     {
-                        g.drawString(deck.get(randomAnswersMCQ4[0]).getTerm(), 330, 390);
-                        g.drawString(deck.get(randomAnswersMCQ4[1]).getTerm(), 590, 390);
-                        g.drawString(deck.get(randomAnswersMCQ4[2]).getTerm(), 330, 465);
-                        g.drawString(testQuestions.get(currentQuestion - 1).getTerm(), 590, 465); //D is correct
+                        g.drawString(limitCharacterCount(22,deck.get(randomAnswersMCQ4[0]).getTerm()), 330, 390);
+                        g.drawString(limitCharacterCount(22,deck.get(randomAnswersMCQ4[1]).getTerm()), 590, 390);
+                        g.drawString(limitCharacterCount(22,deck.get(randomAnswersMCQ4[2]).getTerm()), 330, 465);
+                        g.drawString(limitCharacterCount(22,testQuestions.get(currentQuestion - 1).getTerm()), 590, 465); //D is correct
                     }
                 }
 
                 if(currentQuestion == 10) {
                     if (correctMultipleChoice5 == 1) {
-                        g.drawString(testQuestions.get(currentQuestion - 1).getTerm(), 330, 390); //A is correct
-                        g.drawString(deck.get(randomAnswersMCQ5[1]).getTerm(), 590, 390);
-                        g.drawString(deck.get(randomAnswersMCQ5[2]).getTerm(), 330, 465);
-                        g.drawString(deck.get(randomAnswersMCQ5[3]).getTerm(), 590, 465);
+                        g.drawString(limitCharacterCount(22,testQuestions.get(currentQuestion - 1).getTerm()), 330, 390); //A is correct
+                        g.drawString(limitCharacterCount(22,deck.get(randomAnswersMCQ5[1]).getTerm()), 590, 390);
+                        g.drawString(limitCharacterCount(22,deck.get(randomAnswersMCQ5[2]).getTerm()), 330, 465);
+                        g.drawString(limitCharacterCount(22,deck.get(randomAnswersMCQ5[3]).getTerm()), 590, 465);
                     } else if (correctMultipleChoice5 == 2) {
-                        g.drawString(deck.get(randomAnswersMCQ5[0]).getTerm(), 330, 390);
-                        g.drawString(testQuestions.get(currentQuestion - 1).getTerm(), 590, 390); //B is correct
-                        g.drawString(deck.get(randomAnswersMCQ5[2]).getTerm(), 330, 465);
-                        g.drawString(deck.get(randomAnswersMCQ5[3]).getTerm(), 590, 465);
+                        g.drawString(limitCharacterCount(22,deck.get(randomAnswersMCQ5[0]).getTerm()), 330, 390);
+                        g.drawString(limitCharacterCount(22,testQuestions.get(currentQuestion - 1).getTerm()), 590, 390); //B is correct
+                        g.drawString(limitCharacterCount(22,deck.get(randomAnswersMCQ5[2]).getTerm()), 330, 465);
+                        g.drawString(limitCharacterCount(22,deck.get(randomAnswersMCQ5[3]).getTerm()), 590, 465);
                     } else if (correctMultipleChoice5 == 3) {
-                        g.drawString(deck.get(randomAnswersMCQ5[0]).getTerm(), 330, 390);
-                        g.drawString(deck.get(randomAnswersMCQ5[1]).getTerm(), 590, 390);
-                        g.drawString(testQuestions.get(currentQuestion - 1).getTerm(), 330, 465); //C is correct
-                        g.drawString(deck.get(randomAnswersMCQ5[3]).getTerm(), 590, 465);
+                        g.drawString(limitCharacterCount(22,deck.get(randomAnswersMCQ5[0]).getTerm()), 330, 390);
+                        g.drawString(limitCharacterCount(22,deck.get(randomAnswersMCQ5[1]).getTerm()), 590, 390);
+                        g.drawString(limitCharacterCount(22,testQuestions.get(currentQuestion - 1).getTerm()), 330, 465); //C is correct
+                        g.drawString(limitCharacterCount(22,deck.get(randomAnswersMCQ5[3]).getTerm()), 590, 465);
                     } else //if(correctMultipleChoice5 == 4)
                     {
-                        g.drawString(deck.get(randomAnswersMCQ5[0]).getTerm(), 330, 390);
-                        g.drawString(deck.get(randomAnswersMCQ5[1]).getTerm(), 590, 390);
-                        g.drawString(deck.get(randomAnswersMCQ5[2]).getTerm(), 330, 465);
-                        g.drawString(testQuestions.get(currentQuestion - 1).getTerm(), 590, 465); //D is correct
+                        g.drawString(limitCharacterCount(22,deck.get(randomAnswersMCQ5[0]).getTerm()), 330, 390);
+                        g.drawString(limitCharacterCount(22,deck.get(randomAnswersMCQ5[1]).getTerm()), 590, 390);
+                        g.drawString(limitCharacterCount(22,deck.get(randomAnswersMCQ5[2]).getTerm()), 330, 465);
+                        g.drawString(limitCharacterCount(22,testQuestions.get(currentQuestion - 1).getTerm()), 590, 465); //D is correct
                     }
                 }
     }
@@ -2957,6 +3196,246 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
             termClicked = false;
             termButtonClicked = 0;
         }
+
+           /*   if (trueFalse1 == true && currentQuestion == 1 && question1Answered == true) {
+                        buttons[TRUEBUTTONFORTEST].highlight();
+                        buttons[FALSEBUTTONFORTEST].unHighlight();
+                    }
+                    if (trueFalse1 == false && currentQuestion == 1 && question1Answered == true) {
+                        buttons[FALSEBUTTONFORTEST].highlight();
+                        buttons[TRUEBUTTONFORTEST].unHighlight();
+                    }
+                    if(currentQuestion == 1 && question1Answered == false)
+                    {
+                        buttons[FALSEBUTTONFORTEST].unHighlight();
+                        buttons[TRUEBUTTONFORTEST].unHighlight();
+                    }
+                    //true/false question 2
+                    if (trueFalse2 == true && currentQuestion == 2 && question2Answered == true) {
+                        buttons[TRUEBUTTONFORTEST].highlight();
+                        buttons[FALSEBUTTONFORTEST].unHighlight();
+                    }
+                    if (trueFalse2 == false && currentQuestion == 2 && question2Answered == true) {
+                        buttons[FALSEBUTTONFORTEST].highlight();
+                        buttons[TRUEBUTTONFORTEST].unHighlight();
+                    }
+                    if(currentQuestion == 2 && question2Answered == false)
+                    {
+                        buttons[FALSEBUTTONFORTEST].unHighlight();
+                        buttons[TRUEBUTTONFORTEST].unHighlight();
+                    }
+                    //true/false question 3
+                    if (trueFalse3 == true && currentQuestion == 3 && question3Answered == true) {
+                        buttons[TRUEBUTTONFORTEST].highlight();
+                        buttons[FALSEBUTTONFORTEST].unHighlight();
+                    }
+                    if (trueFalse3 == false && currentQuestion == 3 && question3Answered == true) {
+                        buttons[FALSEBUTTONFORTEST].highlight();
+                        buttons[TRUEBUTTONFORTEST].unHighlight();
+                    }
+                    if(currentQuestion == 3 && question3Answered == false)
+                    {
+                        buttons[FALSEBUTTONFORTEST].unHighlight();
+                        buttons[TRUEBUTTONFORTEST].unHighlight();
+                    }
+                    //true/false question 4
+                    if (trueFalse4 == true && currentQuestion == 4 && question4Answered == true) {
+                        buttons[TRUEBUTTONFORTEST].highlight();
+                        buttons[FALSEBUTTONFORTEST].unHighlight();
+                    }
+                    if (trueFalse4 == false && currentQuestion == 4 && question4Answered == true) {
+                        buttons[FALSEBUTTONFORTEST].highlight();
+                        buttons[TRUEBUTTONFORTEST].unHighlight();
+                    }
+                    if(currentQuestion == 4 && question4Answered == false)
+                    {
+                        buttons[FALSEBUTTONFORTEST].unHighlight();
+                        buttons[TRUEBUTTONFORTEST].unHighlight();
+                    }
+                    //true/false question 5
+                    if (trueFalse5 == true && currentQuestion == 5 && question5Answered == true) {
+                        buttons[TRUEBUTTONFORTEST].highlight();
+                        buttons[FALSEBUTTONFORTEST].unHighlight();
+                    }
+                    if (trueFalse5 == false && currentQuestion == 5 && question5Answered == true) {
+                        buttons[FALSEBUTTONFORTEST].highlight();
+                        buttons[TRUEBUTTONFORTEST].unHighlight();
+                    }
+                    if(currentQuestion == 5 && question5Answered == false)
+                    {
+                        buttons[FALSEBUTTONFORTEST].unHighlight();
+                        buttons[TRUEBUTTONFORTEST].unHighlight();
+                    }
+                    //multiple choice question 1. User selected A
+                    if(chosenAnswerMultipleChoice1 == 1 && currentQuestion == 6 && question6Answered == true){
+                        buttons[MCQATESTBUTTON].highlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 1. User selected B
+                    if(chosenAnswerMultipleChoice1 == 2 && currentQuestion == 6 && question6Answered == true){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].highlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 1. User selected C
+                    if(chosenAnswerMultipleChoice1 == 3 && currentQuestion == 6 && question6Answered == true){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].highlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 1. User selected D
+                    if(chosenAnswerMultipleChoice1 == 4 && currentQuestion == 6 && question6Answered == true){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].highlight();
+                    }
+                    if(currentQuestion == 6 && question6Answered == false){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 2. User selected A
+                    if(chosenAnswerMultipleChoice2 == 1 && currentQuestion == 7 && question7Answered == true){
+                        buttons[MCQATESTBUTTON].highlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 2. User selected B
+                    if(chosenAnswerMultipleChoice2 == 2 && currentQuestion == 7 && question7Answered == true){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].highlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 2. User selected C
+                    if(chosenAnswerMultipleChoice2 == 3 && currentQuestion == 7 && question7Answered == true){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].highlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 2. User selected D
+                    if(chosenAnswerMultipleChoice2 == 4 && currentQuestion == 7 && question7Answered == true){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].highlight();
+                    }
+                    if(currentQuestion == 7 && question7Answered == false){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 3. User selected A
+                    if(chosenAnswerMultipleChoice3 == 1 && currentQuestion == 8 && question8Answered == true){
+                        buttons[MCQATESTBUTTON].highlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 3. User selected B
+                    if(chosenAnswerMultipleChoice3 == 2 && currentQuestion == 8 && question8Answered == true){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].highlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 3. User selected C
+                    if(chosenAnswerMultipleChoice3 == 3 && currentQuestion == 8 && question8Answered == true){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].highlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 3. User selected D
+                    if(chosenAnswerMultipleChoice3 == 4 && currentQuestion == 8 && question8Answered == true){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].highlight();
+                    }
+                    if(currentQuestion == 8 && question8Answered == false){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 4. User selected A
+                    if(chosenAnswerMultipleChoice4 == 1 && currentQuestion == 9 && question9Answered == true){
+                        buttons[MCQATESTBUTTON].highlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 4. User selected B
+                    if(chosenAnswerMultipleChoice4 == 2 && currentQuestion == 9 && question9Answered == true){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].highlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 4. User selected C
+                    if(chosenAnswerMultipleChoice4 == 3 && currentQuestion == 9 && question9Answered == true){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].highlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 4. User selected D
+                    if(chosenAnswerMultipleChoice4 == 4 && currentQuestion == 9 && question9Answered == true){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].highlight();
+                    }
+                    if(currentQuestion == 9 && question9Answered == false){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 5. User selected A
+                    if(correctMultipleChoice5 == 1 && currentQuestion == 10 && question10Answered == true){
+                        buttons[MCQATESTBUTTON].highlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 5. User selected B
+                    if(chosenAnswerMultipleChoice5 == 2 && currentQuestion == 10 && question10Answered == true){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].highlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 5. User selected C
+                    if(chosenAnswerMultipleChoice5 == 3 && currentQuestion == 10 && question10Answered == true){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].highlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 5. User selected D
+                    if(chosenAnswerMultipleChoice5 == 4 && currentQuestion == 10 && question10Answered == true){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].highlight();
+                    }
+                    if(currentQuestion == 10 && question10Answered == false){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }*/
 
        // int button = e.getButton();
       /*  if (button == MouseEvent.BUTTON1) {
@@ -3568,6 +4047,245 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                    {
                        if((deck.size()<= 20 && currentQuestion + 1 <= deck.size()) || (deck.size()> 20 && currentQuestion + 1 <= 20))
                     currentQuestion++;
+                       if (trueFalse1 == true && currentQuestion == 1 && question1Answered == true) {
+                        buttons[TRUEBUTTONFORTEST].highlight();
+                        buttons[FALSEBUTTONFORTEST].unHighlight();
+                    }
+                    if (trueFalse1 == false && currentQuestion == 1 && question1Answered == true) {
+                        buttons[FALSEBUTTONFORTEST].highlight();
+                        buttons[TRUEBUTTONFORTEST].unHighlight();
+                    }
+                    if(currentQuestion == 1 && question1Answered == false)
+                    {
+                        buttons[FALSEBUTTONFORTEST].unHighlight();
+                        buttons[TRUEBUTTONFORTEST].unHighlight();
+                    }
+                    //true/false question 2
+                    if (trueFalse2 == true && currentQuestion == 2 && question2Answered == true) {
+                        buttons[TRUEBUTTONFORTEST].highlight();
+                        buttons[FALSEBUTTONFORTEST].unHighlight();
+                    }
+                    if (trueFalse2 == false && currentQuestion == 2 && question2Answered == true) {
+                        buttons[FALSEBUTTONFORTEST].highlight();
+                        buttons[TRUEBUTTONFORTEST].unHighlight();
+                    }
+                    if(currentQuestion == 2 && question2Answered == false)
+                    {
+                        buttons[FALSEBUTTONFORTEST].unHighlight();
+                        buttons[TRUEBUTTONFORTEST].unHighlight();
+                    }
+                    //true/false question 3
+                    if (trueFalse3 == true && currentQuestion == 3 && question3Answered == true) {
+                        buttons[TRUEBUTTONFORTEST].highlight();
+                        buttons[FALSEBUTTONFORTEST].unHighlight();
+                    }
+                    if (trueFalse3 == false && currentQuestion == 3 && question3Answered == true) {
+                        buttons[FALSEBUTTONFORTEST].highlight();
+                        buttons[TRUEBUTTONFORTEST].unHighlight();
+                    }
+                    if(currentQuestion == 3 && question3Answered == false)
+                    {
+                        buttons[FALSEBUTTONFORTEST].unHighlight();
+                        buttons[TRUEBUTTONFORTEST].unHighlight();
+                    }
+                    //true/false question 4
+                    if (trueFalse4 == true && currentQuestion == 4 && question4Answered == true) {
+                        buttons[TRUEBUTTONFORTEST].highlight();
+                        buttons[FALSEBUTTONFORTEST].unHighlight();
+                    }
+                    if (trueFalse4 == false && currentQuestion == 4 && question4Answered == true) {
+                        buttons[FALSEBUTTONFORTEST].highlight();
+                        buttons[TRUEBUTTONFORTEST].unHighlight();
+                    }
+                    if(currentQuestion == 4 && question4Answered == false)
+                    {
+                        buttons[FALSEBUTTONFORTEST].unHighlight();
+                        buttons[TRUEBUTTONFORTEST].unHighlight();
+                    }
+                    //true/false question 5
+                    if (trueFalse5 == true && currentQuestion == 5 && question5Answered == true) {
+                        buttons[TRUEBUTTONFORTEST].highlight();
+                        buttons[FALSEBUTTONFORTEST].unHighlight();
+                    }
+                    if (trueFalse5 == false && currentQuestion == 5 && question5Answered == true) {
+                        buttons[FALSEBUTTONFORTEST].highlight();
+                        buttons[TRUEBUTTONFORTEST].unHighlight();
+                    }
+                    if(currentQuestion == 5 && question5Answered == false)
+                    {
+                        buttons[FALSEBUTTONFORTEST].unHighlight();
+                        buttons[TRUEBUTTONFORTEST].unHighlight();
+                    }
+                    //multiple choice question 1. User selected A
+                    if(chosenAnswerMultipleChoice1 == 1 && currentQuestion == 6 && question6Answered == true){
+                        buttons[MCQATESTBUTTON].highlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 1. User selected B
+                    if(chosenAnswerMultipleChoice1 == 2 && currentQuestion == 6 && question6Answered == true){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].highlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 1. User selected C
+                    if(chosenAnswerMultipleChoice1 == 3 && currentQuestion == 6 && question6Answered == true){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].highlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 1. User selected D
+                    if(chosenAnswerMultipleChoice1 == 4 && currentQuestion == 6 && question6Answered == true){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].highlight();
+                    }
+                    if(currentQuestion == 6 && question6Answered == false){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 2. User selected A
+                    if(chosenAnswerMultipleChoice2 == 1 && currentQuestion == 7 && question7Answered == true){
+                        buttons[MCQATESTBUTTON].highlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 2. User selected B
+                    if(chosenAnswerMultipleChoice2 == 2 && currentQuestion == 7 && question7Answered == true){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].highlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 2. User selected C
+                    if(chosenAnswerMultipleChoice2 == 3 && currentQuestion == 7 && question7Answered == true){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].highlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 2. User selected D
+                    if(chosenAnswerMultipleChoice2 == 4 && currentQuestion == 7 && question7Answered == true){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].highlight();
+                    }
+                    if(currentQuestion == 7 && question7Answered == false){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 3. User selected A
+                    if(chosenAnswerMultipleChoice3 == 1 && currentQuestion == 8 && question8Answered == true){
+                        buttons[MCQATESTBUTTON].highlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 3. User selected B
+                    if(chosenAnswerMultipleChoice3 == 2 && currentQuestion == 8 && question8Answered == true){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].highlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 3. User selected C
+                    if(chosenAnswerMultipleChoice3 == 3 && currentQuestion == 8 && question8Answered == true){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].highlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 3. User selected D
+                    if(chosenAnswerMultipleChoice3 == 4 && currentQuestion == 8 && question8Answered == true){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].highlight();
+                    }
+                    if(currentQuestion == 8 && question8Answered == false){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 4. User selected A
+                    if(chosenAnswerMultipleChoice4 == 1 && currentQuestion == 9 && question9Answered == true){
+                        buttons[MCQATESTBUTTON].highlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 4. User selected B
+                    if(chosenAnswerMultipleChoice4 == 2 && currentQuestion == 9 && question9Answered == true){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].highlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 4. User selected C
+                    if(chosenAnswerMultipleChoice4 == 3 && currentQuestion == 9 && question9Answered == true){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].highlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 4. User selected D
+                    if(chosenAnswerMultipleChoice4 == 4 && currentQuestion == 9 && question9Answered == true){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].highlight();
+                    }
+                    if(currentQuestion == 9 && question9Answered == false){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 5. User selected A
+                    if(correctMultipleChoice5 == 1 && currentQuestion == 10 && question10Answered == true){
+                        buttons[MCQATESTBUTTON].highlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 5. User selected B
+                    if(chosenAnswerMultipleChoice5 == 2 && currentQuestion == 10 && question10Answered == true){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].highlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 5. User selected C
+                    if(chosenAnswerMultipleChoice5 == 3 && currentQuestion == 10 && question10Answered == true){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].highlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 5. User selected D
+                    if(chosenAnswerMultipleChoice5 == 4 && currentQuestion == 10 && question10Answered == true){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].highlight();
+                    }
+                    if(currentQuestion == 10 && question10Answered == false){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
 
                        if(currentQuestion == 6 && randomAnswersSelectedMCQ1 == false) {
                            if (correctMultipleChoice1 == 1) //A is correct
@@ -3871,7 +4589,7 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                            randomAnswersSelectedMCQ4 = true;
                        }
                        if(currentQuestion == 10 && randomAnswersSelectedMCQ5 == false) {
-                           if (correctMultipleChoice1 == 5) //A is correct
+                           if (correctMultipleChoice5 == 1) //A is correct
                            {
                                randomAnswerB = (int) (Math.random() * (deck.size())); //move this from here to button code so it does not repeat over and over again
                                while ((deck.get(randomAnswerB).getTerm()).equals(testQuestions.get(currentQuestion - 1).getTerm())) {
@@ -4083,6 +4801,246 @@ public class MainPanel extends JPanel implements MouseListener, MouseMotionListe
                            currentQuestion = 10;
                        else if(currentQuestion - 1 > 0)
                            currentQuestion--;
+
+                             if (trueFalse1 == true && currentQuestion == 1 && question1Answered == true) {
+                        buttons[TRUEBUTTONFORTEST].highlight();
+                        buttons[FALSEBUTTONFORTEST].unHighlight();
+                    }
+                    if (trueFalse1 == false && currentQuestion == 1 && question1Answered == true) {
+                        buttons[FALSEBUTTONFORTEST].highlight();
+                        buttons[TRUEBUTTONFORTEST].unHighlight();
+                    }
+                    if(currentQuestion == 1 && question1Answered == false)
+                    {
+                        buttons[FALSEBUTTONFORTEST].unHighlight();
+                        buttons[TRUEBUTTONFORTEST].unHighlight();
+                    }
+                    //true/false question 2
+                    if (trueFalse2 == true && currentQuestion == 2 && question2Answered == true) {
+                        buttons[TRUEBUTTONFORTEST].highlight();
+                        buttons[FALSEBUTTONFORTEST].unHighlight();
+                    }
+                    if (trueFalse2 == false && currentQuestion == 2 && question2Answered == true) {
+                        buttons[FALSEBUTTONFORTEST].highlight();
+                        buttons[TRUEBUTTONFORTEST].unHighlight();
+                    }
+                    if(currentQuestion == 2 && question2Answered == false)
+                    {
+                        buttons[FALSEBUTTONFORTEST].unHighlight();
+                        buttons[TRUEBUTTONFORTEST].unHighlight();
+                    }
+                    //true/false question 3
+                    if (trueFalse3 == true && currentQuestion == 3 && question3Answered == true) {
+                        buttons[TRUEBUTTONFORTEST].highlight();
+                        buttons[FALSEBUTTONFORTEST].unHighlight();
+                    }
+                    if (trueFalse3 == false && currentQuestion == 3 && question3Answered == true) {
+                        buttons[FALSEBUTTONFORTEST].highlight();
+                        buttons[TRUEBUTTONFORTEST].unHighlight();
+                    }
+                    if(currentQuestion == 3 && question3Answered == false)
+                    {
+                        buttons[FALSEBUTTONFORTEST].unHighlight();
+                        buttons[TRUEBUTTONFORTEST].unHighlight();
+                    }
+                    //true/false question 4
+                    if (trueFalse4 == true && currentQuestion == 4 && question4Answered == true) {
+                        buttons[TRUEBUTTONFORTEST].highlight();
+                        buttons[FALSEBUTTONFORTEST].unHighlight();
+                    }
+                    if (trueFalse4 == false && currentQuestion == 4 && question4Answered == true) {
+                        buttons[FALSEBUTTONFORTEST].highlight();
+                        buttons[TRUEBUTTONFORTEST].unHighlight();
+                    }
+                    if(currentQuestion == 4 && question4Answered == false)
+                    {
+                        buttons[FALSEBUTTONFORTEST].unHighlight();
+                        buttons[TRUEBUTTONFORTEST].unHighlight();
+                    }
+                    //true/false question 5
+                    if (trueFalse5 == true && currentQuestion == 5 && question5Answered == true) {
+                        buttons[TRUEBUTTONFORTEST].highlight();
+                        buttons[FALSEBUTTONFORTEST].unHighlight();
+                    }
+                    if (trueFalse5 == false && currentQuestion == 5 && question5Answered == true) {
+                        buttons[FALSEBUTTONFORTEST].highlight();
+                        buttons[TRUEBUTTONFORTEST].unHighlight();
+                    }
+                    if(currentQuestion == 5 && question5Answered == false)
+                    {
+                        buttons[FALSEBUTTONFORTEST].unHighlight();
+                        buttons[TRUEBUTTONFORTEST].unHighlight();
+                    }
+                    //multiple choice question 1. User selected A
+                    if(chosenAnswerMultipleChoice1 == 1 && currentQuestion == 6 && question6Answered == true){
+                        buttons[MCQATESTBUTTON].highlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 1. User selected B
+                    if(chosenAnswerMultipleChoice1 == 2 && currentQuestion == 6 && question6Answered == true){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].highlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 1. User selected C
+                    if(chosenAnswerMultipleChoice1 == 3 && currentQuestion == 6 && question6Answered == true){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].highlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 1. User selected D
+                    if(chosenAnswerMultipleChoice1 == 4 && currentQuestion == 6 && question6Answered == true){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].highlight();
+                    }
+                    if(currentQuestion == 6 && question6Answered == false){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 2. User selected A
+                    if(chosenAnswerMultipleChoice2 == 1 && currentQuestion == 7 && question7Answered == true){
+                        buttons[MCQATESTBUTTON].highlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 2. User selected B
+                    if(chosenAnswerMultipleChoice2 == 2 && currentQuestion == 7 && question7Answered == true){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].highlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 2. User selected C
+                    if(chosenAnswerMultipleChoice2 == 3 && currentQuestion == 7 && question7Answered == true){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].highlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 2. User selected D
+                    if(chosenAnswerMultipleChoice2 == 4 && currentQuestion == 7 && question7Answered == true){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].highlight();
+                    }
+                    if(currentQuestion == 7 && question7Answered == false){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 3. User selected A
+                    if(chosenAnswerMultipleChoice3 == 1 && currentQuestion == 8 && question8Answered == true){
+                        buttons[MCQATESTBUTTON].highlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 3. User selected B
+                    if(chosenAnswerMultipleChoice3 == 2 && currentQuestion == 8 && question8Answered == true){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].highlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 3. User selected C
+                    if(chosenAnswerMultipleChoice3 == 3 && currentQuestion == 8 && question8Answered == true){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].highlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 3. User selected D
+                    if(chosenAnswerMultipleChoice3 == 4 && currentQuestion == 8 && question8Answered == true){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].highlight();
+                    }
+                    if(currentQuestion == 8 && question8Answered == false){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 4. User selected A
+                    if(chosenAnswerMultipleChoice4 == 1 && currentQuestion == 9 && question9Answered == true){
+                        buttons[MCQATESTBUTTON].highlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 4. User selected B
+                    if(chosenAnswerMultipleChoice4 == 2 && currentQuestion == 9 && question9Answered == true){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].highlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 4. User selected C
+                    if(chosenAnswerMultipleChoice4 == 3 && currentQuestion == 9 && question9Answered == true){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].highlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 4. User selected D
+                    if(chosenAnswerMultipleChoice4 == 4 && currentQuestion == 9 && question9Answered == true){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].highlight();
+                    }
+                    if(currentQuestion == 9 && question9Answered == false){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 5. User selected A
+                    if(correctMultipleChoice5 == 1 && currentQuestion == 10 && question10Answered == true){
+                        buttons[MCQATESTBUTTON].highlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 5. User selected B
+                    if(chosenAnswerMultipleChoice5 == 2 && currentQuestion == 10 && question10Answered == true){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].highlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 5. User selected C
+                    if(chosenAnswerMultipleChoice5 == 3 && currentQuestion == 10 && question10Answered == true){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].highlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
+                    //multiple choice question 5. User selected D
+                    if(chosenAnswerMultipleChoice5 == 4 && currentQuestion == 10 && question10Answered == true){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].highlight();
+                    }
+                    if(currentQuestion == 10 && question10Answered == false){
+                        buttons[MCQATESTBUTTON].unHighlight();
+                        buttons[MCQBTESTBUTTON].unHighlight();
+                        buttons[MCQCTESTBUTTON].unHighlight();
+                        buttons[MCQDTESTBUTTON].unHighlight();
+                    }
 
                    }
                    if(b.getTitle().equals("learnA"))
